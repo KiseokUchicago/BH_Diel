@@ -127,8 +127,11 @@ dim(combined_tsv)
 
 combined_tsv %>% select()
 
-# write.table(combined_tsv,"Replicate_B_combined.tsv", sep='\t',row.names = F)
-# openxlsx::write.xlsx(combined_tsv,'Replicate_B_combined.xlsx',rowNames=F)
+setwd('../')
+getwd()
+
+write.table(combined_tsv,"Replicate_B_combined.tsv", sep='\t',row.names = F)
+openxlsx::write.xlsx(combined_tsv,'Replicate_B_combined.xlsx',rowNames=F)
 
 
 ```
