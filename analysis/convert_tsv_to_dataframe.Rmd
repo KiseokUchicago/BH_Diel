@@ -88,8 +88,8 @@ convert_tsv <- function(file_number, filename){
   
   # final form
   head(df9)
-  # write.table(df9,file=paste0("data/",file_number,'_',filename), sep='\t',row.names = F)
-  # openxlsx::write.xlsx(df9,paste0("data/",file_number,'_',str_remove(filename,'.tsv'),'.xlsx'),rowNames=F)
+  write.table(df9,file=paste0(file_number,'_',filename), sep='\t',row.names = F)
+  openxlsx::write.xlsx(df9,paste0(file_number,'_',str_remove(filename,'.tsv'),'.xlsx'),rowNames=F)
 }
 
 # list all files in certain folder
