@@ -514,16 +514,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree993544907145f25b0891066dca24997732b39810targetblank9935449a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/993544907145f25b0891066dca24997732b39810" target="_blank">9935449</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree7830f0053fe892c583494bdfddfc272fe7ffbd2ctargetblank7830f00a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/7830f0053fe892c583494bdfddfc272fe7ffbd2c" target="_blank">7830f00</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree993544907145f25b0891066dca24997732b39810targetblank9935449a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree7830f0053fe892c583494bdfddfc272fe7ffbd2ctargetblank7830f00a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/993544907145f25b0891066dca24997732b39810" target="_blank">9935449</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/7830f0053fe892c583494bdfddfc272fe7ffbd2c" target="_blank">7830f00</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -622,6 +622,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KiseokUchicago/BH_Diel/blob/7830f0053fe892c583494bdfddfc272fe7ffbd2c/analysis/convert_tsv_to_dataframe.Rmd" target="_blank">7830f00</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-02-22
+</td>
+<td>
+publish
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KiseokUchicago/BH_Diel/366e63ad3f1783c91278abbe68d0b0e2b734aae2/docs/convert_tsv_to_dataframe.html" target="_blank">366e63a</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-02-22
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -948,24 +982,36 @@ for (i in c(1:length(list_f))){
 [1] 24
 [1] &quot;IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T8-SRF_filtered_PSMs.tsv&quot;</code></pre>
 </div>
-<div id="aggregate-all-converted-tsv-files" class="section level3">
-<h3>aggregate all converted tsv files</h3>
+<div id="aggregate-all-converted-tsv-files---output-it-to-linux" class="section level3">
+<h3>aggregate all converted tsv files -&gt; output it to linux</h3>
 <pre class="r"><code>#
-setwd(&#39;./data/&#39;)
-getwd()</code></pre>
-<pre><code>[1] &quot;C:/Users/there/Desktop/Dr_Coleman _rotation/BH_Diel/data&quot;</code></pre>
-<pre class="r"><code>tsv_files  &lt;- list.files(pattern = &#39;^[0-9].*_PSMs\\.tsv&#39;)
+tsv_files  &lt;- list.files(pattern = &#39;^[0-9].*_PSMs\\.tsv&#39;)
 tables &lt;- lapply(tsv_files, read.table, header = TRUE)
 combined_tsv &lt;- do.call(rbind , tables)
 head(combined_tsv)</code></pre>
-<pre><code>NULL</code></pre>
+<pre><code>          Spec_id Base.Peptide.Sequence log2.18O.16O.Ratio  SampleID Index
+1 BDCL_T1_B_56549  LLSENVDAIIGAASSGVSLK        -0.60046965 BDCL_T1_B     1
+2 BDCL_T1_B_48736    SVFVNQASSEGIGQALAK        -0.09393621 BDCL_T1_B     2
+3 BDCL_T1_B_50215    EEIASVASISAADTEIGR        -1.17728746 BDCL_T1_B     3
+4 BDCL_T1_B_47756    GQADIGLLGSTAGTQLNR        -0.82806202 BDCL_T1_B     4
+5 BDCL_T1_B_48571    SVFVNQASSEGIGQALAK        -1.05946785 BDCL_T1_B     5
+6 BDCL_T1_B_56779 AMLQDIAVLTGGTVITDELGR        -0.70018147 BDCL_T1_B     6
+     Cruise Station Isotope Replicate Time Depth SpectrumID ScanID Target.
+1 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      49728  56549    True
+2 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      42413  48736    True
+3 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      43799  50215    True
+4 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      41495  47756    True
+5 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      42258  48571    True
+6 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      49943  56779    True
+  Decoy.
+1  False
+2  False
+3  False
+4  False
+5  False
+6  False</code></pre>
 <pre class="r"><code>dim(combined_tsv)</code></pre>
-<pre><code>NULL</code></pre>
-<pre class="r"><code>combined_tsv %&gt;% select()</code></pre>
-<pre><code>Error in UseMethod(&quot;select&quot;): no applicable method for &#39;select&#39; applied to an object of class &quot;NULL&quot;</code></pre>
-<pre class="r"><code>setwd(&#39;../&#39;)
-getwd()</code></pre>
-<pre><code>[1] &quot;C:/Users/there/Desktop/Dr_Coleman _rotation/BH_Diel&quot;</code></pre>
+<pre><code>[1] 38959    15</code></pre>
 <pre class="r"><code>write.table(combined_tsv,&quot;Replicate_B_combined.tsv&quot;, sep=&#39;\t&#39;,row.names = F)
 openxlsx::write.xlsx(combined_tsv,&#39;Replicate_B_combined.xlsx&#39;,rowNames=F)</code></pre>
 <br>
