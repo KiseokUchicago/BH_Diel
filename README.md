@@ -1,0 +1,5 @@
+# BH_Diel
+
+A [workflowr][] project.
+
+[workflowr]: https://github.com/jdblischak/workflowr
