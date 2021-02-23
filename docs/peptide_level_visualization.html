@@ -514,16 +514,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltreec4cbcd229432d571f38ef352a2c584f61be1c6c1targetblankc4cbcd2a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/c4cbcd229432d571f38ef352a2c584f61be1c6c1" target="_blank">c4cbcd2</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree5a66cb1df60159b096f60da4df338e24228e996dtargetblank5a66cb1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/5a66cb1df60159b096f60da4df338e24228e996d" target="_blank">5a66cb1</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltreec4cbcd229432d571f38ef352a2c584f61be1c6c1targetblankc4cbcd2a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree5a66cb1df60159b096f60da4df338e24228e996dtargetblank5a66cb1a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/c4cbcd229432d571f38ef352a2c584f61be1c6c1" target="_blank">c4cbcd2</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/5a66cb1df60159b096f60da4df338e24228e996d" target="_blank">5a66cb1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -585,9 +585,6 @@ Untracked files:
     Untracked:  Replicate_B_combined.xlsx
     Untracked:  data/diel-Feb21/
 
-Unstaged changes:
-    Modified:   analysis/index.Rmd
-
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
@@ -625,6 +622,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KiseokUchicago/BH_Diel/blob/5a66cb1df60159b096f60da4df338e24228e996d/analysis/peptide_level_visualization.Rmd" target="_blank">5a66cb1</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-02-22
+</td>
+<td>
+peptide
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KiseokUchicago/BH_Diel/12b2c74add495b09b165c27e24022cdd0f863103/docs/peptide_level_visualization.html" target="_blank">12b2c74</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-02-22
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -702,6 +733,12 @@ visualization
 </div>
 <div id="peptide-level-visualization" class="section level3">
 <h3>Peptide level visualization</h3>
+<pre class="r"><code># libraries
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(ggplot2)
+library(formattable)</code></pre>
 </div>
 <div id="number-of-uniq-peptides-sequence-per-sample" class="section level3">
 <h3>(1) Number of uniq peptides (sequence) per sample</h3>
@@ -709,22 +746,16 @@ visualization
 df_pep &lt;- read.table(&quot;Replicate_B_combined.tsv&quot;,sep=&#39;\t&#39;,header = T)
 
 # count unique peptide per sample
-df_uni &lt;- df_pep %&gt;% group_by(SampleID) %&gt;% summarize(uniq_pep = length(unique(Base.Peptide.Sequence)))</code></pre>
-<pre><code>Error in df_pep %&gt;% group_by(SampleID) %&gt;% summarize(uniq_pep = length(unique(Base.Peptide.Sequence))): could not find function &quot;%&gt;%&quot;</code></pre>
-<pre class="r"><code>df_uni1 &lt;- df_uni %&gt;% separate(SampleID, sep=&#39;_&#39;, into= c(&#39;Depth&#39;,&#39;Time&#39;,&#39;Replicate&#39;),remove = F) %&gt;% select(-Time, -Replicate)</code></pre>
-<pre><code>Error in df_uni %&gt;% separate(SampleID, sep = &quot;_&quot;, into = c(&quot;Depth&quot;, &quot;Time&quot;, : could not find function &quot;%&gt;%&quot;</code></pre>
-<pre class="r"><code>df_uni2 &lt;- df_uni1 %&gt;% arrange((Depth))</code></pre>
-<pre><code>Error in df_uni1 %&gt;% arrange((Depth)): could not find function &quot;%&gt;%&quot;</code></pre>
-<pre class="r"><code># get the order right from SRF -&gt; DCL -&gt; BDCL
-ord &lt;- df_uni2$SampleID </code></pre>
-<pre><code>Error in eval(expr, envir, enclos): object &#39;df_uni2&#39; not found</code></pre>
-<pre class="r"><code>df_uni2$SampleID &lt;- factor(df_uni2$SampleID, levels = ord)</code></pre>
-<pre><code>Error in factor(df_uni2$SampleID, levels = ord): object &#39;df_uni2&#39; not found</code></pre>
-<pre class="r"><code># Making barplot
-# install.packages(&#39;formattable&#39;)
-library(ggplot2)
-library(formattable)
+df_uni &lt;- df_pep %&gt;% group_by(SampleID) %&gt;% summarize(uniq_pep = length(unique(Base.Peptide.Sequence)))
+df_uni1 &lt;- df_uni %&gt;% separate(SampleID, sep=&#39;_&#39;, into= c(&#39;Depth&#39;,&#39;Time&#39;,&#39;Replicate&#39;),remove = F) %&gt;% select(-Time, -Replicate)
+df_uni2 &lt;- df_uni1 %&gt;% arrange((Depth))
 
+# get the order right from SRF -&gt; DCL -&gt; BDCL
+ord &lt;- df_uni2$SampleID 
+df_uni2$SampleID &lt;- factor(df_uni2$SampleID, levels = ord)
+
+
+# Making barplot
 theme_set(theme_bw())
 
 uniq1 &lt;- ggplot(df_uni2, aes(x=SampleID, fill=Depth, y=uniq_pep)) +  ## I put fill=value which was wrong
@@ -739,13 +770,15 @@ uniq1 &lt;- ggplot(df_uni2, aes(x=SampleID, fill=Depth, y=uniq_pep)) +  ## I put
   theme(axis.text.x = element_text(angle = 90, hjust = 0.5, vjust=0.3,size=13, family=&quot;serif&quot;))+
   theme(axis.text.y = element_text(size=10))+
   theme(panel.grid.major = element_blank()) +
-  theme(panel.grid.minor = element_blank())</code></pre>
-<pre><code>Error in ggplot(df_uni2, aes(x = SampleID, fill = Depth, y = uniq_pep)): object &#39;df_uni2&#39; not found</code></pre>
-<pre class="r"><code>uniq2 &lt;- uniq1 + geom_text(aes(x=df_uni$SampleID, y=df_uni$uniq_pep, label=df_uni$uniq_pep),
-            size = 3, hjust = 0.5, position = position_stack(vjust = +1.05), family=&quot;serif&quot;)</code></pre>
-<pre><code>Error in eval(expr, envir, enclos): object &#39;uniq1&#39; not found</code></pre>
-<pre class="r"><code>uniq2</code></pre>
-<pre><code>Error in eval(expr, envir, enclos): object &#39;uniq2&#39; not found</code></pre>
+  theme(panel.grid.minor = element_blank())
+
+uniq2 &lt;- uniq1 + geom_text(aes(x=df_uni$SampleID, y=df_uni$uniq_pep, label=df_uni$uniq_pep),
+            size = 3, hjust = 0.5, position = position_stack(vjust = +1.05), family=&quot;serif&quot;)
+uniq2</code></pre>
+<img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-2-1.png" width="576" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<strong>Warning!</strong> The custom <code>fig.path</code> you set was ignored by workflowr.
+</div>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -771,20 +804,22 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] formattable_0.2.1 ggplot2_3.3.3     workflowr_1.6.2  
+[1] formattable_0.2.1 ggplot2_3.3.3     stringr_1.4.0     tidyr_1.1.2      
+[5] dplyr_1.0.4       workflowr_1.6.2  
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.5        pillar_1.4.7      compiler_4.0.3    later_1.1.0.1    
- [5] git2r_0.27.1      tools_4.0.3       digest_0.6.27     evaluate_0.14    
- [9] lifecycle_1.0.0   tibble_3.0.4      gtable_0.3.0      pkgconfig_2.0.3  
-[13] rlang_0.4.10      DBI_1.1.1         yaml_2.2.1        xfun_0.20        
-[17] withr_2.4.1       stringr_1.4.0     dplyr_1.0.4       knitr_1.31       
-[21] htmlwidgets_1.5.3 generics_0.1.0    fs_1.5.0          vctrs_0.3.6      
-[25] rprojroot_2.0.2   grid_4.0.3        tidyselect_1.1.0  glue_1.4.2       
-[29] R6_2.5.0          rmarkdown_2.6     purrr_0.3.4       magrittr_2.0.1   
-[33] whisker_0.4       scales_1.1.1      promises_1.1.1    ellipsis_0.3.1   
-[37] htmltools_0.5.0   assertthat_0.2.1  colorspace_2.0-0  httpuv_1.5.4     
-[41] stringi_1.5.3     munsell_0.5.0     crayon_1.4.1     </code></pre>
+ [1] Rcpp_1.0.5         highr_0.8          RColorBrewer_1.1-2 pillar_1.4.7      
+ [5] compiler_4.0.3     later_1.1.0.1      git2r_0.27.1       tools_4.0.3       
+ [9] digest_0.6.27      evaluate_0.14      lifecycle_1.0.0    tibble_3.0.4      
+[13] gtable_0.3.0       pkgconfig_2.0.3    rlang_0.4.10       DBI_1.1.1         
+[17] yaml_2.2.1         xfun_0.20          withr_2.4.1        knitr_1.31        
+[21] htmlwidgets_1.5.3  generics_0.1.0     fs_1.5.0           vctrs_0.3.6       
+[25] rprojroot_2.0.2    grid_4.0.3         tidyselect_1.1.0   glue_1.4.2        
+[29] R6_2.5.0           rmarkdown_2.6      farver_2.0.3       purrr_0.3.4       
+[33] magrittr_2.0.1     whisker_0.4        scales_1.1.1       promises_1.1.1    
+[37] ellipsis_0.3.1     htmltools_0.5.0    assertthat_0.2.1   colorspace_2.0-0  
+[41] httpuv_1.5.4       labeling_0.4.2     stringi_1.5.3      munsell_0.5.0     
+[45] crayon_1.4.1      </code></pre>
 </div>
 </div>
 
