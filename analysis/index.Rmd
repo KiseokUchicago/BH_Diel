@@ -11,4 +11,4 @@ editor_options:
 Welcome to my research website.
 
 * [Converting_tsv_to_dataframe](convert_tsv_to_dataframe.html)
-* [Diel_visualization](Diel_visualization.html)
+* [Peptide_level_visualization](peptide_level_visualization.html)
