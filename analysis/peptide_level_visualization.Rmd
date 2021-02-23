@@ -1,0 +1,31 @@
+---
+title: "peptide_level_visualization"
+author: "KiseokUchicago"
+date: "2021-02-22"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=6, fig.height=4, fig.path='Figs/',
+                      error=TRUE, echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE)
+```
+
+### Peptide level visualization
+
+### (1) Number of uniq peptides (sequence) per sample
+
+```{r}
+# read in combined table of 24 samples (Replicate B)
+df_pep <- read.table("Replicate_B_combined.tsv",sep='\t',header = T)
+
+# count unique peptide per sample
+df_uni <- df_pep %>% group_by(SampleID) %>% summarize(uniq_pep = length(unique(Base.Peptide.Sequence))) %>% ungroup()
+
+# barplot
+library(ggplot2)
+
+
+```
+
