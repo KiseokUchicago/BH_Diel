@@ -1,0 +1,139 @@
+---
+title: "convert_tsv_to_dataframe"
+author: "KiseokUChicago"
+date: "2021-01-14"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+### Converting tsv files to dataframe
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=6, fig.height=4, fig.path='Figs/',
+                      error=TRUE, echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE)
+```
+
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(stringr)
+
+# Make the desirable format
+df <- read.csv(file='data/diel-Feb21/IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T1-BDCL_filtered_PSMs.tsv', sep = '\t')
+df <- tibble::rownames_to_column(df, var = 'Index')
+df2 <- df %>% select(Index,Scan.Number, Base.Peptide.Sequence, log2.18O.16O.Ratio, Target., Decoy.)
+df3 <- df2 %>% separate(Scan.Number, into = c('dir',"file_name"), sep = 'IPTL-')
+colnames(df3)
+df4 <- df3 %>% select(-dir)
+colnames(df4)
+df5 <- df4 %>% separate(file_name, sep=';', into= c('IPT','SpectrumID','ScanID'))
+head(df5)
+# remove unwanted substrings
+df5$IPT <- str_remove(df5$IPT, '.raw')
+df5$SpectrumID <- str_remove(df5$SpectrumID, ' SpectrumID: ')
+df5$ScanID <- str_remove(df5$ScanID, ' scans: ') 
+head(df5$ScanID) # watch out for the space in front
+df6 <- df5 %>% separate(IPT,into=c('Cruise','Station','Isotope','16O','Replicate','Time','Depth'),sep='-') %>% select(-`16O`)
+colnames(df6)
+df7 <- df6 %>% unite(c('Depth','Time','Replicate','ScanID'),col=Spec_id, remove=F) 
+df7 <- df7 %>% unite(c('Depth','Time','Replicate'),col=SampleID, remove=F) 
+head(df7)
+# Arrange column order
+df8 <- df7 %>% select(Spec_id, Base.Peptide.Sequence, log2.18O.16O.Ratio,SampleID,Index,Cruise,Station,Isotope, Replicate, Time, Depth, SpectrumID, ScanID, Target., Decoy.)
+head(df8)   
+# screen and remove Decoy = True
+df9 <- df8 %>% filter(Decoy.=='False')
+# confirm
+df9[df9$Decoy.=='True',]
+
+# final form
+head(df9)
+
+```
+
+### Doing it for all tsv files
+
+```{r}
+library(openxlsx)
+
+# define function
+convert_tsv <- function(file_number, filename){
+  # Make the desirable format
+  df <- read.csv(file=paste0(directory_path,"/" ,filename), sep = '\t')
+  df <- tibble::rownames_to_column(df, var = 'Index')
+  df2 <- df %>% select(Index,Scan.Number, Base.Peptide.Sequence, log2.18O.16O.Ratio, Target., Decoy.)
+  df3 <- df2 %>% separate(Scan.Number, into = c('dir',"file_name"), sep = 'IPTL-')
+  colnames(df3)
+  df4 <- df3 %>% select(-dir)
+  colnames(df4)
+  df5 <- df4 %>% separate(file_name, sep=';', into= c('IPT','SpectrumID','ScanID'))
+  head(df5)
+  # remove unwanted substrings
+  df5$IPT <- str_remove(df5$IPT, '.raw')
+  df5$SpectrumID <- str_remove(df5$SpectrumID, ' SpectrumID: ')
+  df5$ScanID <- str_remove(df5$ScanID, ' scans: ') 
+  head(df5$ScanID) # watch out for the space in front
+  df6 <- df5 %>% separate(IPT,into=c('Cruise','Station','Isotope','16O','Replicate','Time','Depth'),sep='-') %>% select(-`16O`)
+  colnames(df6)
+  df7 <- df6 %>% unite(c('Depth','Time','Replicate','ScanID'),col=Spec_id, remove=F) 
+  df7 <- df7 %>% unite(c('Depth','Time','Replicate'),col=SampleID, remove=F) 
+  head(df7)
+  # Arrange column order
+  df8 <- df7 %>% select(Spec_id, Base.Peptide.Sequence, log2.18O.16O.Ratio,SampleID,Index,Cruise,Station,Isotope, Replicate, Time, Depth, SpectrumID, ScanID, Target., Decoy.)
+  # screen and remove Decoy = True
+  df9 <- df8 %>% filter(Decoy.=='False')
+  # confirm
+  df9[df9$Decoy.=='True',]
+  
+  # final form
+  head(df9)
+  # write.table(df9,file=paste0("data/",file_number,'_',filename), sep='\t',row.names = F)
+  # openxlsx::write.xlsx(df9,paste0("data/",file_number,'_',str_remove(filename,'.tsv'),'.xlsx'),rowNames=F)
+}
+
+# list all files in certain folder
+directory_path = "data/diel-Feb21"
+list_f <- list.files(path="data/diel-Feb21")
+length(list_f)
+
+# test example
+convert_tsv('01','IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T1-BDCL_filtered_PSMs.tsv')
+
+# make file name starting from 01, 02, 
+vec_00 <- sprintf("%02d", c(1:length(list_f)))
+# loop through files and convert
+for (i in c(1:length(list_f))){
+  print(i)
+  print(list_f[i])
+  convert_tsv(vec_00[i], list_f[i])
+}
+
+
+```
+
+### aggregate all converted tsv files
+
+```{r}
+#
+setwd('./data/')
+getwd()
+
+tsv_files  <- list.files(pattern = '^[0-9].*_PSMs\\.tsv')
+tables <- lapply(tsv_files, read.table, header = TRUE)
+combined_tsv <- do.call(rbind , tables)
+head(combined_tsv)
+dim(combined_tsv)
+
+combined_tsv %>% select()
+
+# write.table(combined_tsv,"Replicate_B_combined.tsv", sep='\t',row.names = F)
+# openxlsx::write.xlsx(combined_tsv,'Replicate_B_combined.xlsx',rowNames=F)
+
+
+```
+
+
+
+
+
