@@ -514,16 +514,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltreedeb4db2f0aae05e8a37b3c9f238db1621ed35046targetblankdeb4db2a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/deb4db2f0aae05e8a37b3c9f238db1621ed35046" target="_blank">deb4db2</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltreedd3354ea8f4f0fc98a1ac9e91aeb7b5acc3645c9targetblankdd3354ea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/dd3354ea8f4f0fc98a1ac9e91aeb7b5acc3645c9" target="_blank">dd3354e</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltreedeb4db2f0aae05e8a37b3c9f238db1621ed35046targetblankdeb4db2a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltreedd3354ea8f4f0fc98a1ac9e91aeb7b5acc3645c9targetblankdd3354ea" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/deb4db2f0aae05e8a37b3c9f238db1621ed35046" target="_blank">deb4db2</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/dd3354ea8f4f0fc98a1ac9e91aeb7b5acc3645c9" target="_blank">dd3354e</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -581,6 +581,8 @@ Untracked files:
     Untracked:  23_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T8-DCL_filtered_PSMs.xlsx
     Untracked:  24_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T8-SRF_filtered_PSMs.tsv
     Untracked:  24_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T8-SRF_filtered_PSMs.xlsx
+    Untracked:  P1_number_unique_peptide_per_sample.pdf
+    Untracked:  P2_number_of_cumulative_unique_peptides.pdf
     Untracked:  Replicate_B_combined.tsv
     Untracked:  Replicate_B_combined.xlsx
     Untracked:  data/diel-Feb21/
@@ -625,6 +627,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KiseokUchicago/BH_Diel/blob/dd3354ea8f4f0fc98a1ac9e91aeb7b5acc3645c9/analysis/peptide_level_visualization.Rmd" target="_blank">dd3354e</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-02-22
+</td>
+<td>
+peptide
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KiseokUchicago/BH_Diel/69d6ce78a34ed33f4c1c6f84cc3d565cc46908a9/docs/peptide_level_visualization.html" target="_blank">69d6ce7</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-02-22
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -777,8 +813,8 @@ library(stringr)
 library(ggplot2)
 library(formattable)</code></pre>
 </div>
-<div id="number-of-uniq-peptides-sequence-per-sample" class="section level3">
-<h3>(1) Number of uniq peptides (sequence) per sample</h3>
+<div id="quality-check-number-of-uniq-peptides-sequence-per-sample" class="section level3">
+<h3>(1) Quality check: Number of uniq peptides (sequence) per sample</h3>
 <pre class="r"><code># read in combined table of 24 samples (Replicate B)
 df_pep &lt;- read.table(&quot;Replicate_B_combined.tsv&quot;,sep=&#39;\t&#39;,header = T)
 
@@ -799,6 +835,7 @@ uniq1 &lt;- ggplot(df_uni2, aes(x=SampleID, fill=Depth, y=uniq_pep)) +  ## I put
   geom_bar(stat=&quot;identity&quot;) +
   scale_fill_brewer(palette=&#39;Set2&#39;) +
   ylab(&quot;Number of unique peptide sequence \n&quot;) +
+  xlab(&quot;\n SampleID&quot;) +
   ggtitle(&quot;Number of unique peptide sequences per sample&quot;)+
   ## adjust positions
   theme(plot.title = element_text(size = 20,hjust = 0.5, family=&quot;serif&quot;)) + 
@@ -813,6 +850,56 @@ uniq2 &lt;- uniq1 + geom_text(aes(x=df_uni$SampleID, y=df_uni$uniq_pep, label=df
             size = 3, hjust = 0.5, position = position_stack(vjust = +1.05), family=&quot;serif&quot;)
 uniq2</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-2-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p>sample DCL_T8 doesn’t seem to have good quality MS data.</p>
+</div>
+<div id="number-of-accumulative-uniq-peptides-sequence" class="section level3">
+<h3>(2) Number of accumulative uniq peptides (sequence)</h3>
+<pre class="r"><code># read in combined table of 24 samples (Replicate B)
+df_pep &lt;- read.table(&quot;Replicate_B_combined.tsv&quot;,sep=&#39;\t&#39;,header = T)
+
+# get unique peptides per sample
+dt &lt;- df_pep %&gt;% select(SampleID, Base.Peptide.Sequence) %&gt;% unique()
+# change SampleID into number
+dt1 &lt;- dt %&gt;% select(SampleID) %&gt;% unique() %&gt;% arrange(SampleID) %&gt;%  arrange()
+dt2 &lt;- tibble::rownames_to_column(dt1,&quot;depth&quot;)
+# merge dt and dt2
+dt_depth &lt;- left_join(dt,dt2,by=c(&#39;SampleID&#39;=&#39;SampleID&#39;))
+dim(dt_depth)</code></pre>
+<pre><code>[1] 15452     3</code></pre>
+<pre class="r"><code># get cumulative number of unique peptides (https://stackoverflow.com/questions/15698399/cumulative-count-of-unique-values-in-r)
+require(data.table)
+dt_depth &lt;- as.data.table(dt_depth)
+setkey(dt_depth, &quot;depth&quot;)
+dt_depth[, Base.Peptide.Sequence := as.numeric(factor(Base.Peptide.Sequence, levels = unique(Base.Peptide.Sequence)))]
+setkey(dt_depth, &quot;depth&quot;, &quot;Base.Peptide.Sequence&quot;)
+dt.out &lt;- dt_depth[J(unique(depth)), mult=&quot;last&quot;]
+dt.out[, Base.Peptide.Sequence := cummax(Base.Peptide.Sequence)]
+
+# getting ready to make plot
+df.out &lt;- tibble::rowid_to_column(dt.out) 
+df.out2 &lt;- df.out %&gt;% select(rowid, Base.Peptide.Sequence) %&gt;% rename(value=Base.Peptide.Sequence)
+# Making line plot
+theme_set(theme_bw())
+
+p1 &lt;- ggplot(df.out2,aes(x = rowid,y = value)) + geom_line(col=&quot;magenta&quot;) + geom_point(color=&#39;maroon&#39;) +
+  ylab(&quot;Number of cumulative unique peptide sequence \n&quot;) +
+  xlab(&quot;\n Number of cumulative samples&quot;) +
+  ylim(c(0,2200)) +
+  ggtitle(&quot;Number of cumulative unique peptide sequences \n&quot;)+
+  ## adjust positions
+  theme(plot.title = element_text(size = 20,hjust = 0.5, family=&quot;serif&quot;)) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
+  theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family=&quot;serif&quot;))+
+  theme(axis.text.y = element_text(size=10))
+  # theme(panel.grid.major = element_blank())
+  # theme(panel.grid.minor = element_blank())
+
+p1</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-3-1.png" width="864" style="display: block; margin: auto;" /> It seems to saturate as more samples are added.</p>
+</div>
+<div id="number-of-accumulative-uniq-peptides-sequence-1" class="section level3">
+<h3>(3) Number of accumulative uniq peptides (sequence)</h3>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -838,8 +925,8 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] formattable_0.2.1 ggplot2_3.3.3     stringr_1.4.0     tidyr_1.1.2      
-[5] dplyr_1.0.4       workflowr_1.6.2  
+[1] data.table_1.13.6 formattable_0.2.1 ggplot2_3.3.3     stringr_1.4.0    
+[5] tidyr_1.1.2       dplyr_1.0.4       workflowr_1.6.2  
 
 loaded via a namespace (and not attached):
  [1] Rcpp_1.0.5         highr_0.8          RColorBrewer_1.1-2 pillar_1.4.7      
