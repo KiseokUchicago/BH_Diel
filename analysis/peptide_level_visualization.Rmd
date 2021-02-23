@@ -23,7 +23,7 @@ library(ggplot2)
 library(formattable)
 ```
 
-### (1) Number of uniq peptides (sequence) per sample
+### (1) Quality check: Number of uniq peptides (sequence) per sample
 
 ```{r}
 # read in combined table of 24 samples (Replicate B)
@@ -46,6 +46,7 @@ uniq1 <- ggplot(df_uni2, aes(x=SampleID, fill=Depth, y=uniq_pep)) +  ## I put fi
   geom_bar(stat="identity") +
   scale_fill_brewer(palette='Set2') +
   ylab("Number of unique peptide sequence \n") +
+  xlab("\n SampleID") +
   ggtitle("Number of unique peptide sequences per sample")+
   ## adjust positions
   theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
@@ -61,4 +62,60 @@ uniq2 <- uniq1 + geom_text(aes(x=df_uni$SampleID, y=df_uni$uniq_pep, label=df_un
 uniq2
 
 ```
+
+sample DCL_T8 doesn't seem to have good quality MS data. 
+
+
+### (2) Number of accumulative uniq peptides (sequence)
+
+```{r}
+# read in combined table of 24 samples (Replicate B)
+df_pep <- read.table("Replicate_B_combined.tsv",sep='\t',header = T)
+
+# get unique peptides per sample
+dt <- df_pep %>% select(SampleID, Base.Peptide.Sequence) %>% unique()
+# change SampleID into number
+dt1 <- dt %>% select(SampleID) %>% unique() %>% arrange(SampleID) %>%  arrange()
+dt2 <- tibble::rownames_to_column(dt1,"depth")
+# merge dt and dt2
+dt_depth <- left_join(dt,dt2,by=c('SampleID'='SampleID'))
+dim(dt_depth)
+
+# get cumulative number of unique peptides (https://stackoverflow.com/questions/15698399/cumulative-count-of-unique-values-in-r)
+require(data.table)
+dt_depth <- as.data.table(dt_depth)
+setkey(dt_depth, "depth")
+dt_depth[, Base.Peptide.Sequence := as.numeric(factor(Base.Peptide.Sequence, levels = unique(Base.Peptide.Sequence)))]
+setkey(dt_depth, "depth", "Base.Peptide.Sequence")
+dt.out <- dt_depth[J(unique(depth)), mult="last"]
+dt.out[, Base.Peptide.Sequence := cummax(Base.Peptide.Sequence)]
+
+# getting ready to make plot
+df.out <- tibble::rowid_to_column(dt.out) 
+df.out2 <- df.out %>% select(rowid, Base.Peptide.Sequence) %>% rename(value=Base.Peptide.Sequence)
+# Making line plot
+theme_set(theme_bw())
+
+p1 <- ggplot(df.out2,aes(x = rowid,y = value)) + geom_line(col="magenta") + geom_point(color='maroon') +
+  ylab("Number of cumulative unique peptide sequence \n") +
+  xlab("\n Number of cumulative samples") +
+  ylim(c(0,2200)) +
+  ggtitle("Number of cumulative unique peptide sequences \n")+
+  ## adjust positions
+  theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family="serif"))+
+  theme(axis.text.y = element_text(size=10))
+  # theme(panel.grid.major = element_blank())
+  # theme(panel.grid.minor = element_blank())
+
+p1
+
+
+```
+It seems to saturate as more samples are added.
+
+
+### (3) Number of accumulative uniq peptides (sequence)
 
