@@ -21,11 +21,39 @@ knitr::opts_chunk$set(fig.width=6, fig.height=4, fig.path='Figs/',
 df_pep <- read.table("Replicate_B_combined.tsv",sep='\t',header = T)
 
 # count unique peptide per sample
-df_uni <- df_pep %>% group_by(SampleID) %>% summarize(uniq_pep = length(unique(Base.Peptide.Sequence))) %>% ungroup()
+df_uni <- df_pep %>% group_by(SampleID) %>% summarize(uniq_pep = length(unique(Base.Peptide.Sequence)))
+df_uni1 <- df_uni %>% separate(SampleID, sep='_', into= c('Depth','Time','Replicate'),remove = F) %>% select(-Time, -Replicate)
+df_uni2 <- df_uni1 %>% arrange((Depth))
 
-# barplot
+# get the order right from SRF -> DCL -> BDCL
+ord <- df_uni2$SampleID 
+df_uni2$SampleID <- factor(df_uni2$SampleID, levels = ord)
+
+
+# Making barplot
+# install.packages('formattable')
 library(ggplot2)
+library(formattable)
 
+theme_set(theme_bw())
+
+uniq1 <- ggplot(df_uni2, aes(x=SampleID, fill=Depth, y=uniq_pep)) +  ## I put fill=value which was wrong
+  geom_bar(stat="identity") +
+  scale_fill_brewer(palette='Set2') +
+  ylab("Number of unique peptide sequence \n") +
+  ggtitle("Number of unique peptide sequences per sample")+
+  ## adjust positions
+  theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.5, vjust=0.3,size=13, family="serif"))+
+  theme(axis.text.y = element_text(size=10))+
+  theme(panel.grid.major = element_blank()) +
+  theme(panel.grid.minor = element_blank())
+
+uniq2 <- uniq1 + geom_text(aes(x=df_uni$SampleID, y=df_uni$uniq_pep, label=df_uni$uniq_pep),
+            size = 3, hjust = 0.5, position = position_stack(vjust = +1.05), family="serif")
+uniq2
 
 ```
 
