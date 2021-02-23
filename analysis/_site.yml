@@ -1,7 +1,7 @@
-name: "BH_Diel"
+name: BH_Diel
 output_dir: ../docs
 navbar:
-  title: "BH_Diel"
+  title: BH_Diel
   left:
   - text: Home
     href: index.html
@@ -9,6 +9,10 @@ navbar:
     href: about.html
   - text: License
     href: license.html
+  right:
+  - icon: fa-github
+    text: Source code
+    href: https://github.com/KiseokUchicago/BH_Diel
 output:
   workflowr::wflow_html:
     toc: yes
