@@ -14,6 +14,15 @@ knitr::opts_chunk$set(fig.width=6, fig.height=4, fig.path='Figs/',
 
 ### Peptide level visualization
 
+```{r}
+# libraries
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(ggplot2)
+library(formattable)
+```
+
 ### (1) Number of uniq peptides (sequence) per sample
 
 ```{r}
@@ -31,10 +40,6 @@ df_uni2$SampleID <- factor(df_uni2$SampleID, levels = ord)
 
 
 # Making barplot
-# install.packages('formattable')
-library(ggplot2)
-library(formattable)
-
 theme_set(theme_bw())
 
 uniq1 <- ggplot(df_uni2, aes(x=SampleID, fill=Depth, y=uniq_pep)) +  ## I put fill=value which was wrong
