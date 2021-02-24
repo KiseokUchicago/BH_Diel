@@ -423,7 +423,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-02-22
+<strong>Last updated:</strong> 2021-02-23
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -514,16 +514,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltreec4cbcd229432d571f38ef352a2c584f61be1c6c1targetblankc4cbcd2a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/c4cbcd229432d571f38ef352a2c584f61be1c6c1" target="_blank">c4cbcd2</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree44eb05fc0b315c8860224b5d2d2d40e0947e21ddtargetblank44eb05fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/44eb05fc0b315c8860224b5d2d2d40e0947e21dd" target="_blank">44eb05f</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltreec4cbcd229432d571f38ef352a2c584f61be1c6c1targetblankc4cbcd2a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree44eb05fc0b315c8860224b5d2d2d40e0947e21ddtargetblank44eb05fa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/c4cbcd229432d571f38ef352a2c584f61be1c6c1" target="_blank">c4cbcd2</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/44eb05fc0b315c8860224b5d2d2d40e0947e21dd" target="_blank">44eb05f</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -581,12 +581,14 @@ Untracked files:
     Untracked:  23_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T8-DCL_filtered_PSMs.xlsx
     Untracked:  24_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T8-SRF_filtered_PSMs.tsv
     Untracked:  24_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T8-SRF_filtered_PSMs.xlsx
+    Untracked:  Hist_freq_of_peptide_id.pdf
+    Untracked:  P1_number_unique_peptide_per_sample.pdf
+    Untracked:  P2_number_of_cumulative_unique_peptides.pdf
+    Untracked:  Peptide_id.tsv
     Untracked:  Replicate_B_combined.tsv
     Untracked:  Replicate_B_combined.xlsx
     Untracked:  data/diel-Feb21/
-
-Unstaged changes:
-    Modified:   analysis/index.Rmd
+    Untracked:  ~$Replicate_B_combined.xlsx
 
 </code></pre>
 <p>
@@ -625,6 +627,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KiseokUchicago/BH_Diel/blob/44eb05fc0b315c8860224b5d2d2d40e0947e21dd/analysis/convert_tsv_to_dataframe.Rmd" target="_blank">44eb05f</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-02-23
+</td>
+<td>
+publish
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KiseokUchicago/BH_Diel/12b2c74add495b09b165c27e24022cdd0f863103/docs/convert_tsv_to_dataframe.html" target="_blank">12b2c74</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-02-22
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -770,9 +806,11 @@ publish
 </div>
 <div id="converting-tsv-files-to-dataframe" class="section level3">
 <h3>Converting tsv files to dataframe</h3>
-<pre class="r"><code>library(dplyr)
+<pre class="r"><code># libraries
+library(dplyr)
 library(tidyr)
 library(stringr)
+library(ggplot2)
 
 # Make the desirable format
 df &lt;- read.csv(file=&#39;data/diel-Feb21/IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T1-BDCL_filtered_PSMs.tsv&#39;, sep = &#39;\t&#39;)
@@ -1002,8 +1040,8 @@ for (i in c(1:length(list_f))){
 [1] 24
 [1] &quot;IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T8-SRF_filtered_PSMs.tsv&quot;</code></pre>
 </div>
-<div id="aggregate-all-converted-tsv-files---output-it-to-linux" class="section level3">
-<h3>aggregate all converted tsv files -&gt; output it to linux</h3>
+<div id="aggregate-all-converted-tsv-files-make-peptide_id-for-all-unique-pep-sequences" class="section level3">
+<h3>Aggregate all converted tsv files &amp; make Peptide_id for all unique pep sequences</h3>
 <pre class="r"><code>#
 tsv_files  &lt;- list.files(pattern = &#39;^[0-9].*_PSMs\\.tsv&#39;)
 tables &lt;- lapply(tsv_files, read.table, header = TRUE)
@@ -1032,8 +1070,117 @@ head(combined_tsv)</code></pre>
 6  False</code></pre>
 <pre class="r"><code>dim(combined_tsv)</code></pre>
 <pre><code>[1] 38959    15</code></pre>
-<pre class="r"><code>write.table(combined_tsv,&quot;Replicate_B_combined.tsv&quot;, sep=&#39;\t&#39;,row.names = F)
-openxlsx::write.xlsx(combined_tsv,&#39;Replicate_B_combined.xlsx&#39;,rowNames=F)</code></pre>
+<pre class="r"><code># give unique peptide id&#39;s for all peptides
+# give peptide name by frequency (peptide with greatest frequency gets Pep_1)
+df_p &lt;- transform(combined_tsv, freq= ave(seq(nrow(combined_tsv)), Base.Peptide.Sequence, FUN=length))
+df_p[order(-df_p$freq), ] %&gt;% head()</code></pre>
+<pre><code>           Spec_id Base.Peptide.Sequence log2.18O.16O.Ratio  SampleID Index
+27 BDCL_T1_B_36572       GFGFVEMDSQEGAQK         -0.8302947 BDCL_T1_B    27
+28 BDCL_T1_B_36364       GFGFVEMDSQEGAQK         -0.8108611 BDCL_T1_B    28
+35 BDCL_T1_B_36316       GFGFVEMDSQEGAQK         -1.0207829 BDCL_T1_B    35
+64 BDCL_T1_B_36652       GFGFVEMDSQEGAQK         -0.8977477 BDCL_T1_B    64
+68 BDCL_T1_B_36813       GFGFVEMDSQEGAQK         -0.8034919 BDCL_T1_B    68
+86 BDCL_T1_B_36844       GFGFVEMDSQEGAQK         -0.8567837 BDCL_T1_B    86
+      Cruise Station Isotope Replicate Time Depth SpectrumID ScanID Target.
+27 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      31014  36572    True
+28 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      30819  36364    True
+35 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      30774  36316    True
+64 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      31089  36652    True
+68 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      31240  36813    True
+86 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      31269  36844    True
+   Decoy. freq
+27  False  333
+28  False  333
+35  False  333
+64  False  333
+68  False  333
+86  False  333</code></pre>
+<pre class="r"><code>df_pepid &lt;- df_p %&gt;% select(Base.Peptide.Sequence,freq) %&gt;% arrange(desc(freq)) %&gt;% unique() %&gt;% arrange()
+
+# Distribution of frequency of each Peptide_id in all samples
+theme_set(theme_bw())
+his1 &lt;- ggplot(df_pepid, aes(x=freq)) +
+  geom_histogram(binwidth = 10) +
+  scale_fill_brewer(palette=&#39;Set2&#39;) +
+  ylab(&quot;Frequency \n&quot;) +
+  xlab(&quot;\n Frequency of each unique peptide sequence&quot;) +
+  ggtitle(&quot;Distribution of frequency of each Peptide_id in all samples \n&quot;)+
+  ## adjust positions
+  theme(plot.title = element_text(size = 20,hjust = 0.5, family=&quot;serif&quot;)) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.5, vjust=0.3,size=13, family=&quot;serif&quot;))+
+  theme(axis.text.y = element_text(size=10))
+  # theme(panel.grid.major = element_blank())
+  # theme(panel.grid.minor = element_blank())
+his1</code></pre>
+<p><img src="figure/convert_tsv_to_dataframe.Rmd/unnamed-chunk-3-1.png" width="864" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>df_pepid2 &lt;- tibble::rownames_to_column(df_pepid, var=&#39;rowid&#39;) 
+df_pepid3 &lt;- df_pepid2 %&gt;% mutate(Peptide_id = paste0(&quot;Pep_&quot;,rowid)) %&gt;% select(-rowid)
+# check if sum of freq is same as all number of spectral reads
+sum(df_pepid3$freq) == dim(combined_tsv)[1]</code></pre>
+<pre><code>[1] TRUE</code></pre>
+<pre class="r"><code># write Peptide_id list
+write.table(df_pepid3,&quot;Peptide_id.tsv&quot;, sep=&#39;\t&#39;,row.names = F)
+
+combined_tsv_pepid &lt;- combined_tsv %&gt;% left_join(df_pepid3, by=c(&#39;Base.Peptide.Sequence&#39;=&#39;Base.Peptide.Sequence&#39;)) %&gt;% select(-freq)
+
+colnames(combined_tsv_pepid)</code></pre>
+<pre><code> [1] &quot;Spec_id&quot;               &quot;Base.Peptide.Sequence&quot; &quot;log2.18O.16O.Ratio&quot;   
+ [4] &quot;SampleID&quot;              &quot;Index&quot;                 &quot;Cruise&quot;               
+ [7] &quot;Station&quot;               &quot;Isotope&quot;               &quot;Replicate&quot;            
+[10] &quot;Time&quot;                  &quot;Depth&quot;                 &quot;SpectrumID&quot;           
+[13] &quot;ScanID&quot;                &quot;Target.&quot;               &quot;Decoy.&quot;               
+[16] &quot;Peptide_id&quot;           </code></pre>
+<pre class="r"><code>head(combined_tsv_pepid)</code></pre>
+<pre><code>          Spec_id Base.Peptide.Sequence log2.18O.16O.Ratio  SampleID Index
+1 BDCL_T1_B_56549  LLSENVDAIIGAASSGVSLK        -0.60046965 BDCL_T1_B     1
+2 BDCL_T1_B_48736    SVFVNQASSEGIGQALAK        -0.09393621 BDCL_T1_B     2
+3 BDCL_T1_B_50215    EEIASVASISAADTEIGR        -1.17728746 BDCL_T1_B     3
+4 BDCL_T1_B_47756    GQADIGLLGSTAGTQLNR        -0.82806202 BDCL_T1_B     4
+5 BDCL_T1_B_48571    SVFVNQASSEGIGQALAK        -1.05946785 BDCL_T1_B     5
+6 BDCL_T1_B_56779 AMLQDIAVLTGGTVITDELGR        -0.70018147 BDCL_T1_B     6
+     Cruise Station Isotope Replicate Time Depth SpectrumID ScanID Target.
+1 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      49728  56549    True
+2 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      42413  48736    True
+3 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      43799  50215    True
+4 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      41495  47756    True
+5 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      42258  48571    True
+6 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      49943  56779    True
+  Decoy. Peptide_id
+1  False    Pep_282
+2  False    Pep_353
+3  False     Pep_39
+4  False    Pep_163
+5  False    Pep_353
+6  False    Pep_464</code></pre>
+<pre class="r"><code>tail(combined_tsv_pepid)</code></pre>
+<pre><code>             Spec_id Base.Peptide.Sequence log2.18O.16O.Ratio SampleID Index
+38954 SRF_T8_B_32793          MAIEELNAAGIK       -2.431449133 SRF_T8_B  2185
+38955 SRF_T8_B_37905         DSVLDIASSAVRR        0.001727274 SRF_T8_B  2186
+38956 SRF_T8_B_21400           DSNIATSADFK       -0.536521364 SRF_T8_B  2187
+38957 SRF_T8_B_35634            FEAGFVAGVK       -0.543380287 SRF_T8_B  2188
+38958 SRF_T8_B_29190           LSALGPGGLSR       -1.016014045 SRF_T8_B  2189
+38959 SRF_T8_B_19472            DLMGVIILNR       -2.620158076 SRF_T8_B  2190
+         Cruise Station Isotope Replicate Time Depth SpectrumID ScanID Target.
+38954 CyanoSUMI   MI41M  18OMix         B   T8   SRF      27267  32793    True
+38955 CyanoSUMI   MI41M  18OMix         B   T8   SRF      32057  37905    True
+38956 CyanoSUMI   MI41M  18OMix         B   T8   SRF      16586  21400    True
+38957 CyanoSUMI   MI41M  18OMix         B   T8   SRF      29929  35634    True
+38958 CyanoSUMI   MI41M  18OMix         B   T8   SRF      23889  29190    True
+38959 CyanoSUMI   MI41M  18OMix         B   T8   SRF      14779  19472    True
+      Decoy. Peptide_id
+38954  False   Pep_1276
+38955  False   Pep_2106
+38956  False    Pep_770
+38957  False    Pep_313
+38958  False   Pep_2107
+38959  False   Pep_2108</code></pre>
+<pre class="r"><code># check whether there is no NA value in the dataframe
+any(is.na.data.frame(combined_tsv_pepid))</code></pre>
+<pre><code>[1] FALSE</code></pre>
+<pre class="r"><code>write.table(combined_tsv_pepid,&quot;Replicate_B_combined.tsv&quot;, sep=&#39;\t&#39;,row.names = F)
+openxlsx::write.xlsx(combined_tsv_pepid,&#39;Replicate_B_combined.xlsx&#39;,rowNames=F)</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1059,19 +1206,21 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] openxlsx_4.2.3  stringr_1.4.0   tidyr_1.1.2     dplyr_1.0.4    
-[5] workflowr_1.6.2
+[1] openxlsx_4.2.3  ggplot2_3.3.3   stringr_1.4.0   tidyr_1.1.2    
+[5] dplyr_1.0.4     workflowr_1.6.2
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.5       whisker_0.4      knitr_1.31       magrittr_2.0.1  
- [5] tidyselect_1.1.0 R6_2.5.0         rlang_0.4.10     tools_4.0.3     
- [9] xfun_0.20        DBI_1.1.1        git2r_0.27.1     htmltools_0.5.0 
-[13] ellipsis_0.3.1   assertthat_0.2.1 yaml_2.2.1       digest_0.6.27   
-[17] rprojroot_2.0.2  tibble_3.0.4     lifecycle_1.0.0  crayon_1.4.1    
-[21] zip_2.1.1        purrr_0.3.4      later_1.1.0.1    vctrs_0.3.6     
-[25] promises_1.1.1   fs_1.5.0         glue_1.4.2       evaluate_0.14   
-[29] rmarkdown_2.6    stringi_1.5.3    compiler_4.0.3   pillar_1.4.7    
-[33] generics_0.1.0   httpuv_1.5.4     pkgconfig_2.0.3 </code></pre>
+ [1] zip_2.1.1        Rcpp_1.0.5       highr_0.8        pillar_1.4.7    
+ [5] compiler_4.0.3   later_1.1.0.1    git2r_0.27.1     tools_4.0.3     
+ [9] digest_0.6.27    evaluate_0.14    lifecycle_1.0.0  tibble_3.0.4    
+[13] gtable_0.3.0     pkgconfig_2.0.3  rlang_0.4.10     DBI_1.1.1       
+[17] yaml_2.2.1       xfun_0.20        withr_2.4.1      knitr_1.31      
+[21] generics_0.1.0   fs_1.5.0         vctrs_0.3.6      rprojroot_2.0.2 
+[25] grid_4.0.3       tidyselect_1.1.0 glue_1.4.2       R6_2.5.0        
+[29] rmarkdown_2.6    farver_2.0.3     purrr_0.3.4      magrittr_2.0.1  
+[33] whisker_0.4      scales_1.1.1     promises_1.1.1   ellipsis_0.3.1  
+[37] htmltools_0.5.0  assertthat_0.2.1 colorspace_2.0-0 httpuv_1.5.4    
+[41] labeling_0.4.2   stringi_1.5.3    munsell_0.5.0    crayon_1.4.1    </code></pre>
 </div>
 </div>
 
