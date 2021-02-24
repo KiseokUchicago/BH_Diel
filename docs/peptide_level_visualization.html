@@ -514,16 +514,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree44eb05fc0b315c8860224b5d2d2d40e0947e21ddtargetblank44eb05fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/44eb05fc0b315c8860224b5d2d2d40e0947e21dd" target="_blank">44eb05f</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltreefe508d15413c128cce2d577485c74c32d77d1704targetblankfe508d1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/fe508d15413c128cce2d577485c74c32d77d1704" target="_blank">fe508d1</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree44eb05fc0b315c8860224b5d2d2d40e0947e21ddtargetblank44eb05fa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltreefe508d15413c128cce2d577485c74c32d77d1704targetblankfe508d1a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/44eb05fc0b315c8860224b5d2d2d40e0947e21dd" target="_blank">44eb05f</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/fe508d15413c128cce2d577485c74c32d77d1704" target="_blank">fe508d1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -582,6 +582,7 @@ Untracked files:
     Untracked:  24_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T8-SRF_filtered_PSMs.tsv
     Untracked:  24_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T8-SRF_filtered_PSMs.xlsx
     Untracked:  Hist_freq_of_peptide_id.pdf
+    Untracked:  Hist_number of timepoints_peptide_appears.pdf
     Untracked:  P1_number_unique_peptide_per_sample.pdf
     Untracked:  P2_number_of_cumulative_unique_peptides.pdf
     Untracked:  Peptide_id.tsv
@@ -627,6 +628,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KiseokUchicago/BH_Diel/blob/fe508d15413c128cce2d577485c74c32d77d1704/analysis/peptide_level_visualization.Rmd" target="_blank">fe508d1</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-02-23
+</td>
+<td>
+publish
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KiseokUchicago/BH_Diel/e55579c873cb14ccd7bc7796c410ba177abc2a6c/docs/peptide_level_visualization.html" target="_blank">e55579c</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-02-23
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -848,7 +883,7 @@ library(ggplot2)
 library(formattable)</code></pre>
 </div>
 <div id="quality-check-number-of-uniq-peptides-sequence-per-sample" class="section level3">
-<h3>(1) Quality check: Number of uniq peptides (sequence) per sample</h3>
+<h3>1. Quality check: Number of uniq peptides (sequence) per sample</h3>
 <pre class="r"><code># read in combined table of 24 samples (Replicate B)
 df_pep &lt;- read.table(&quot;Replicate_B_combined.tsv&quot;,sep=&#39;\t&#39;,header = T)
 
@@ -883,11 +918,11 @@ uniq1 &lt;- ggplot(df_uni2, aes(x=SampleID, fill=Depth, y=uniq_pep)) +  ## I put
 uniq2 &lt;- uniq1 + geom_text(aes(x=df_uni$SampleID, y=df_uni$uniq_pep, label=df_uni$uniq_pep),
             size = 3, hjust = 0.5, position = position_stack(vjust = +1.05), family=&quot;serif&quot;)
 uniq2</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-2-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-2-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <p>sample DCL_T8 doesn’t seem to have good quality MS data.</p>
 </div>
-<div id="number-of-accumulative-uniq-peptides-sequence" class="section level3">
-<h3>(2) Number of accumulative uniq peptides (sequence)</h3>
+<div id="number-of-accumulative-uniq-peptides-sequence-does-it-saturate" class="section level3">
+<h3>2. Number of accumulative uniq peptides (sequence): Does it saturate?</h3>
 <pre class="r"><code># read in combined table of 24 samples (Replicate B)
 df_pep &lt;- read.table(&quot;Replicate_B_combined.tsv&quot;,sep=&#39;\t&#39;,header = T)
 
@@ -930,10 +965,103 @@ p1 &lt;- ggplot(df.out2,aes(x = rowid,y = value)) + geom_line(col=&quot;magenta&
   # theme(panel.grid.minor = element_blank())
 
 p1</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-3-1.png" width="864" style="display: block; margin: auto;" /> It seems to saturate as more samples are added.</p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-3-1.png" width="1056" style="display: block; margin: auto;" /> It seems to saturate as more samples are added.</p>
 </div>
-<div id="section" class="section level3">
-<h3></h3>
+<div id="which-peptide_ids-are-present-in-allalmost-time-points" class="section level3">
+<h3>3. Which Peptide_ids are present in all(almost) time points?</h3>
+<p>Make a histogram of x-axis being the # of time points present, y-axis being the number of Peptide_ids<br />
+We need 3 histogram for (1) Surface, (2) DCL, and (3) BDCL</p>
+<pre class="r"><code># read in combined table of 24 samples (Replicate B)
+df_pep &lt;- read.table(&quot;Replicate_B_combined.tsv&quot;,sep=&#39;\t&#39;,header = T)
+
+# (1) Surface
+colnames(df_pep)</code></pre>
+<pre><code> [1] &quot;Spec_id&quot;               &quot;Base.Peptide.Sequence&quot; &quot;log2.18O.16O.Ratio&quot;   
+ [4] &quot;SampleID&quot;              &quot;Index&quot;                 &quot;Cruise&quot;               
+ [7] &quot;Station&quot;               &quot;Isotope&quot;               &quot;Replicate&quot;            
+[10] &quot;Time&quot;                  &quot;Depth&quot;                 &quot;SpectrumID&quot;           
+[13] &quot;ScanID&quot;                &quot;Target.&quot;               &quot;Decoy.&quot;               
+[16] &quot;Peptide_id&quot;           </code></pre>
+<pre class="r"><code>df_srf &lt;- df_pep %&gt;% filter(Depth == &#39;SRF&#39;) %&gt;% select(Peptide_id, SampleID, Time, Depth) %&gt;% unique() %&gt;% arrange(Peptide_id)
+# How many time points did it appear
+(df_srf2 &lt;- df_srf %&gt;% group_by(Peptide_id) %&gt;% summarize(Timepoints = n()) %&gt;% ungroup())</code></pre>
+<pre><code># A tibble: 1,401 x 2
+   Peptide_id Timepoints
+ * &lt;chr&gt;           &lt;int&gt;
+ 1 Pep_1               8
+ 2 Pep_10              8
+ 3 Pep_100             7
+ 4 Pep_1000            1
+ 5 Pep_1001            4
+ 6 Pep_1005            1
+ 7 Pep_1007            2
+ 8 Pep_1009            1
+ 9 Pep_101             8
+10 Pep_1010            3
+# ... with 1,391 more rows</code></pre>
+<pre class="r"><code># Check if Pep_1 appeared in 8 time points
+df_srf %&gt;% filter(Peptide_id==&quot;Pep_1&quot;) # true 8 times</code></pre>
+<pre><code>  Peptide_id SampleID Time Depth
+1      Pep_1 SRF_T1_B   T1   SRF
+2      Pep_1 SRF_T2_B   T2   SRF
+3      Pep_1 SRF_T3_B   T3   SRF
+4      Pep_1 SRF_T4_B   T4   SRF
+5      Pep_1 SRF_T5_B   T5   SRF
+6      Pep_1 SRF_T6_B   T6   SRF
+7      Pep_1 SRF_T7_B   T7   SRF
+8      Pep_1 SRF_T8_B   T8   SRF</code></pre>
+<pre class="r"><code># Histogram
+theme_set(theme_bw())
+ggplot(df_srf2, aes(Timepoints)) + geom_bar() +
+  ylab(&quot;Number of peptides \n&quot;) +
+  xlab(&quot;\n Cumulative number of timepoints peptide are present&quot;) +
+  scale_x_continuous(breaks=seq(1,8,1))+
+  ggtitle(&quot;Distribution of number of timepoints each Peptide_id appears (Surface) \n&quot;)+
+  ## adjust positions
+  theme(plot.title = element_text(size = 20,hjust = 0.5, family=&quot;serif&quot;)) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
+  theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family=&quot;serif&quot;))+
+  theme(axis.text.y = element_text(size=10))</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-4-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>  # theme(panel.grid.major = element_blank())
+  # theme(panel.grid.minor = element_blank())
+
+# Let&#39;s try to plot all of them at once
+df_all &lt;- df_pep %&gt;% select(Peptide_id, SampleID, Time, Depth) %&gt;% unique() %&gt;% arrange(Peptide_id)
+# How many time points did it appear
+(df_all2 &lt;- df_all %&gt;% group_by(Peptide_id, Depth) %&gt;% summarize(Timepoints = n()) %&gt;% ungroup())</code></pre>
+<pre><code># A tibble: 4,017 x 3
+   Peptide_id Depth Timepoints
+   &lt;chr&gt;      &lt;chr&gt;      &lt;int&gt;
+ 1 Pep_1      BDCL           8
+ 2 Pep_1      DCL            8
+ 3 Pep_1      SRF            8
+ 4 Pep_10     BDCL           8
+ 5 Pep_10     DCL            8
+ 6 Pep_10     SRF            8
+ 7 Pep_100    BDCL           6
+ 8 Pep_100    DCL            6
+ 9 Pep_100    SRF            7
+10 Pep_1000   BDCL           1
+# ... with 4,007 more rows</code></pre>
+<pre class="r"><code># Histogram
+ggplot(df_all2, aes(Timepoints)) + geom_bar(aes(fill=Depth), position=&#39;dodge&#39;) +
+  scale_fill_brewer(palette=&#39;Set2&#39;) +
+  ylab(&quot;Number of peptides \n&quot;) +
+  xlab(&quot;\n Cumulative number of timepoints peptide are present&quot;) +
+  scale_x_continuous(breaks=seq(1,8,1))+
+  ggtitle(&quot;Distribution of number of timepoints each Peptide_id appears \n&quot;)+
+  ## adjust positions
+  theme(plot.title = element_text(size = 20,hjust = 0.5, family=&quot;serif&quot;)) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
+  theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family=&quot;serif&quot;))+
+  theme(axis.text.y = element_text(size=10))</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-4-2.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>  # theme(panel.grid.major = element_blank())
+  # theme(panel.grid.minor = element_blank())</code></pre>
+<p>Why does DCL have so less?</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -966,15 +1094,15 @@ loaded via a namespace (and not attached):
  [1] Rcpp_1.0.5         highr_0.8          RColorBrewer_1.1-2 pillar_1.4.7      
  [5] compiler_4.0.3     later_1.1.0.1      git2r_0.27.1       tools_4.0.3       
  [9] digest_0.6.27      evaluate_0.14      lifecycle_1.0.0    tibble_3.0.4      
-[13] gtable_0.3.0       pkgconfig_2.0.3    rlang_0.4.10       DBI_1.1.1         
-[17] yaml_2.2.1         xfun_0.20          withr_2.4.1        knitr_1.31        
-[21] htmlwidgets_1.5.3  generics_0.1.0     fs_1.5.0           vctrs_0.3.6       
-[25] rprojroot_2.0.2    grid_4.0.3         tidyselect_1.1.0   glue_1.4.2        
-[29] R6_2.5.0           rmarkdown_2.6      farver_2.0.3       purrr_0.3.4       
-[33] magrittr_2.0.1     whisker_0.4        scales_1.1.1       promises_1.1.1    
-[37] ellipsis_0.3.1     htmltools_0.5.0    assertthat_0.2.1   colorspace_2.0-0  
-[41] httpuv_1.5.4       labeling_0.4.2     stringi_1.5.3      munsell_0.5.0     
-[45] crayon_1.4.1      </code></pre>
+[13] gtable_0.3.0       pkgconfig_2.0.3    rlang_0.4.10       cli_2.3.0         
+[17] DBI_1.1.1          yaml_2.2.1         xfun_0.20          withr_2.4.1       
+[21] knitr_1.31         htmlwidgets_1.5.3  generics_0.1.0     fs_1.5.0          
+[25] vctrs_0.3.6        rprojroot_2.0.2    grid_4.0.3         tidyselect_1.1.0  
+[29] glue_1.4.2         R6_2.5.0           fansi_0.4.2        rmarkdown_2.6     
+[33] farver_2.0.3       purrr_0.3.4        magrittr_2.0.1     whisker_0.4       
+[37] scales_1.1.1       promises_1.1.1     ellipsis_0.3.1     htmltools_0.5.0   
+[41] assertthat_0.2.1   colorspace_2.0-0   httpuv_1.5.4       labeling_0.4.2    
+[45] utf8_1.1.4         stringi_1.5.3      munsell_0.5.0      crayon_1.4.1      </code></pre>
 </div>
 </div>
 
