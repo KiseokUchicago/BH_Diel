@@ -8,7 +8,7 @@ editor_options:
 ---
 
 ```{r global_options, include=FALSE}
-knitr::opts_chunk$set(fig.width=9, fig.height=9,
+knitr::opts_chunk$set(fig.width=11, fig.height=9,
                       error=TRUE, echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE)
 ```
 
@@ -23,7 +23,7 @@ library(ggplot2)
 library(formattable)
 ```
 
-### (1) Quality check: Number of uniq peptides (sequence) per sample
+### 1. Quality check: Number of uniq peptides (sequence) per sample
 
 ```{r}
 # read in combined table of 24 samples (Replicate B)
@@ -66,7 +66,7 @@ uniq2
 sample DCL_T8 doesn't seem to have good quality MS data. 
 
 
-### (2) Number of accumulative uniq peptides (sequence)
+### 2. Number of accumulative uniq peptides (sequence): Does it saturate?
 
 ```{r}
 # read in combined table of 24 samples (Replicate B)
@@ -117,5 +117,61 @@ p1
 It seems to saturate as more samples are added.
 
 
-### 
+### 3. Which Peptide_ids are present in all(almost) time points?
+Make a histogram of x-axis being the # of time points present, y-axis being the number of Peptide_ids \
+We need 3 histogram for (1) Surface, (2) DCL, and (3) BDCL
+
+```{r}
+# read in combined table of 24 samples (Replicate B)
+df_pep <- read.table("Replicate_B_combined.tsv",sep='\t',header = T)
+
+# (1) Surface
+colnames(df_pep)
+df_srf <- df_pep %>% filter(Depth == 'SRF') %>% select(Peptide_id, SampleID, Time, Depth) %>% unique() %>% arrange(Peptide_id)
+# How many time points did it appear
+(df_srf2 <- df_srf %>% group_by(Peptide_id) %>% summarize(Timepoints = n()) %>% ungroup())
+# Check if Pep_1 appeared in 8 time points
+df_srf %>% filter(Peptide_id=="Pep_1") # true 8 times
+# Histogram
+theme_set(theme_bw())
+ggplot(df_srf2, aes(Timepoints)) + geom_bar() +
+  ylab("Number of peptides \n") +
+  xlab("\n Cumulative number of timepoints peptide are present") +
+  scale_x_continuous(breaks=seq(1,8,1))+
+  ggtitle("Distribution of number of timepoints each Peptide_id appears (Surface) \n")+
+  ## adjust positions
+  theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family="serif"))+
+  theme(axis.text.y = element_text(size=10))
+  # theme(panel.grid.major = element_blank())
+  # theme(panel.grid.minor = element_blank())
+
+# Let's try to plot all of them at once
+df_all <- df_pep %>% select(Peptide_id, SampleID, Time, Depth) %>% unique() %>% arrange(Peptide_id)
+# How many time points did it appear
+(df_all2 <- df_all %>% group_by(Peptide_id, Depth) %>% summarize(Timepoints = n()) %>% ungroup())
+# Histogram
+ggplot(df_all2, aes(Timepoints)) + geom_bar(aes(fill=Depth), position='dodge') +
+  scale_fill_brewer(palette='Set2') +
+  ylab("Number of peptides \n") +
+  xlab("\n Cumulative number of timepoints peptide are present") +
+  scale_x_continuous(breaks=seq(1,8,1))+
+  ggtitle("Distribution of number of timepoints each Peptide_id appears \n")+
+  ## adjust positions
+  theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family="serif"))+
+  theme(axis.text.y = element_text(size=10))
+  # theme(panel.grid.major = element_blank())
+  # theme(panel.grid.minor = element_blank())
+
+
+```
+
+Why does DCL have so less?
+
+
 
