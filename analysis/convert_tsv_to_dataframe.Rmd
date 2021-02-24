@@ -9,15 +9,17 @@ editor_options:
 
 ### Converting tsv files to dataframe
 ```{r global_options, include=FALSE}
-knitr::opts_chunk$set(fig.width=6, fig.height=4, fig.path='Figs/',
+knitr::opts_chunk$set(fig.width=9, fig.height=9,
                       error=TRUE, echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE)
 ```
 
 
 ```{r}
+# libraries
 library(dplyr)
 library(tidyr)
 library(stringr)
+library(ggplot2)
 
 # Make the desirable format
 df <- read.csv(file='data/diel-Feb21/IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T1-BDCL_filtered_PSMs.tsv', sep = '\t')
@@ -112,7 +114,7 @@ for (i in c(1:length(list_f))){
 
 ```
 
-### aggregate all converted tsv files -> output it to linux
+### Aggregate all converted tsv files & make Peptide_id for all unique pep sequences
 
 ```{r}
 #
@@ -122,8 +124,47 @@ combined_tsv <- do.call(rbind , tables)
 head(combined_tsv)
 dim(combined_tsv)
 
-write.table(combined_tsv,"Replicate_B_combined.tsv", sep='\t',row.names = F)
-openxlsx::write.xlsx(combined_tsv,'Replicate_B_combined.xlsx',rowNames=F)
+# give unique peptide id's for all peptides
+# give peptide name by frequency (peptide with greatest frequency gets Pep_1)
+df_p <- transform(combined_tsv, freq= ave(seq(nrow(combined_tsv)), Base.Peptide.Sequence, FUN=length))
+df_p[order(-df_p$freq), ] %>% head()
+df_pepid <- df_p %>% select(Base.Peptide.Sequence,freq) %>% arrange(desc(freq)) %>% unique() %>% arrange()
+
+# Distribution of frequency of each Peptide_id in all samples
+theme_set(theme_bw())
+his1 <- ggplot(df_pepid, aes(x=freq)) +
+  geom_histogram(binwidth = 10) +
+  scale_fill_brewer(palette='Set2') +
+  ylab("Frequency \n") +
+  xlab("\n Frequency of each unique peptide sequence") +
+  ggtitle("Distribution of frequency of each Peptide_id in all samples \n")+
+  ## adjust positions
+  theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.5, vjust=0.3,size=13, family="serif"))+
+  theme(axis.text.y = element_text(size=10))
+  # theme(panel.grid.major = element_blank())
+  # theme(panel.grid.minor = element_blank())
+his1
+
+df_pepid2 <- tibble::rownames_to_column(df_pepid, var='rowid') 
+df_pepid3 <- df_pepid2 %>% mutate(Peptide_id = paste0("Pep_",rowid)) %>% select(-rowid)
+# check if sum of freq is same as all number of spectral reads
+sum(df_pepid3$freq) == dim(combined_tsv)[1]
+# write Peptide_id list
+write.table(df_pepid3,"Peptide_id.tsv", sep='\t',row.names = F)
+
+combined_tsv_pepid <- combined_tsv %>% left_join(df_pepid3, by=c('Base.Peptide.Sequence'='Base.Peptide.Sequence')) %>% select(-freq)
+
+colnames(combined_tsv_pepid)
+head(combined_tsv_pepid)
+tail(combined_tsv_pepid)
+# check whether there is no NA value in the dataframe
+any(is.na.data.frame(combined_tsv_pepid))
+
+write.table(combined_tsv_pepid,"Replicate_B_combined.tsv", sep='\t',row.names = F)
+openxlsx::write.xlsx(combined_tsv_pepid,'Replicate_B_combined.xlsx',rowNames=F)
 
 
 ```
