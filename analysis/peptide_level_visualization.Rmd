@@ -173,5 +173,137 @@ ggplot(df_all2, aes(Timepoints)) + geom_bar(aes(fill=Depth), position='dodge') +
 
 Why does DCL have so less?
 
+### 4. Plotting time series fluctuation for the peptides
+First retrieve the log intensity value for all peptides (average over the same spec_id)
 
+```{r}
+# (1) Get list of peptides that are present in 7 or 8 timepoints
+df_all2_filt <- df_all2 %>% filter(Timepoints > 6) %>% unique() 
+
+# (2) Let's average the intensity for each unique peptide
+df_int <- df_pep %>% select(Peptide_id, Spec_id, log2.18O.16O.Ratio, SampleID, Time, Depth, Replicate) %>% unique() %>% arrange(Peptide_id)
+head(df_int)
+df_ave <- df_int %>% group_by(SampleID, Time, Depth, Replicate, Peptide_id) %>% summarize(Mean_log2_intensity=mean(log2.18O.16O.Ratio)) %>% ungroup()
+head(df_ave)
+
+# (3) import time metadata and merge
+(df_time <- read.table('data/Time_metadata.txt', header=T, sep='\t'))
+# left_join with average data
+df_ave2 <- df_ave %>% left_join(df_time, by=c('Time'='timepoint'))
+head(df_ave2)
+# only use peptides that appear 7 or 8 times
+df_ave2 %>% select(SampleID,Peptide_id) %>% unique() %>% dim() # 15452 peptides before
+df_filt78 <- inner_join(df_ave2, df_all2_filt, by=c('Peptide_id'='Peptide_id','Depth'='Depth'))
+
+# inspecting if the inner join was successful
+head(df_filt78)
+colnames(df_ave2)
+colnames(df_time)
+colnames(df_filt78)
+
+df_filt78 %>% select(SampleID,Peptide_id) %>% unique() %>% dim() # 7304 peptides for peptides in 7 or 8 timepoints
+
+# get only 8 ones
+df_filt8 <- df_filt78 %>% filter(Timepoints > 7)
+df_filt8 %>% select(SampleID,Peptide_id) %>% unique() %>% dim() # 4112 peptides for peptides in all 8 timepoints
+
+# get only 7 ones
+df_filt7 <- df_filt78 %>% filter(Timepoints == 7)
+df_filt7 %>% select(SampleID,Peptide_id) %>% unique() %>% dim() # 3192 peptides for peptides in 7 timepoints
+
+```
+
+Plot for peptides present in 8 timepoints
+```{r}
+
+# (4) Plot the scatter plot 
+theme_set(theme_bw())
+ggplot(df_filt8, aes(x=elapsed_hours,y=Mean_log2_intensity, color=Depth, group=Peptide_id)) +
+  geom_point(size=2, shape=21) +
+  geom_line()+
+  scale_color_brewer(palette='Set2') +
+  ylab("Mean log2 intensity (log2(18O/16O)) \n") +
+  xlab("\n Elapsed hours after 12:45pm June 26 2019") +
+  scale_x_continuous(breaks=seq(0,26,1))+
+  ggtitle("Time series intensity of peptide_id \n")+
+  ## adjust positions
+  theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family="serif"))+
+  theme(axis.text.y = element_text(size=10)) 
+  # theme(panel.grid.major = element_blank()) +
+  # theme(panel.grid.minor = element_blank())
+```
+
+
+4.1. Surface(SRF)
+
+```{r}
+# color code
+# 1. Surface(blue): #8da0cb
+# 2. DCL(orange): #fc8d62
+# 3. BDCL(green): #66c2a5
+color_vec <- c('#8da0cb','#fc8d62','#66c2a5')
+depth_vec <- c('SRF','DCL','BDCL')
+
+time_series_1depth <- function(df_filt78, depth){
+  theme_set(theme_bw())
+  # filter depth
+  df_filt78_s <- df_filt78 %>% filter(Depth == depth_vec[depth])
+  ggplot(df_filt78_s, aes(x=elapsed_hours,y=Mean_log2_intensity, group=Peptide_id)) +
+    geom_point(size=2, shape=21, color=color_vec[depth]) +
+    geom_line(color= color_vec[depth])+
+    ylab("Mean log2 intensity (log2(18O/16O)) \n") +
+    xlab("\n Elapsed hours after 12:45pm June 26 2019") +
+    scale_x_continuous(breaks=seq(0,26,1))+
+    ggtitle(paste0("Time series intensity of peptide_id"," (",depth_vec[depth],")","\n"))+
+    ## adjust positions
+    theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
+    theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
+    theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
+    theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family="serif"))+
+    theme(axis.text.y = element_text(size=10)) 
+    # theme(panel.grid.major = element_blank()) +
+    # theme(panel.grid.minor = element_blank())
+}
+
+# when we use all 7, 8 appearance cases
+time_series_1depth(df_filt78,1)
+
+# when we use only 8 appearance cases
+time_series_1depth(df_filt8,1)
+
+# when we use only 7 appearance cases
+time_series_1depth(df_filt7,1)
+
+```
+
+4.2. Deep Chlorophyll layer (DCL)
+
+```{r}
+# when we use all 7, 8 appearance cases
+time_series_1depth(df_filt78,2)
+
+# when we use only 8 appearance cases
+time_series_1depth(df_filt8,2)
+
+# when we use only 7 appearance cases
+time_series_1depth(df_filt7,2)
+
+```
+
+4.3. Below Deep Chlorophyll layer (BDCL)
+
+```{r}
+# when we use all 7, 8 appearance cases
+time_series_1depth(df_filt78,3)
+
+# when we use only 8 appearance cases
+time_series_1depth(df_filt8,3)
+
+# when we use only 7 appearance cases
+time_series_1depth(df_filt7,3)
+
+```
 
