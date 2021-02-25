@@ -423,7 +423,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-02-23
+<strong>Last updated:</strong> 2021-02-25
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -514,22 +514,23 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltreefe508d15413c128cce2d577485c74c32d77d1704targetblankfe508d1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/fe508d15413c128cce2d577485c74c32d77d1704" target="_blank">fe508d1</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltreeaf94ad010f576c08f5207ee8e60e202cb93a8691targetblankaf94ad0a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/af94ad010f576c08f5207ee8e60e202cb93a8691" target="_blank">af94ad0</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltreefe508d15413c128cce2d577485c74c32d77d1704targetblankfe508d1a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltreeaf94ad010f576c08f5207ee8e60e202cb93a8691targetblankaf94ad0a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/fe508d15413c128cce2d577485c74c32d77d1704" target="_blank">fe508d1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/af94ad010f576c08f5207ee8e60e202cb93a8691" target="_blank">af94ad0</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
 Ignored files:
+    Ignored:    .Rhistory
     Ignored:    .Rproj.user/
 
 Untracked files:
@@ -588,8 +589,9 @@ Untracked files:
     Untracked:  Peptide_id.tsv
     Untracked:  Replicate_B_combined.tsv
     Untracked:  Replicate_B_combined.xlsx
+    Untracked:  Time_series_intesity_all.pdf
+    Untracked:  data/Time_metadata.txt
     Untracked:  data/diel-Feb21/
-    Untracked:  ~$Replicate_B_combined.xlsx
 
 </code></pre>
 <p>
@@ -628,6 +630,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KiseokUchicago/BH_Diel/blob/af94ad010f576c08f5207ee8e60e202cb93a8691/analysis/peptide_level_visualization.Rmd" target="_blank">af94ad0</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-02-25
+</td>
+<td>
+peptide
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KiseokUchicago/BH_Diel/3db29b0bc2c1673a15f5600c103841a88b5a47bf/docs/peptide_level_visualization.html" target="_blank">3db29b0</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-02-23
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1062,6 +1098,173 @@ ggplot(df_all2, aes(Timepoints)) + geom_bar(aes(fill=Depth), position=&#39;dodge
 <pre class="r"><code>  # theme(panel.grid.major = element_blank())
   # theme(panel.grid.minor = element_blank())</code></pre>
 <p>Why does DCL have so less?</p>
+</div>
+<div id="plotting-time-series-fluctuation-for-the-peptides" class="section level3">
+<h3>4. Plotting time series fluctuation for the peptides</h3>
+<p>First retrieve the log intensity value for all peptides (average over the same spec_id)</p>
+<pre class="r"><code># (1) Get list of peptides that are present in 7 or 8 timepoints
+df_all2_filt &lt;- df_all2 %&gt;% filter(Timepoints &gt; 6) %&gt;% unique() 
+
+# (2) Let&#39;s average the intensity for each unique peptide
+df_int &lt;- df_pep %&gt;% select(Peptide_id, Spec_id, log2.18O.16O.Ratio, SampleID, Time, Depth, Replicate) %&gt;% unique() %&gt;% arrange(Peptide_id)
+head(df_int)</code></pre>
+<pre><code>  Peptide_id         Spec_id log2.18O.16O.Ratio  SampleID Time Depth Replicate
+1      Pep_1 BDCL_T1_B_36572         -0.8302947 BDCL_T1_B   T1  BDCL         B
+2      Pep_1 BDCL_T1_B_36364         -0.8108611 BDCL_T1_B   T1  BDCL         B
+3      Pep_1 BDCL_T1_B_36316         -1.0207829 BDCL_T1_B   T1  BDCL         B
+4      Pep_1 BDCL_T1_B_36652         -0.8977477 BDCL_T1_B   T1  BDCL         B
+5      Pep_1 BDCL_T1_B_36813         -0.8034919 BDCL_T1_B   T1  BDCL         B
+6      Pep_1 BDCL_T1_B_36844         -0.8567837 BDCL_T1_B   T1  BDCL         B</code></pre>
+<pre class="r"><code>df_ave &lt;- df_int %&gt;% group_by(SampleID, Time, Depth, Replicate, Peptide_id) %&gt;% summarize(Mean_log2_intensity=mean(log2.18O.16O.Ratio)) %&gt;% ungroup()
+head(df_ave)</code></pre>
+<pre><code># A tibble: 6 x 6
+  SampleID  Time  Depth Replicate Peptide_id Mean_log2_intensity
+  &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;                    &lt;dbl&gt;
+1 BDCL_T1_B T1    BDCL  B         Pep_1                  -0.845 
+2 BDCL_T1_B T1    BDCL  B         Pep_10                 -1.14  
+3 BDCL_T1_B T1    BDCL  B         Pep_100                 0.175 
+4 BDCL_T1_B T1    BDCL  B         Pep_1000               -0.0504
+5 BDCL_T1_B T1    BDCL  B         Pep_1001               -0.0688
+6 BDCL_T1_B T1    BDCL  B         Pep_1002               -0.731 </code></pre>
+<pre class="r"><code># (3) import time metadata and merge
+(df_time &lt;- read.table(&#39;data/Time_metadata.txt&#39;, header=T, sep=&#39;\t&#39;))</code></pre>
+<pre><code>  timepoint          date_time elapsed_hours
+1        T1 6/26/2019 12:45:00             0
+2        T2 6/26/2019 15:45:00             3
+3        T3 6/26/2019 18:45:00             6
+4        T4 6/26/2019 21:45:00             9
+5        T5  6/27/2019 4:40:00            15
+6        T6  6/27/2019 7:45:00            19
+7        T7 6/27/2019 10:45:00            22
+8        T8 6/27/2019 13:45:00            25</code></pre>
+<pre class="r"><code># left_join with average data
+df_ave2 &lt;- df_ave %&gt;% left_join(df_time, by=c(&#39;Time&#39;=&#39;timepoint&#39;))
+head(df_ave2)</code></pre>
+<pre><code># A tibble: 6 x 8
+  SampleID Time  Depth Replicate Peptide_id Mean_log2_inten~ date_time
+  &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;                 &lt;dbl&gt; &lt;chr&gt;    
+1 BDCL_T1~ T1    BDCL  B         Pep_1               -0.845  6/26/201~
+2 BDCL_T1~ T1    BDCL  B         Pep_10              -1.14   6/26/201~
+3 BDCL_T1~ T1    BDCL  B         Pep_100              0.175  6/26/201~
+4 BDCL_T1~ T1    BDCL  B         Pep_1000            -0.0504 6/26/201~
+5 BDCL_T1~ T1    BDCL  B         Pep_1001            -0.0688 6/26/201~
+6 BDCL_T1~ T1    BDCL  B         Pep_1002            -0.731  6/26/201~
+# ... with 1 more variable: elapsed_hours &lt;int&gt;</code></pre>
+<pre class="r"><code># only use peptides that appear 7 or 8 times
+df_ave2 %&gt;% select(SampleID,Peptide_id) %&gt;% unique() %&gt;% dim() # 15452 peptides before</code></pre>
+<pre><code>[1] 15452     2</code></pre>
+<pre class="r"><code>df_filt78 &lt;- inner_join(df_ave2, df_all2_filt, by=c(&#39;Peptide_id&#39;=&#39;Peptide_id&#39;,&#39;Depth&#39;=&#39;Depth&#39;))
+
+# inspecting if the inner join was successful
+head(df_filt78)</code></pre>
+<pre><code># A tibble: 6 x 9
+  SampleID Time  Depth Replicate Peptide_id Mean_log2_inten~ date_time
+  &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;                 &lt;dbl&gt; &lt;chr&gt;    
+1 BDCL_T1~ T1    BDCL  B         Pep_1                -0.845 6/26/201~
+2 BDCL_T1~ T1    BDCL  B         Pep_10               -1.14  6/26/201~
+3 BDCL_T1~ T1    BDCL  B         Pep_101              -0.401 6/26/201~
+4 BDCL_T1~ T1    BDCL  B         Pep_102              -0.550 6/26/201~
+5 BDCL_T1~ T1    BDCL  B         Pep_104              -0.454 6/26/201~
+6 BDCL_T1~ T1    BDCL  B         Pep_105              -0.564 6/26/201~
+# ... with 2 more variables: elapsed_hours &lt;int&gt;, Timepoints &lt;int&gt;</code></pre>
+<pre class="r"><code>colnames(df_ave2)</code></pre>
+<pre><code>[1] &quot;SampleID&quot;            &quot;Time&quot;                &quot;Depth&quot;              
+[4] &quot;Replicate&quot;           &quot;Peptide_id&quot;          &quot;Mean_log2_intensity&quot;
+[7] &quot;date_time&quot;           &quot;elapsed_hours&quot;      </code></pre>
+<pre class="r"><code>colnames(df_time)</code></pre>
+<pre><code>[1] &quot;timepoint&quot;     &quot;date_time&quot;     &quot;elapsed_hours&quot;</code></pre>
+<pre class="r"><code>colnames(df_filt78)</code></pre>
+<pre><code>[1] &quot;SampleID&quot;            &quot;Time&quot;                &quot;Depth&quot;              
+[4] &quot;Replicate&quot;           &quot;Peptide_id&quot;          &quot;Mean_log2_intensity&quot;
+[7] &quot;date_time&quot;           &quot;elapsed_hours&quot;       &quot;Timepoints&quot;         </code></pre>
+<pre class="r"><code>df_filt78 %&gt;% select(SampleID,Peptide_id) %&gt;% unique() %&gt;% dim() # 7304 peptides for peptides in 7 or 8 timepoints</code></pre>
+<pre><code>[1] 7304    2</code></pre>
+<pre class="r"><code># get only 8 ones
+df_filt8 &lt;- df_filt78 %&gt;% filter(Timepoints &gt; 7)
+df_filt8 %&gt;% select(SampleID,Peptide_id) %&gt;% unique() %&gt;% dim() # 4112 peptides for peptides in all 8 timepoints</code></pre>
+<pre><code>[1] 4112    2</code></pre>
+<pre class="r"><code># get only 7 ones
+df_filt7 &lt;- df_filt78 %&gt;% filter(Timepoints == 7)
+df_filt7 %&gt;% select(SampleID,Peptide_id) %&gt;% unique() %&gt;% dim() # 3192 peptides for peptides in 7 timepoints</code></pre>
+<pre><code>[1] 3192    2</code></pre>
+<p>Plot for peptides present in 8 timepoints</p>
+<pre class="r"><code># (4) Plot the scatter plot 
+theme_set(theme_bw())
+ggplot(df_filt8, aes(x=elapsed_hours,y=Mean_log2_intensity, color=Depth, group=Peptide_id)) +
+  geom_point(size=2, shape=21) +
+  geom_line()+
+  scale_color_brewer(palette=&#39;Set2&#39;) +
+  ylab(&quot;Mean log2 intensity (log2(18O/16O)) \n&quot;) +
+  xlab(&quot;\n Elapsed hours after 12:45pm June 26 2019&quot;) +
+  scale_x_continuous(breaks=seq(0,26,1))+
+  ggtitle(&quot;Time series intensity of peptide_id \n&quot;)+
+  ## adjust positions
+  theme(plot.title = element_text(size = 20,hjust = 0.5, family=&quot;serif&quot;)) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
+  theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family=&quot;serif&quot;))+
+  theme(axis.text.y = element_text(size=10)) </code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-6-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>  # theme(panel.grid.major = element_blank()) +
+  # theme(panel.grid.minor = element_blank())</code></pre>
+<p>4.1. Surface(SRF)</p>
+<pre class="r"><code># color code
+# 1. Surface(blue): #8da0cb
+# 2. DCL(orange): #fc8d62
+# 3. BDCL(green): #66c2a5
+color_vec &lt;- c(&#39;#8da0cb&#39;,&#39;#fc8d62&#39;,&#39;#66c2a5&#39;)
+depth_vec &lt;- c(&#39;SRF&#39;,&#39;DCL&#39;,&#39;BDCL&#39;)
+
+time_series_1depth &lt;- function(df_filt78, depth){
+  theme_set(theme_bw())
+  # filter depth
+  df_filt78_s &lt;- df_filt78 %&gt;% filter(Depth == depth_vec[depth])
+  ggplot(df_filt78_s, aes(x=elapsed_hours,y=Mean_log2_intensity, group=Peptide_id)) +
+    geom_point(size=2, shape=21, color=color_vec[depth]) +
+    geom_line(color= color_vec[depth])+
+    ylab(&quot;Mean log2 intensity (log2(18O/16O)) \n&quot;) +
+    xlab(&quot;\n Elapsed hours after 12:45pm June 26 2019&quot;) +
+    scale_x_continuous(breaks=seq(0,26,1))+
+    ggtitle(paste0(&quot;Time series intensity of peptide_id&quot;,&quot; (&quot;,depth_vec[depth],&quot;)&quot;,&quot;\n&quot;))+
+    ## adjust positions
+    theme(plot.title = element_text(size = 20,hjust = 0.5, family=&quot;serif&quot;)) + 
+    theme(axis.title.x = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
+    theme(axis.title.y = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
+    theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family=&quot;serif&quot;))+
+    theme(axis.text.y = element_text(size=10)) 
+    # theme(panel.grid.major = element_blank()) +
+    # theme(panel.grid.minor = element_blank())
+}
+
+# when we use all 7, 8 appearance cases
+time_series_1depth(df_filt78,1)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-7-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># when we use only 8 appearance cases
+time_series_1depth(df_filt8,1)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-7-2.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># when we use only 7 appearance cases
+time_series_1depth(df_filt7,1)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-7-3.png" width="1056" style="display: block; margin: auto;" /></p>
+<p>4.2. Deep Chlorophyll layer (DCL)</p>
+<pre class="r"><code># when we use all 7, 8 appearance cases
+time_series_1depth(df_filt78,2)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-8-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># when we use only 8 appearance cases
+time_series_1depth(df_filt8,2)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-8-2.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># when we use only 7 appearance cases
+time_series_1depth(df_filt7,2)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-8-3.png" width="1056" style="display: block; margin: auto;" /></p>
+<p>4.3. Below Deep Chlorophyll layer (BDCL)</p>
+<pre class="r"><code># when we use all 7, 8 appearance cases
+time_series_1depth(df_filt78,3)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-9-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># when we use only 8 appearance cases
+time_series_1depth(df_filt8,3)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-9-2.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># when we use only 7 appearance cases
+time_series_1depth(df_filt7,3)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-9-3.png" width="1056" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
