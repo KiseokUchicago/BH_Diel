@@ -27,24 +27,24 @@ library(formattable)
 
 ```{r}
 # read in combined table of 24 samples (Replicate B)
-df_pep <- read.table("Replicate_B_combined.tsv",sep='\t',header = T)
+df_pep <- read.table("Replicate_ABC50_combined.tsv",sep='\t',header = T)
 
 # count unique peptide per sample
 df_uni <- df_pep %>% group_by(SampleID) %>% summarize(uniq_pep = length(unique(Base.Peptide.Sequence)))
 df_uni1 <- df_uni %>% separate(SampleID, sep='_', into= c('Depth','Time','Replicate'),remove = F) %>% select(-Time, -Replicate)
-df_uni2 <- df_uni1 %>% arrange((Depth))
+df_uni2 <- df_uni1 %>% arrange(desc(Depth))
 
 # get the order right from SRF -> DCL -> BDCL
 ord <- df_uni2$SampleID 
 df_uni2$SampleID <- factor(df_uni2$SampleID, levels = ord)
-
+df_uni2$Depth <- factor(df_uni2$Depth, levels = c('SRF','DCL','BDCL'))
 
 # Making barplot
 theme_set(theme_bw())
-
+cols <- c('SRF'='#fc8d62','DCL'='#66c2a5','BDCL'='#8da0cb')
 uniq1 <- ggplot(df_uni2, aes(x=SampleID, fill=Depth, y=uniq_pep)) +  ## I put fill=value which was wrong
   geom_bar(stat="identity") +
-  scale_fill_brewer(palette='Set2') +
+  scale_fill_manual(values=cols) +
   ylab("Number of unique peptide sequence \n") +
   xlab("\n SampleID") +
   ggtitle("Number of unique peptide sequences per sample")+
@@ -70,7 +70,7 @@ sample DCL_T8 doesn't seem to have good quality MS data.
 
 ```{r}
 # read in combined table of 24 samples (Replicate B)
-df_pep <- read.table("Replicate_B_combined.tsv",sep='\t',header = T)
+df_pep <- read.table("Replicate_ABC50_combined.tsv",sep='\t',header = T)
 
 # get unique peptides per sample
 dt <- df_pep %>% select(SampleID, Base.Peptide.Sequence) %>% unique()
@@ -99,7 +99,7 @@ theme_set(theme_bw())
 p1 <- ggplot(df.out2,aes(x = rowid,y = value)) + geom_line(col="magenta") + geom_point(color='maroon') +
   ylab("Number of cumulative unique peptide sequence \n") +
   xlab("\n Number of cumulative samples") +
-  ylim(c(0,2200)) +
+  # ylim(c(0,2200)) +
   ggtitle("Number of cumulative unique peptide sequences \n")+
   ## adjust positions
   theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
@@ -123,15 +123,15 @@ We need 3 histogram for (1) Surface, (2) DCL, and (3) BDCL
 
 ```{r}
 # read in combined table of 24 samples (Replicate B)
-df_pep <- read.table("Replicate_B_combined.tsv",sep='\t',header = T)
+df_pep <- read.table("Replicate_ABC50_combined.tsv",sep='\t',header = T)
 
 # (1) Surface
 colnames(df_pep)
 df_srf <- df_pep %>% filter(Depth == 'SRF') %>% select(Peptide_id, SampleID, Time, Depth) %>% unique() %>% arrange(Peptide_id)
 # How many time points did it appear
-(df_srf2 <- df_srf %>% group_by(Peptide_id) %>% summarize(Timepoints = n()) %>% ungroup())
+(df_srf2 <- df_srf %>% group_by(Peptide_id) %>% summarize(Timepoints = n_distinct(Time)) %>% ungroup())
 # Check if Pep_1 appeared in 8 time points
-df_srf %>% filter(Peptide_id=="Pep_1") # true 8 times
+df_srf %>% filter(Peptide_id=="Pep_1004") # true 8 times
 # Histogram
 theme_set(theme_bw())
 ggplot(df_srf2, aes(Timepoints)) + geom_bar() +
@@ -151,10 +151,12 @@ ggplot(df_srf2, aes(Timepoints)) + geom_bar() +
 # Let's try to plot all of them at once
 df_all <- df_pep %>% select(Peptide_id, SampleID, Time, Depth) %>% unique() %>% arrange(Peptide_id)
 # How many time points did it appear
-(df_all2 <- df_all %>% group_by(Peptide_id, Depth) %>% summarize(Timepoints = n()) %>% ungroup())
+(df_all2 <- df_all %>% group_by(Peptide_id, Depth) %>% summarize(Timepoints = n_distinct(Time)) %>% ungroup())
+df_all2$Depth <- factor(df_all2$Depth, levels = c('SRF','DCL','BDCL'))
+
 # Histogram
 ggplot(df_all2, aes(Timepoints)) + geom_bar(aes(fill=Depth), position='dodge') +
-  scale_fill_brewer(palette='Set2') +
+  scale_fill_manual(values=cols) +
   ylab("Number of peptides \n") +
   xlab("\n Cumulative number of timepoints peptide are present") +
   scale_x_continuous(breaks=seq(1,8,1))+
@@ -202,14 +204,17 @@ colnames(df_time)
 colnames(df_filt78)
 
 df_filt78 %>% select(SampleID,Peptide_id) %>% unique() %>% dim() # 7304 peptides for peptides in 7 or 8 timepoints
+df_filt78$Depth <- factor(df_filt78$Depth, levels = c('SRF','DCL','BDCL'))
 
 # get only 8 ones
 df_filt8 <- df_filt78 %>% filter(Timepoints > 7)
 df_filt8 %>% select(SampleID,Peptide_id) %>% unique() %>% dim() # 4112 peptides for peptides in all 8 timepoints
+df_filt8$Depth <- factor(df_filt8$Depth, levels = c('SRF','DCL','BDCL'))
 
 # get only 7 ones
 df_filt7 <- df_filt78 %>% filter(Timepoints == 7)
 df_filt7 %>% select(SampleID,Peptide_id) %>% unique() %>% dim() # 3192 peptides for peptides in 7 timepoints
+df_filt8$Depth <- factor(df_filt8$Depth, levels = c('SRF','DCL','BDCL'))
 
 ```
 
@@ -218,10 +223,11 @@ Plot for peptides present in 8 timepoints
 
 # (4) Plot the scatter plot 
 theme_set(theme_bw())
+
 ggplot(df_filt8, aes(x=elapsed_hours,y=Mean_log2_intensity, color=Depth, group=Peptide_id)) +
   geom_point(size=2, shape=21) +
   geom_line()+
-  scale_color_brewer(palette='Set2') +
+  scale_color_manual(values=cols) +
   ylab("Mean log2 intensity (log2(18O/16O)) \n") +
   xlab("\n Elapsed hours after 12:45pm June 26 2019") +
   scale_x_continuous(breaks=seq(0,26,1))+
@@ -241,10 +247,10 @@ ggplot(df_filt8, aes(x=elapsed_hours,y=Mean_log2_intensity, color=Depth, group=P
 
 ```{r}
 # color code
-# 1. Surface(blue): #8da0cb
-# 2. DCL(orange): #fc8d62
-# 3. BDCL(green): #66c2a5
-color_vec <- c('#8da0cb','#fc8d62','#66c2a5')
+# 1. Surface(orange): #fc8d62
+# 2. DCL(green): #66c2a5
+# 3. BDCL(blue): #8da0cb
+color_vec <- c('#fc8d62','#66c2a5','#8da0cb')
 depth_vec <- c('SRF','DCL','BDCL')
 
 time_series_1depth <- function(df_filt78, depth){

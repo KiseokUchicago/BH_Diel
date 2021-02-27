@@ -95,8 +95,8 @@ convert_tsv <- function(file_number, filename){
 }
 
 # list all files in certain folder
-directory_path = "data/diel-Feb21"
-list_f <- list.files(path="data/diel-Feb21")
+directory_path = "data/diel-Feb26"
+list_f <- list.files(path="data/diel-Feb26")
 length(list_f)
 
 # test example
@@ -150,6 +150,8 @@ his1
 
 df_pepid2 <- tibble::rownames_to_column(df_pepid, var='rowid') 
 df_pepid3 <- df_pepid2 %>% mutate(Peptide_id = paste0("Pep_",rowid)) %>% select(-rowid)
+head(df_pepid3)
+tail(df_pepid3)
 # check if sum of freq is same as all number of spectral reads
 sum(df_pepid3$freq) == dim(combined_tsv)[1]
 # write Peptide_id list
@@ -163,8 +165,8 @@ tail(combined_tsv_pepid)
 # check whether there is no NA value in the dataframe
 any(is.na.data.frame(combined_tsv_pepid))
 
-write.table(combined_tsv_pepid,"Replicate_B_combined.tsv", sep='\t',row.names = F)
-openxlsx::write.xlsx(combined_tsv_pepid,'Replicate_B_combined.xlsx',rowNames=F)
+write.table(combined_tsv_pepid,"Replicate_ABC50_combined.tsv", sep='\t',row.names = F)
+openxlsx::write.xlsx(combined_tsv_pepid,'Replicate_ABC50_combined.xlsx',rowNames=F)
 
 
 ```
