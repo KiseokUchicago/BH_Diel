@@ -185,16 +185,35 @@ df_all2_filt <- df_all2 %>% filter(Timepoints > 6) %>% unique()
 # (2) Let's average the intensity for each unique peptide
 df_int <- df_pep %>% select(Peptide_id, Spec_id, log2.18O.16O.Ratio, SampleID, Time, Depth, Replicate) %>% unique() %>% arrange(Peptide_id)
 head(df_int)
-df_ave <- df_int %>% group_by(SampleID, Time, Depth, Replicate, Peptide_id) %>% summarize(Mean_log2_intensity=mean(log2.18O.16O.Ratio)) %>% ungroup()
+# first average the spectrum_id per sample 
+# important to make sure to take log2 after averaging the original value(2^x)
+df_int %>% filter(Peptide_id=='Pep_1' & Time =='T1' & SampleID == 'BDCL_T1_A')
+df_ave <- df_int %>% group_by(SampleID, Time, Depth, Replicate, Peptide_id) %>% summarize(log2_Mean_intensity=log2(mean(2^log2.18O.16O.Ratio))) %>% ungroup()
 head(df_ave)
+
+df_ave %>% filter(Peptide_id=='Pep_1' & Time =='T1' & SampleID == 'BDCL_T1_A') # check if Pep_1 in sample 'BDCL_T1_A' is -0.5059 (yes correct)
+
+# then average and error by replicate
+# see here for calculating error bar in log scale (https://faculty.washington.edu/stuve/log_error.pdf)
+# for example of Pep_1
+df_ave %>% group_by(SampleID) %>% filter(Peptide_id=='Pep_1') %>% head(10)
+# calculate average and error bar for intensity
+df_ave_rep <- df_ave %>% group_by(Time, Depth, Peptide_id) %>% summarize(log2_ave_intensity=log2(mean(2^log2_Mean_intensity)), sd_intensity=sd(2^log2_Mean_intensity)) %>% ungroup()
+head(df_ave_rep)
+# why is there no sd for Pep_1004?
+df_ave %>% group_by(SampleID) %>% filter(Peptide_id=='Pep_1004') # there is only 1 sample for T1 BDCL 
+# log scale error bar: d(log2y)=1/log2 * (dy / y)
+df_ave_rep2 <- df_ave_rep %>% mutate(ave_intensity = 2^log2_ave_intensity) %>% mutate(rel_error = sd_intensity/ave_intensity) %>% mutate(log2_sd_intensity = (1/log(2))*rel_error) %>% mutate(log2_error_up=log2_ave_intensity+log2_sd_intensity) %>% mutate(log2_error_down=log2_ave_intensity-log2_sd_intensity)
+
+head(df_ave_rep2)
 
 # (3) import time metadata and merge
 (df_time <- read.table('data/Time_metadata.txt', header=T, sep='\t'))
 # left_join with average data
-df_ave2 <- df_ave %>% left_join(df_time, by=c('Time'='timepoint'))
+df_ave2 <- df_ave_rep2 %>% left_join(df_time, by=c('Time'='timepoint'))
 head(df_ave2)
 # only use peptides that appear 7 or 8 times
-df_ave2 %>% select(SampleID,Peptide_id) %>% unique() %>% dim() # 15452 peptides before
+df_ave2 %>% select(Peptide_id) %>% unique() %>% dim() # 3233 peptides before
 df_filt78 <- inner_join(df_ave2, df_all2_filt, by=c('Peptide_id'='Peptide_id','Depth'='Depth'))
 
 # inspecting if the inner join was successful
@@ -203,32 +222,33 @@ colnames(df_ave2)
 colnames(df_time)
 colnames(df_filt78)
 
-df_filt78 %>% select(SampleID,Peptide_id) %>% unique() %>% dim() # 7304 peptides for peptides in 7 or 8 timepoints
+df_filt78 %>% select(Peptide_id) %>% unique() %>% dim() # 736 peptides for peptides in 7 or 8 timepoints
 df_filt78$Depth <- factor(df_filt78$Depth, levels = c('SRF','DCL','BDCL'))
 
 # get only 8 ones
 df_filt8 <- df_filt78 %>% filter(Timepoints > 7)
-df_filt8 %>% select(SampleID,Peptide_id) %>% unique() %>% dim() # 4112 peptides for peptides in all 8 timepoints
+df_filt8 %>% select(Peptide_id) %>% unique() %>% dim() # 539 peptides for peptides in all 8 timepoints
 df_filt8$Depth <- factor(df_filt8$Depth, levels = c('SRF','DCL','BDCL'))
 
 # get only 7 ones
 df_filt7 <- df_filt78 %>% filter(Timepoints == 7)
-df_filt7 %>% select(SampleID,Peptide_id) %>% unique() %>% dim() # 3192 peptides for peptides in 7 timepoints
+df_filt7 %>% select(Peptide_id) %>% unique() %>% dim() # 533 peptides for peptides in 7 timepoints
 df_filt8$Depth <- factor(df_filt8$Depth, levels = c('SRF','DCL','BDCL'))
 
 ```
 
-Plot for peptides present in 8 timepoints
+Plot for peptides present in 7 or 8 timepoints
 ```{r}
 
-# (4) Plot the scatter plot 
+# (4) Plot the scatter plot with error bars
 theme_set(theme_bw())
 
-ggplot(df_filt8, aes(x=elapsed_hours,y=Mean_log2_intensity, color=Depth, group=Peptide_id)) +
+ggplot(df_filt78, aes(x=elapsed_hours,y=log2_ave_intensity, color=Depth, group=interaction(Peptide_id,Depth))) +
   geom_point(size=2, shape=21) +
   geom_line()+
+  geom_errorbar(aes(ymin=log2_error_down, ymax=log2_error_up), width=.2, position=position_dodge(.9))+
   scale_color_manual(values=cols) +
-  ylab("Mean log2 intensity (log2(18O/16O)) \n") +
+  ylab("log2 Mean intensity (log2(18O/16O)) \n") +
   xlab("\n Elapsed hours after 12:45pm June 26 2019") +
   scale_x_continuous(breaks=seq(0,26,1))+
   ggtitle("Time series intensity of peptide_id \n")+
@@ -242,6 +262,26 @@ ggplot(df_filt8, aes(x=elapsed_hours,y=Mean_log2_intensity, color=Depth, group=P
   # theme(panel.grid.minor = element_blank())
 ```
 
+without error bars
+```{r}
+theme_set(theme_bw())
+ggplot(df_filt78, aes(x=elapsed_hours,y=log2_ave_intensity, color=Depth, group=interaction(Peptide_id,Depth))) +
+  geom_point(size=2, shape=21) +
+  geom_line()+
+  # geom_errorbar(aes(ymin=log2_error_down, ymax=log2_error_up), width=.2, position=position_dodge(.9))+
+  scale_color_manual(values=cols) +
+  ylab("log2 Mean intensity (log2(18O/16O)) \n") +
+  xlab("\n Elapsed hours after 12:45pm June 26 2019") +
+  scale_x_continuous(breaks=seq(0,26,1))+
+  ggtitle("Time series intensity of peptide_id \n")+
+  ## adjust positions
+  theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family="serif"))+
+  theme(axis.text.y = element_text(size=10)) 
+```
+
 
 4.1. Surface(SRF)
 
@@ -253,11 +293,11 @@ ggplot(df_filt8, aes(x=elapsed_hours,y=Mean_log2_intensity, color=Depth, group=P
 color_vec <- c('#fc8d62','#66c2a5','#8da0cb')
 depth_vec <- c('SRF','DCL','BDCL')
 
-time_series_1depth <- function(df_filt78, depth){
+time_series_1depth_woError <- function(df_filt78, depth){
   theme_set(theme_bw())
   # filter depth
   df_filt78_s <- df_filt78 %>% filter(Depth == depth_vec[depth])
-  ggplot(df_filt78_s, aes(x=elapsed_hours,y=Mean_log2_intensity, group=Peptide_id)) +
+  ggplot(df_filt78_s, aes(x=elapsed_hours,y=log2_ave_intensity, group=Peptide_id)) +
     geom_point(size=2, shape=21, color=color_vec[depth]) +
     geom_line(color= color_vec[depth])+
     ylab("Mean log2 intensity (log2(18O/16O)) \n") +
@@ -274,14 +314,39 @@ time_series_1depth <- function(df_filt78, depth){
     # theme(panel.grid.minor = element_blank())
 }
 
+time_series_1depth_wError <- function(df_filt78, depth){
+  theme_set(theme_bw())
+  # filter depth
+  df_filt78_s <- df_filt78 %>% filter(Depth == depth_vec[depth])
+  ggplot(df_filt78_s, aes(x=elapsed_hours,y=log2_ave_intensity, group=Peptide_id)) +
+    geom_point(size=2, shape=21, color=color_vec[depth]) +
+    geom_line(color= color_vec[depth])+
+    geom_errorbar(aes(ymin=log2_error_down, ymax=log2_error_up), width=.05, position=position_dodge(.2),color='red')+
+    ylab("Mean log2 intensity (log2(18O/16O)) \n") +
+    xlab("\n Elapsed hours after 12:45pm June 26 2019") +
+    scale_x_continuous(breaks=seq(0,26,1))+
+    ggtitle(paste0("Time series intensity of peptide_id"," (",depth_vec[depth],")","\n"))+
+    ## adjust positions
+    theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
+    theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
+    theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
+    theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family="serif"))+
+    theme(axis.text.y = element_text(size=10)) 
+    # theme(panel.grid.major = element_blank()) +
+    # theme(panel.grid.minor = element_blank())
+}
+
 # when we use all 7, 8 appearance cases
-time_series_1depth(df_filt78,1)
+time_series_1depth_woError(df_filt78,1)
+time_series_1depth_wError(df_filt78,1)
 
 # when we use only 8 appearance cases
-time_series_1depth(df_filt8,1)
+time_series_1depth_woError(df_filt8,1)
+time_series_1depth_wError(df_filt8,1)
 
 # when we use only 7 appearance cases
-time_series_1depth(df_filt7,1)
+time_series_1depth_woError(df_filt7,1)
+time_series_1depth_wError(df_filt7,1)
 
 ```
 
@@ -289,13 +354,16 @@ time_series_1depth(df_filt7,1)
 
 ```{r}
 # when we use all 7, 8 appearance cases
-time_series_1depth(df_filt78,2)
+time_series_1depth_woError(df_filt78,2)
+time_series_1depth_wError(df_filt78,2)
 
 # when we use only 8 appearance cases
-time_series_1depth(df_filt8,2)
+time_series_1depth_woError(df_filt8,2)
+time_series_1depth_wError(df_filt8,2)
 
 # when we use only 7 appearance cases
-time_series_1depth(df_filt7,2)
+time_series_1depth_woError(df_filt7,2)
+time_series_1depth_wError(df_filt7,2)
 
 ```
 
@@ -303,13 +371,16 @@ time_series_1depth(df_filt7,2)
 
 ```{r}
 # when we use all 7, 8 appearance cases
-time_series_1depth(df_filt78,3)
+time_series_1depth_woError(df_filt78,3)
+time_series_1depth_wError(df_filt78,3)
 
 # when we use only 8 appearance cases
-time_series_1depth(df_filt8,3)
+time_series_1depth_woError(df_filt8,3)
+time_series_1depth_wError(df_filt8,3)
 
 # when we use only 7 appearance cases
-time_series_1depth(df_filt7,3)
+time_series_1depth_woError(df_filt7,3)
+time_series_1depth_wError(df_filt7,3)
 
 ```
 
