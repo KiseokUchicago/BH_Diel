@@ -27,7 +27,7 @@ library(formattable)
 
 ```{r}
 # read in combined table of 24 samples (Replicate B)
-df_pep <- read.table("Replicate_ABC50_combined.tsv",sep='\t',header = T)
+df_pep <- read.table("Replicate_ABC63_combined.tsv",sep='\t',header = T)
 
 # count unique peptide per sample
 df_uni <- df_pep %>% group_by(SampleID) %>% summarize(uniq_pep = length(unique(Base.Peptide.Sequence)))
@@ -70,7 +70,7 @@ sample DCL_T8 doesn't seem to have good quality MS data.
 
 ```{r}
 # read in combined table of 24 samples (Replicate B)
-df_pep <- read.table("Replicate_ABC50_combined.tsv",sep='\t',header = T)
+df_pep <- read.table("Replicate_ABC63_combined.tsv",sep='\t',header = T)
 
 # get unique peptides per sample
 dt <- df_pep %>% select(SampleID, Base.Peptide.Sequence) %>% unique()
@@ -123,7 +123,7 @@ We need 3 histogram for (1) Surface, (2) DCL, and (3) BDCL
 
 ```{r}
 # read in combined table of 24 samples (Replicate B)
-df_pep <- read.table("Replicate_ABC50_combined.tsv",sep='\t',header = T)
+df_pep <- read.table("Replicate_ABC63_combined.tsv",sep='\t',header = T)
 
 # (1) Surface
 colnames(df_pep)

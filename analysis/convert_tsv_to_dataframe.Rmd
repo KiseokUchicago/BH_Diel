@@ -22,7 +22,7 @@ library(stringr)
 library(ggplot2)
 
 # Make the desirable format
-df <- read.csv(file='data/diel-Feb21/IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T1-BDCL_filtered_PSMs.tsv', sep = '\t')
+df <- read.csv(file='data/diel-Mar2/IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T1-BDCL_filtered_PSMs.tsv', sep = '\t')
 df <- tibble::rownames_to_column(df, var = 'Index')
 df2 <- df %>% select(Index,Scan.Number, Base.Peptide.Sequence, log2.18O.16O.Ratio, Target., Decoy.)
 df3 <- df2 %>% separate(Scan.Number, into = c('dir',"file_name"), sep = 'IPTL-')
@@ -95,12 +95,12 @@ convert_tsv <- function(file_number, filename){
 }
 
 # list all files in certain folder
-directory_path = "data/diel-Feb26"
-list_f <- list.files(path="data/diel-Feb26")
+directory_path = "data/diel-Mar2"
+list_f <- list.files(path="data/diel-Mar2")
 length(list_f)
 
 # test example
-convert_tsv('01','IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T1-BDCL_filtered_PSMs.tsv')
+# convert_tsv('01','IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T1-BDCL_filtered_PSMs.tsv')
 
 # make file name starting from 01, 02, 
 vec_00 <- sprintf("%02d", c(1:length(list_f)))
@@ -165,8 +165,8 @@ tail(combined_tsv_pepid)
 # check whether there is no NA value in the dataframe
 any(is.na.data.frame(combined_tsv_pepid))
 
-write.table(combined_tsv_pepid,"Replicate_ABC50_combined.tsv", sep='\t',row.names = F)
-openxlsx::write.xlsx(combined_tsv_pepid,'Replicate_ABC50_combined.xlsx',rowNames=F)
+write.table(combined_tsv_pepid,"Replicate_ABC63_combined.tsv", sep='\t',row.names = F)
+openxlsx::write.xlsx(combined_tsv_pepid,'Replicate_ABC63_combined.xlsx',rowNames=F)
 
 
 ```
