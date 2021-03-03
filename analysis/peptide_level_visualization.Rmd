@@ -389,12 +389,12 @@ time_series_1depth_wError(df_filt7,3)
 
 ```
 
-5. Time series clustering
+### 5. Time series clustering
 
 For time series clustering with R, the first step is to work out an appropriate distance/similarity metric, and then, at the second step, use existing clustering techniques, such as k-means, hierarchical clustering, density-based clustering or subspace clustering, to find clustering structures.
 (http://www.rdatamining.com/examples/time-series-clustering-classification)
 
-5.1. Approach 1 using Dynamic time warping distance
+5.1. Approach 1: Hierarchical clustering using Dynamic time warping distance
 Dynamic Time Warping (DTW) finds optimal alignment between two time series, and DTW distance is used as a distance metric in the example below.
 (http://www.rdatamining.com/examples/time-series-clustering-classification)
 
@@ -420,9 +420,6 @@ any(is.na(dc_8)) # False: there is no NA in the table
 distMatrix <- dist(dc_8, method="DTW")
 hc <- hclust(distMatrix, method="average")
 plot(hc, cex=0.7, xlab='Hierarchical clustering of Distance(DTW) Matrix')
-
-
-
 
 ```
 
@@ -468,10 +465,431 @@ clust3 <- c("374","479","758","905","52","435","461","111","196","482","691","59
 clust3 <- str_replace(clust3,"^","Pep_") # make Peptide_id
 time_series_clust_wError(df_filt8, 1, clust3)
 
+```
+
+5.2. Unsupervised clustering with various distances (SBD, DTW, ...) / prototyping methods / clustering methods \
+- Using dtwclust package
+- How many clusters should we use? Evaluate by CVI (Cluster validity index, the bigger the better for internal CVI) \
+- Please normalize before clustering
+
+(0) Data formating for tsclust input 
+
+```{r}
+# (1) Change our data into list format for input into tsclust
+colnames(df_filt8)
+
+make_list <- function(df_filt8,depth){
+  df_SRF8 <- df_filt8 %>% filter(Depth==depth) %>% select(Peptide_id,Time,log2_ave_intensity)
+  # reshape the dataframe with timepoints
+  library(maditr)
+  v_names <- c("T1","T2","T3","T4","T5","T6","T7","T8")
+  df_SRF8$Time <- factor(df_SRF8$Time, levels=v_names)
+  dc_SRF8 <- dcast(df_SRF8, Peptide_id ~ Time, value.var = "log2_ave_intensity")
+  # make Peptide_id more simpler (Pep_1 -> P.1)
+  dc_SRF8$Peptide_id <- str_replace(dc_SRF8$Peptide_id,"Pep_","P.")
+  # make first column into row name
+  dc_SRF8 <- tibble::column_to_rownames(dc_SRF8, var="Peptide_id")
+  # make it into list format
+  # l_SRF8 <- setNames(split(dc_SRF8, seq(nrow(dc_SRF8))), rownames(dc_SRF8))
+  l_SRF8 <- as.list(as.data.frame(t(dc_SRF8)))
+  return(l_SRF8)
+}
+
+l_SRF8 <- make_list(df_filt8,'SRF')
+l_DCL8 <- make_list(df_filt8,'DCL')
+l_BDCL8 <- make_list(df_filt8,'BDCL')
+
+```
+
+(1) Hierarchical clustering w/ shape based distance
+
+```{r}
+# input into tsclust
+library(dtwclust)
+require("TSclust")
+
+### Hierarchical clustering w/ shape based distance
+hc_sbd <- tsclust(l_SRF8, type = "h", k = 2L:10L,
+  preproc = zscore, seed = 899,
+  distance = "sbd", centroid = shape_extraction,
+  control = hierarchical_control(method = "average"))
+
+internal_CVI <- function(hc_sbd,main){
+  names(hc_sbd) <- 2L:10L
+  (eval <- sapply(hc_sbd, cvi, type = "internal"))
+  # divide CH value with 100 just to plot with other internal CVIs 
+  eval['CH',] <- eval['CH',]/100
+  t(eval)
+  matplot(x=seq(2,10,by=1),y=t(eval), type = c("b"),pch=1,col = 1:7,
+          xlab="Number of clusters",ylab="Internal CVI (cluster validity index)",main=main,axes=F) #plot
+  axis(2)
+  axis(side=1,at=2:10)
+  legend("bottomright", legend = c("Sil","SF","CH/100","DB","DBstar","D","COP"), col=1:7, pch=1,cex=0.8) # optional legend
+}
+
+internal_CVI(hc_sbd,"Hierarchical clustering w/ shape based distance")
+
+# use 3 or 4 clusters
+hc_sbd3 <- tsclust(l_SRF8, type = "h", k = 3L,
+  distance = "sbd", centroid = shape_extraction,
+  control = hierarchical_control(method = "average"))
+
+hc_sbd4 <- tsclust(l_SRF8, type = "h", k = 4L,
+  distance = "sbd", centroid = shape_extraction,
+  control = hierarchical_control(method = "average"))
+
+# cluster dendrogram
+plot(hc_sbd3)
+# The series and the obtained prototypes can be plotted too
+plot(hc_sbd3, type = "sc")
+# Focusing on the first cluster
+plot(hc_sbd3, type = "series", clus = 1L)
+plot(hc_sbd3, type = "centroids", clus = 1L)
+
+# cluster dendrogram
+plot(hc_sbd4)
+# The series and the obtained prototypes can be plotted too
+plot(hc_sbd4, type = "sc")
+```
+
+(2-1) partial clustering methods - DTW
+
+```{r}
+### partial clustering methods
+# z-normalization
+l_SRF8_z <- zscore(l_SRF8)
+
+# DTW distance
+pc_dtw <- tsclust(l_SRF8_z, k = 2L:10L,
+  distance = "dtw_basic", centroid = "dba",
+  trace = TRUE, seed = 8,
+  norm = "L2", window.size = 8L,
+  args = tsclust_args(cent = list(trace = TRUE)))
+
+internal_CVI(pc_dtw, "Partial clustering with DTW distance")
+
+# use 4, 5, 7 clusters
+pc_dtw4 <- tsclust(l_SRF8_z, k = 4L,
+  distance = "dtw_basic", centroid = "dba",
+  trace = TRUE, seed = 8,
+  norm = "L2", window.size = 8L,
+  args = tsclust_args(cent = list(trace = TRUE)))
+pc_dtw5 <- tsclust(l_SRF8_z, k = 5L,
+  distance = "dtw_basic", centroid = "dba",
+  trace = TRUE, seed = 8,
+  norm = "L2", window.size = 8L,
+  args = tsclust_args(cent = list(trace = TRUE)))
+pc_dtw7 <- tsclust(l_SRF8_z, k = 7L,
+  distance = "dtw_basic", centroid = "dba",
+  trace = TRUE, seed = 8,
+  norm = "L2", window.size = 8L,
+  args = tsclust_args(cent = list(trace = TRUE)))
+
+# Prototypes for 4 clusters
+plot(pc_dtw4)
+
+# Prototypes for 5 clusters
+plot(pc_dtw5)
+
+# Prototypes for 7 clusters
+plot(pc_dtw7)
+
+```
+
+(2-2) partial clustering methods - DTW_lb
+cross-distance matrix is NOT symmetric, which can be problematic for
+
+```{r}
+# DTW_lb distance method
+pc_dtwlb <- tsclust(l_SRF8_z, k = 2L:10L,
+  distance = "dtw_lb", centroid = "dba",
+  trace = TRUE, seed = 8,
+  norm = "L2", window.size = 4L,
+  control = partitional_control(pam.precompute = FALSE),
+  args = tsclust_args(cent = list(trace = TRUE)))
+
+internal_CVI(pc_dtwlb, "Partial clustering with DTW_lb distance")
+
+# use 8 clusters
+pc_dtwlb8 <- tsclust(l_SRF8_z, k = 8L,
+  distance = "dtw_lb", centroid = "dba",
+  trace = TRUE, seed = 8,
+  norm = "L2", window.size = 4L,
+  control = partitional_control(pam.precompute = FALSE),
+  args = tsclust_args(cent = list(trace = TRUE)))
+
+# Prototypes for 8 clusters
+plot(pc_dtwlb8)
+
+```
+
+(2-3) partial clustering methods - k-shape
+
+```{r}
+# k-shape method
+pc_ks <- tsclust(l_SRF8_z, k = 2L:10L,
+  distance = "sbd", centroid = "shape",
+  seed = 8, trace = TRUE)
+
+internal_CVI(pc_ks, "Partial clustering with k-shape method")
+
+# use 3 or 4 clusters
+pc_ks3 <- tsclust(l_SRF8_z, k = 3L,
+  distance = "sbd", centroid = "shape",
+  seed = 8, trace = TRUE)
+
+pc_ks4 <- tsclust(l_SRF8_z, k = 4L,
+  distance = "sbd", centroid = "shape",
+  seed = 8, trace = TRUE)
+
+pc_ks5 <- tsclust(l_SRF8_z, k = 5L,
+  distance = "sbd", centroid = "shape",
+  seed = 8, trace = TRUE)
+
+# Prototypes for 3 clusters
+plot(pc_ks3)
+
+# Prototypes for 4 clusters
+plot(pc_ks4)
+
+# Prototypes for 5 clusters
+plot(pc_ks5)
+```
+
+
+(2-4) partial clustering methods - Tadpole 
+problematic for our dataset (series' cross-distance matrix is NOT symmetric)
+
+```{r}
+# Tadpole method
+pc_tp <- tsclust(l_SRF8_z, k = 2L:10L, type = "t",
+  seed = 8, trace = TRUE,
+  control = tadpole_control(dc = 1.5,
+  window.size = 4L))
+
+internal_CVI(pc_tp, "Partial clustering with Tadpole method")
+
+# use 8 clusters
+pc_tp8 <- tsclust(l_SRF8_z, k = 8L, type = "t",
+  seed = 8, trace = TRUE,
+  control = tadpole_control(dc = 1.5,
+  window.size = 4L))
+
+# Prototypes for 8 clusters
+plot(pc_tp8)
+
+```
+
+### 6. RAIN analysis (Rhythmicity Analysis Incorporating Non-parametric methods)
+
+```{r}
+require(rain)
+
+
+
+
+
+
+
+
+
 
 
 ```
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Archived: Not using this part
+
+Approach2: Time Series Classification using Dynamic time warping distance
+Time series classification is to build a classification model based on labelled time series and then use the model to predict the label of unlabelled time series. The way for time series classification with R is to extract and build features from time series data first, and then apply existing classification techniques, such as SVM, k-NN, neural networks, regression and decision trees, to the feature set.
+
+Discrete Wavelet Transform (DWT) provides a multi-resolution representation using wavelets and is used in the example below. Another popular feature extraction technique is Discrete Fourier Transform (DFT).
+(http://www.rdatamining.com/examples/time-series-clustering-classification)
+```{r eval=F}
+# extracting DWT coefficients (with Haar filter)
+library(wavelets)
+wtData <- NULL
+
+sc <- read.table("data/synthetic_control.data.txt", header=F, sep="")
+
+for (i in 1:nrow(sc)){
+  a <- t(sc[i,])
+  wt <- dwt(a, filter="haar", boundary='periodic')
+  wtData <- rbind(wtData, unlist(c(wt@W,wt@V[[wt@level]])))
+}
+
+wtData <- as.data.frame(wtData)
+head(wtData)
+
+# set class labels into categorical values
+classId <- c(rep(1,100), rep(2,100), rep(3,100),rep(4,100), rep(5,100), rep(6,100))
+wtSc <- data.frame(cbind(classId, wtData))
+
+# build a decision tree with ctree() in package party
+library(party)
+ct <- ctree(classId ~ ., data=wtSc, controls = ctree_control(minsplit=30, minbucket=10, maxdepth=5))
+pClassId <- predict(ct)
+
+# check predicted classes against original class labels
+table(classId, pClassId)
+# accuracy
+(sum(classId==pClassId)) / nrow(wtSc)
+
+plot(ct, ip_args=list(pval=FALSE), ep_args=list(digits=0))
+
+
+# Lower CVI means better clustering : k_shape is the best clustering method
+sapply(list(DTW = pc_dtw, DTW_LB = pc_dtwlb, kShape = pc_ks, TADPole = pc_tp), cvi, b = names(l_SRF8), type = "VI")
+
+sapply(list(DTW = pc_dtw, DTW_LB = pc_dtwlb, kShape = pc_ks, TADPole = pc_tp), cvi, type = "internal")
+
+
+# subset
+data <- CharTraj[1L:20L]
+pc_k <- tsclust(data, k = 3L:5L, distance = "dtw_basic", centroid = "pam", seed = 94L)
+names(pc_k) <- paste0("k_", 3L:5L)
+sapply(pc_k, cvi, type = "internal")
+
+
+
+names(l_SRF8)
+```
+
+
+### Archived: 5.3. dtwclust
+the clustering itself may be shape-based, feature-based or model-based.\
+In the context of shape-based time-series clustering, it is common to utilize the Dynamic
+Time Warping (DTW) distance as dissimilarity measure (Aghabozorgi et al. 2015).\
+DTW is a dynamic programming algorithm that compares two series and tries to find the
+optimum warping path between them under certain constraints, such as monotonicity. It
+started being used by the data mining community to overcome some of the limitations associated with the Euclidean distance (Ratanamahatana and Keogh 2004; Berndt and Clifford
+1994).\
+https://cran.r-project.org/web/packages/dtwclust/vignettes/dtwclust.pdf
+
+```{r eval=F}
+# install.packages('dtwclust')
+# install.packages('TSclust')
+library(dtwclust)
+require("TSclust")
+data("uciCT")
+
+proxy::pr_DB$set_entry(FUN = diss.ACF, names = c("ACFD"), loop = TRUE, type = "metric", distance = TRUE, description = "Autocorrelation-based distance")
+
+# Normalized DTW
+ndtw <- function(x, y, ...) {
+  dtw(x, y, ...,
+  step.pattern = asymmetric,
+  distance.only = TRUE)$normalizedDistance
+}
+
+# Register the distance with proxy
+proxy::pr_DB$set_entry(FUN = ndtw, names = c("nDTW"),
+  loop = TRUE, type = "metric", distance = TRUE,
+  description = "Normalized, asymmetric DTW")
+
+# Partitional clustering
+tsclust(CharTraj[1L:10L], k = 2L,
+  distance = "nDTW", seed = 838)
+
+# hierarchical clustering
+hc_sbd <- tsclust(CharTraj, type = "h", k = 20L,
+  preproc = zscore, seed = 899,
+  distance = "sbd", centroid = shape_extraction,
+  control = hierarchical_control(method = "average"))
+
+plot(hc_sbd)
+
+# The series and the obtained prototypes can be plotted too
+plot(hc_sbd, type = "sc")
+
+# Focusing on the first cluster
+plot(hc_sbd, type = "series", clus = 1L)
+plot(hc_sbd, type = "centroids", clus = 1L)
+
+
+### Hierarchical clustering w/ shape based distance
+hc_sbd <- tsclust(CharTraj, type = "h", k = 20L,
+  preproc = zscore, seed = 899,
+  distance = "sbd", centroid = shape_extraction,
+  control = hierarchical_control(method = "average"))
+
+
+### partial clustering methods
+# Reinterpolate to same length
+data <- reinterpolate(CharTraj, new.length = max(lengths(CharTraj)))
+
+# z-normalization
+data <- zscore(data[60L:100L])
+names(data)
+# DTW method
+pc_dtw <- tsclust(data, k = 4L,
+  distance = "dtw_basic", centroid = "dba",
+  trace = TRUE, seed = 8,
+  norm = "L2", window.size = 20L,
+  args = tsclust_args(cent = list(trace = TRUE)))
+
+# DTW_lb method
+pc_dtwlb <- tsclust(data, k = 4L,
+  distance = "dtw_lb", centroid = "dba",
+  trace = TRUE, seed = 8,
+  norm = "L2", window.size = 20L,
+  control = partitional_control(pam.precompute = FALSE),
+  args = tsclust_args(cent = list(trace = TRUE)))
+
+# k-shape method
+pc_ks <- tsclust(data, k = 4L,
+  distance = "sbd", centroid = "shape",
+  seed = 8, trace = TRUE)
+
+# Tadpole method
+pc_tp <- tsclust(data, k = 4L, type = "t",
+  seed = 8, trace = TRUE,
+  control = tadpole_control(dc = 1.5,
+  window.size = 20L))
+
+# Fuzzy clustering
+
+# Calculate autocorrelation up to 50th lag
+acf_fun <- function(series, ...) {
+  lapply(series, function(x) {
+  as.numeric(acf(x, lag.max = 50, plot = FALSE)$acf)
+  })
+}
+# Fuzzy c-means
+fc <- tsclust(CharTraj[1:20], type = "f", k = 4L,
+  preproc = acf_fun, distance = "L2",
+  seed = 42)
+
+# Lower CVI means better clustering : k_shape is the best clustering method
+sapply(list(DTW = pc_dtw, DTW_LB = pc_dtwlb, kShape = pc_ks, TADPole = pc_tp), cvi, b = CharTrajLabels[60L:100L], type = "VI")
+
+CharTraj
+
+# Plot crisp partition in the original space
+plot(fc, series = CharTraj[1:20], type = "series")
+
+# subset
+data <- CharTraj[1L:20L]
+pc_k <- tsclust(data, k = 3L:5L, distance = "dtw_basic", centroid = "pam", seed = 94L)
+names(pc_k) <- paste0("k_", 3L:5L)
+sapply(pc_k, cvi, type = "internal")
+
+```
 
