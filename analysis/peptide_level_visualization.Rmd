@@ -249,7 +249,7 @@ ggplot(df_filt78, aes(x=elapsed_hours,y=log2_ave_intensity, color=Depth, group=i
   geom_errorbar(aes(ymin=log2_error_down, ymax=log2_error_up), width=.2, position=position_dodge(.9))+
   scale_color_manual(values=cols) +
   ylab("log2 Mean intensity (log2(18O/16O)) \n") +
-  xlab("\n Elapsed hours after 12:45pm June 26 2019") +
+  xlab("\n Elapsed hours after 12:45pm June 26 2019 (day 05:17-20:30)") +
   scale_x_continuous(breaks=seq(0,26,1))+
   ggtitle("Time series intensity of peptide_id \n")+
   ## adjust positions
@@ -257,7 +257,9 @@ ggplot(df_filt78, aes(x=elapsed_hours,y=log2_ave_intensity, color=Depth, group=i
   theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
   theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
   theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family="serif"))+
-  theme(axis.text.y = element_text(size=10)) 
+  theme(axis.text.y = element_text(size=10)) +
+  annotate("rect", xmin = 7.75, xmax = 16.53, ymin = -Inf, ymax = Inf, alpha = .2)
+  # geom_rect(aes(xmin=7.75, xmax=16.53, ymin=0, ymax=Inf))
   # theme(panel.grid.major = element_blank()) +
   # theme(panel.grid.minor = element_blank())
 ```
@@ -271,7 +273,7 @@ ggplot(df_filt78, aes(x=elapsed_hours,y=log2_ave_intensity, color=Depth, group=i
   # geom_errorbar(aes(ymin=log2_error_down, ymax=log2_error_up), width=.2, position=position_dodge(.9))+
   scale_color_manual(values=cols) +
   ylab("log2 Mean intensity (log2(18O/16O)) \n") +
-  xlab("\n Elapsed hours after 12:45pm June 26 2019") +
+  xlab("\n Elapsed hours after 12:45pm June 26 2019 (day 05:17-20:30)") +
   scale_x_continuous(breaks=seq(0,26,1))+
   ggtitle("Time series intensity of peptide_id \n")+
   ## adjust positions
@@ -279,7 +281,8 @@ ggplot(df_filt78, aes(x=elapsed_hours,y=log2_ave_intensity, color=Depth, group=i
   theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
   theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
   theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family="serif"))+
-  theme(axis.text.y = element_text(size=10)) 
+  theme(axis.text.y = element_text(size=10)) +
+  annotate("rect", xmin = 7.75, xmax = 16.53, ymin = -Inf, ymax = Inf, alpha = .2)
 ```
 
 
@@ -301,7 +304,7 @@ time_series_1depth_woError <- function(df_filt78, depth){
     geom_point(size=2, shape=21, color=color_vec[depth]) +
     geom_line(color= color_vec[depth])+
     ylab("Mean log2 intensity (log2(18O/16O)) \n") +
-    xlab("\n Elapsed hours after 12:45pm June 26 2019") +
+    xlab("\n Elapsed hours after 12:45pm June 26 2019 (day 05:17-20:30)") +
     scale_x_continuous(breaks=seq(0,26,1))+
     ggtitle(paste0("Time series intensity of peptide_id"," (",depth_vec[depth],")","\n"))+
     ## adjust positions
@@ -309,7 +312,8 @@ time_series_1depth_woError <- function(df_filt78, depth){
     theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
     theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
     theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family="serif"))+
-    theme(axis.text.y = element_text(size=10)) 
+    theme(axis.text.y = element_text(size=10)) +
+    annotate("rect", xmin = 7.75, xmax = 16.53, ymin = -Inf, ymax = Inf, alpha = .2)
     # theme(panel.grid.major = element_blank()) +
     # theme(panel.grid.minor = element_blank())
 }
@@ -323,7 +327,7 @@ time_series_1depth_wError <- function(df_filt78, depth){
     geom_line(color= color_vec[depth])+
     geom_errorbar(aes(ymin=log2_error_down, ymax=log2_error_up), width=.05, position=position_dodge(.2),color='red')+
     ylab("Mean log2 intensity (log2(18O/16O)) \n") +
-    xlab("\n Elapsed hours after 12:45pm June 26 2019") +
+    xlab("\n Elapsed hours after 12:45pm June 26 2019 (day 05:17-20:30)") +
     scale_x_continuous(breaks=seq(0,26,1))+
     ggtitle(paste0("Time series intensity of peptide_id"," (",depth_vec[depth],")","\n"))+
     ## adjust positions
@@ -331,7 +335,8 @@ time_series_1depth_wError <- function(df_filt78, depth){
     theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
     theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
     theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family="serif"))+
-    theme(axis.text.y = element_text(size=10)) 
+    theme(axis.text.y = element_text(size=10)) +
+    annotate("rect", xmin = 7.75, xmax = 16.53, ymin = -Inf, ymax = Inf, alpha = .2)
     # theme(panel.grid.major = element_blank()) +
     # theme(panel.grid.minor = element_blank())
 }
@@ -383,4 +388,90 @@ time_series_1depth_woError(df_filt7,3)
 time_series_1depth_wError(df_filt7,3)
 
 ```
+
+5. Time series clustering
+
+For time series clustering with R, the first step is to work out an appropriate distance/similarity metric, and then, at the second step, use existing clustering techniques, such as k-means, hierarchical clustering, density-based clustering or subspace clustering, to find clustering structures.
+(http://www.rdatamining.com/examples/time-series-clustering-classification)
+
+5.1. Approach 1 using Dynamic time warping distance
+Dynamic Time Warping (DTW) finds optimal alignment between two time series, and DTW distance is used as a distance metric in the example below.
+(http://www.rdatamining.com/examples/time-series-clustering-classification)
+
+```{r}
+
+# let's try cluster our time series data
+colnames(df_filt8)
+df_8 <- df_filt8 %>% filter(Depth=='SRF') %>% select(Peptide_id,Time,log2_ave_intensity)
+
+# reshape the dataframe with timepoints
+library(maditr)
+v_names <- c("T1","T2","T3","T4","T5","T6","T7","T8")
+df_8$Time <- factor(df_8$Time, levels=v_names)
+dc_8 <- dcast(df_8, Peptide_id ~ Time, value.var = "log2_ave_intensity")
+# make Peptide_id more simpler (Pep_1 -> 1)
+dc_8$Peptide_id <- str_replace(dc_8$Peptide_id,"Pep_","")
+# make first column into row name
+dc_8 <- tibble::column_to_rownames(dc_8, var="Peptide_id")
+
+# DTW distances
+library(dtw)
+any(is.na(dc_8)) # False: there is no NA in the table
+distMatrix <- dist(dc_8, method="DTW")
+hc <- hclust(distMatrix, method="average")
+plot(hc, cex=0.7, xlab='Hierarchical clustering of Distance(DTW) Matrix')
+
+
+
+
+```
+
+Draw the particular small cluster in the time series plot
+
+```{r}
+# function for plotting cluster of piptides
+time_series_clust_wError <- function(df_filt78, depth, clust1){
+  theme_set(theme_bw())
+  # filter depth
+  df_filt78_s <- df_filt78 %>% filter(Depth == depth_vec[depth]) %>% filter(Peptide_id %in% clust1)
+  ggplot(df_filt78_s, aes(x=elapsed_hours,y=log2_ave_intensity, group=Peptide_id)) +
+    geom_point(size=2, shape=21, color=color_vec[depth]) +
+    geom_line(color= color_vec[depth])+
+    geom_errorbar(aes(ymin=log2_error_down, ymax=log2_error_up), width=.05, position=position_dodge(.2),color='red')+
+    ylab("Mean log2 intensity (log2(18O/16O)) \n") +
+    xlab("\n Elapsed hours after 12:45pm June 26 2019 (day 05:17-20:30)") +
+    scale_x_continuous(breaks=seq(0,26,1))+
+    ggtitle(paste0("Time series intensity of peptide_id"," (",depth_vec[depth],")","\n"))+
+    ## adjust positions
+    theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
+    theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
+    theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
+    theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family="serif"))+
+    theme(axis.text.y = element_text(size=10)) +
+    annotate("rect", xmin = 7.75, xmax = 16.53, ymin = -Inf, ymax = Inf, alpha = .2)
+    # theme(panel.grid.major = element_blank()) +
+    # theme(panel.grid.minor = element_blank())
+}
+
+# cluster1
+clust1 <- c('149')
+clust1 <- str_replace(clust1,"^","Pep_") # make Peptide_id
+time_series_clust_wError(df_filt8, 1, clust1)
+
+# cluster2
+clust2 <- c("167","216","351","352","96","502","242", "77","110","133", "81","33","539","46","51", "137","264","94","535","18","4", "898", "314", "8")
+clust2 <- str_replace(clust2,"^","Pep_") # make Peptide_id
+time_series_clust_wError(df_filt8, 1, clust2)
+
+# cluster
+clust3 <- c("374","479","758","905","52","435","461","111","196","482","691","597","739","657","740")
+clust3 <- str_replace(clust3,"^","Pep_") # make Peptide_id
+time_series_clust_wError(df_filt8, 1, clust3)
+
+
+
+```
+
+
+
 
