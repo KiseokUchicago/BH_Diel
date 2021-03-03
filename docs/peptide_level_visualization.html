@@ -21,6 +21,15 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -48,11 +57,6 @@ div.section {
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -65,32 +69,6 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
 
 
 
@@ -101,10 +79,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -121,40 +95,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -182,7 +129,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -194,7 +141,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -205,10 +152,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -220,7 +180,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -346,13 +305,13 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
 
 
 
@@ -392,7 +351,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -514,16 +473,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltreedc0c92541c7a095cc906479e3d7db744c6e4f4catargetblankdc0c925a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/dc0c92541c7a095cc906479e3d7db744c6e4f4ca" target="_blank">dc0c925</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree5478476358f9190fb8438dfee193052b3c2e3bb0targetblank5478476a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/5478476358f9190fb8438dfee193052b3c2e3bb0" target="_blank">5478476</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltreedc0c92541c7a095cc906479e3d7db744c6e4f4catargetblankdc0c925a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree5478476358f9190fb8438dfee193052b3c2e3bb0targetblank5478476a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/dc0c92541c7a095cc906479e3d7db744c6e4f4ca" target="_blank">dc0c925</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/5478476358f9190fb8438dfee193052b3c2e3bb0" target="_blank">5478476</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -679,6 +638,8 @@ Untracked files:
     Untracked:  data/diel-Feb25/
     Untracked:  data/diel-Feb26/
     Untracked:  data/diel-Mar2/
+    Untracked:  data/synthetic_control.data.txt
+    Untracked:  hclust_DTW_average_wide.pdf
 
 </code></pre>
 <p>
@@ -717,6 +678,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KiseokUchicago/BH_Diel/blob/5478476358f9190fb8438dfee193052b3c2e3bb0/analysis/peptide_level_visualization.Rmd" target="_blank">5478476</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-02
+</td>
+<td>
+hclust
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KiseokUchicago/BH_Diel/7218e38d19977eee4cdac9f49bb92a9c754c0687/docs/peptide_level_visualization.html" target="_blank">7218e38</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-02
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1386,14 +1381,14 @@ df_ave_rep2 &lt;- df_ave_rep %&gt;% mutate(ave_intensity = 2^log2_ave_intensity)
 
 head(df_ave_rep2)</code></pre>
 <pre><code># A tibble: 6 x 10
-  Time  Depth Peptide_id log2_ave_intens~ sd_intensity ave_intensity rel_error
-  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;                 &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;
-1 T1    BDCL  Pep_1                -0.781       0.173          0.582     0.297
-2 T1    BDCL  Pep_10               -0.204       0.160          0.868     0.184
-3 T1    BDCL  Pep_100              -1.02        0.0770         0.493     0.156
-4 T1    BDCL  Pep_1004             -1.03       NA              0.488    NA    
-5 T1    BDCL  Pep_1009             -0.749      NA              0.595    NA    
-6 T1    BDCL  Pep_101              -0.968       0.0619         0.511     0.121
+  Time  Depth Peptide_id log2_ave_intensity sd_intensity ave_intensity rel_error
+  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;                   &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;
+1 T1    BDCL  Pep_1                  -0.781       0.173          0.582     0.297
+2 T1    BDCL  Pep_10                 -0.204       0.160          0.868     0.184
+3 T1    BDCL  Pep_100                -1.02        0.0770         0.493     0.156
+4 T1    BDCL  Pep_1004               -1.03       NA              0.488    NA    
+5 T1    BDCL  Pep_1009               -0.749      NA              0.595    NA    
+6 T1    BDCL  Pep_101                -0.968       0.0619         0.511     0.121
 # ... with 3 more variables: log2_sd_intensity &lt;dbl&gt;, log2_error_up &lt;dbl&gt;,
 #   log2_error_down &lt;dbl&gt;</code></pre>
 <pre class="r"><code># (3) import time metadata and merge
@@ -1411,14 +1406,14 @@ head(df_ave_rep2)</code></pre>
 df_ave2 &lt;- df_ave_rep2 %&gt;% left_join(df_time, by=c(&#39;Time&#39;=&#39;timepoint&#39;))
 head(df_ave2)</code></pre>
 <pre><code># A tibble: 6 x 12
-  Time  Depth Peptide_id log2_ave_intens~ sd_intensity ave_intensity rel_error
-  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;                 &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;
-1 T1    BDCL  Pep_1                -0.781       0.173          0.582     0.297
-2 T1    BDCL  Pep_10               -0.204       0.160          0.868     0.184
-3 T1    BDCL  Pep_100              -1.02        0.0770         0.493     0.156
-4 T1    BDCL  Pep_1004             -1.03       NA              0.488    NA    
-5 T1    BDCL  Pep_1009             -0.749      NA              0.595    NA    
-6 T1    BDCL  Pep_101              -0.968       0.0619         0.511     0.121
+  Time  Depth Peptide_id log2_ave_intensity sd_intensity ave_intensity rel_error
+  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;                   &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;
+1 T1    BDCL  Pep_1                  -0.781       0.173          0.582     0.297
+2 T1    BDCL  Pep_10                 -0.204       0.160          0.868     0.184
+3 T1    BDCL  Pep_100                -1.02        0.0770         0.493     0.156
+4 T1    BDCL  Pep_1004               -1.03       NA              0.488    NA    
+5 T1    BDCL  Pep_1009               -0.749      NA              0.595    NA    
+6 T1    BDCL  Pep_101                -0.968       0.0619         0.511     0.121
 # ... with 5 more variables: log2_sd_intensity &lt;dbl&gt;, log2_error_up &lt;dbl&gt;,
 #   log2_error_down &lt;dbl&gt;, date_time &lt;chr&gt;, elapsed_hours &lt;int&gt;</code></pre>
 <pre class="r"><code># only use peptides that appear 7 or 8 times
@@ -1429,14 +1424,14 @@ df_ave2 %&gt;% select(Peptide_id) %&gt;% unique() %&gt;% dim() # 3233 peptides b
 # inspecting if the inner join was successful
 head(df_filt78)</code></pre>
 <pre><code># A tibble: 6 x 13
-  Time  Depth Peptide_id log2_ave_intens~ sd_intensity ave_intensity rel_error
-  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;                 &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;
-1 T1    BDCL  Pep_1                -0.781       0.173          0.582     0.297
-2 T1    BDCL  Pep_10               -0.204       0.160          0.868     0.184
-3 T1    BDCL  Pep_100              -1.02        0.0770         0.493     0.156
-4 T1    BDCL  Pep_101              -0.968       0.0619         0.511     0.121
-5 T1    BDCL  Pep_102              -1.21        0.109          0.432     0.251
-6 T1    BDCL  Pep_1020             -1.31        0.108          0.404     0.267
+  Time  Depth Peptide_id log2_ave_intensity sd_intensity ave_intensity rel_error
+  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;                   &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;
+1 T1    BDCL  Pep_1                  -0.781       0.173          0.582     0.297
+2 T1    BDCL  Pep_10                 -0.204       0.160          0.868     0.184
+3 T1    BDCL  Pep_100                -1.02        0.0770         0.493     0.156
+4 T1    BDCL  Pep_101                -0.968       0.0619         0.511     0.121
+5 T1    BDCL  Pep_102                -1.21        0.109          0.432     0.251
+6 T1    BDCL  Pep_1020               -1.31        0.108          0.404     0.267
 # ... with 6 more variables: log2_sd_intensity &lt;dbl&gt;, log2_error_up &lt;dbl&gt;,
 #   log2_error_down &lt;dbl&gt;, date_time &lt;chr&gt;, elapsed_hours &lt;int&gt;,
 #   Timepoints &lt;int&gt;</code></pre>
@@ -1478,7 +1473,7 @@ ggplot(df_filt78, aes(x=elapsed_hours,y=log2_ave_intensity, color=Depth, group=i
   geom_errorbar(aes(ymin=log2_error_down, ymax=log2_error_up), width=.2, position=position_dodge(.9))+
   scale_color_manual(values=cols) +
   ylab(&quot;log2 Mean intensity (log2(18O/16O)) \n&quot;) +
-  xlab(&quot;\n Elapsed hours after 12:45pm June 26 2019&quot;) +
+  xlab(&quot;\n Elapsed hours after 12:45pm June 26 2019 (day 05:17-20:30)&quot;) +
   scale_x_continuous(breaks=seq(0,26,1))+
   ggtitle(&quot;Time series intensity of peptide_id \n&quot;)+
   ## adjust positions
@@ -1486,9 +1481,11 @@ ggplot(df_filt78, aes(x=elapsed_hours,y=log2_ave_intensity, color=Depth, group=i
   theme(axis.title.x = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
   theme(axis.title.y = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
   theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family=&quot;serif&quot;))+
-  theme(axis.text.y = element_text(size=10)) </code></pre>
+  theme(axis.text.y = element_text(size=10)) +
+  annotate(&quot;rect&quot;, xmin = 7.75, xmax = 16.53, ymin = -Inf, ymax = Inf, alpha = .2)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-6-1.png" width="1056" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>  # theme(panel.grid.major = element_blank()) +
+<pre class="r"><code>  # geom_rect(aes(xmin=7.75, xmax=16.53, ymin=0, ymax=Inf))
+  # theme(panel.grid.major = element_blank()) +
   # theme(panel.grid.minor = element_blank())</code></pre>
 <p>without error bars</p>
 <pre class="r"><code>theme_set(theme_bw())
@@ -1498,7 +1495,7 @@ ggplot(df_filt78, aes(x=elapsed_hours,y=log2_ave_intensity, color=Depth, group=i
   # geom_errorbar(aes(ymin=log2_error_down, ymax=log2_error_up), width=.2, position=position_dodge(.9))+
   scale_color_manual(values=cols) +
   ylab(&quot;log2 Mean intensity (log2(18O/16O)) \n&quot;) +
-  xlab(&quot;\n Elapsed hours after 12:45pm June 26 2019&quot;) +
+  xlab(&quot;\n Elapsed hours after 12:45pm June 26 2019 (day 05:17-20:30)&quot;) +
   scale_x_continuous(breaks=seq(0,26,1))+
   ggtitle(&quot;Time series intensity of peptide_id \n&quot;)+
   ## adjust positions
@@ -1506,7 +1503,8 @@ ggplot(df_filt78, aes(x=elapsed_hours,y=log2_ave_intensity, color=Depth, group=i
   theme(axis.title.x = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
   theme(axis.title.y = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
   theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family=&quot;serif&quot;))+
-  theme(axis.text.y = element_text(size=10)) </code></pre>
+  theme(axis.text.y = element_text(size=10)) +
+  annotate(&quot;rect&quot;, xmin = 7.75, xmax = 16.53, ymin = -Inf, ymax = Inf, alpha = .2)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-7-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <p>4.1. Surface(SRF)</p>
 <pre class="r"><code># color code
@@ -1524,7 +1522,7 @@ time_series_1depth_woError &lt;- function(df_filt78, depth){
     geom_point(size=2, shape=21, color=color_vec[depth]) +
     geom_line(color= color_vec[depth])+
     ylab(&quot;Mean log2 intensity (log2(18O/16O)) \n&quot;) +
-    xlab(&quot;\n Elapsed hours after 12:45pm June 26 2019&quot;) +
+    xlab(&quot;\n Elapsed hours after 12:45pm June 26 2019 (day 05:17-20:30)&quot;) +
     scale_x_continuous(breaks=seq(0,26,1))+
     ggtitle(paste0(&quot;Time series intensity of peptide_id&quot;,&quot; (&quot;,depth_vec[depth],&quot;)&quot;,&quot;\n&quot;))+
     ## adjust positions
@@ -1532,7 +1530,8 @@ time_series_1depth_woError &lt;- function(df_filt78, depth){
     theme(axis.title.x = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
     theme(axis.title.y = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
     theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family=&quot;serif&quot;))+
-    theme(axis.text.y = element_text(size=10)) 
+    theme(axis.text.y = element_text(size=10)) +
+    annotate(&quot;rect&quot;, xmin = 7.75, xmax = 16.53, ymin = -Inf, ymax = Inf, alpha = .2)
     # theme(panel.grid.major = element_blank()) +
     # theme(panel.grid.minor = element_blank())
 }
@@ -1546,7 +1545,7 @@ time_series_1depth_wError &lt;- function(df_filt78, depth){
     geom_line(color= color_vec[depth])+
     geom_errorbar(aes(ymin=log2_error_down, ymax=log2_error_up), width=.05, position=position_dodge(.2),color=&#39;red&#39;)+
     ylab(&quot;Mean log2 intensity (log2(18O/16O)) \n&quot;) +
-    xlab(&quot;\n Elapsed hours after 12:45pm June 26 2019&quot;) +
+    xlab(&quot;\n Elapsed hours after 12:45pm June 26 2019 (day 05:17-20:30)&quot;) +
     scale_x_continuous(breaks=seq(0,26,1))+
     ggtitle(paste0(&quot;Time series intensity of peptide_id&quot;,&quot; (&quot;,depth_vec[depth],&quot;)&quot;,&quot;\n&quot;))+
     ## adjust positions
@@ -1554,7 +1553,8 @@ time_series_1depth_wError &lt;- function(df_filt78, depth){
     theme(axis.title.x = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
     theme(axis.title.y = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
     theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family=&quot;serif&quot;))+
-    theme(axis.text.y = element_text(size=10)) 
+    theme(axis.text.y = element_text(size=10)) +
+    annotate(&quot;rect&quot;, xmin = 7.75, xmax = 16.53, ymin = -Inf, ymax = Inf, alpha = .2)
     # theme(panel.grid.major = element_blank()) +
     # theme(panel.grid.minor = element_blank())
 }
@@ -1606,6 +1606,78 @@ time_series_1depth_woError(df_filt7,3)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-10-5.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>time_series_1depth_wError(df_filt7,3)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-10-6.png" width="1056" style="display: block; margin: auto;" /></p>
+<ol start="5" style="list-style-type: decimal">
+<li>Time series clustering</li>
+</ol>
+<p>For time series clustering with R, the first step is to work out an appropriate distance/similarity metric, and then, at the second step, use existing clustering techniques, such as k-means, hierarchical clustering, density-based clustering or subspace clustering, to find clustering structures. (<a href="http://www.rdatamining.com/examples/time-series-clustering-classification" class="uri">http://www.rdatamining.com/examples/time-series-clustering-classification</a>)</p>
+<p>5.1. Approach 1 using Dynamic time warping distance Dynamic Time Warping (DTW) finds optimal alignment between two time series, and DTW distance is used as a distance metric in the example below. (<a href="http://www.rdatamining.com/examples/time-series-clustering-classification" class="uri">http://www.rdatamining.com/examples/time-series-clustering-classification</a>)</p>
+<pre class="r"><code># let&#39;s try cluster our time series data
+colnames(df_filt8)</code></pre>
+<pre><code> [1] &quot;Time&quot;               &quot;Depth&quot;              &quot;Peptide_id&quot;        
+ [4] &quot;log2_ave_intensity&quot; &quot;sd_intensity&quot;       &quot;ave_intensity&quot;     
+ [7] &quot;rel_error&quot;          &quot;log2_sd_intensity&quot;  &quot;log2_error_up&quot;     
+[10] &quot;log2_error_down&quot;    &quot;date_time&quot;          &quot;elapsed_hours&quot;     
+[13] &quot;Timepoints&quot;        </code></pre>
+<pre class="r"><code>df_8 &lt;- df_filt8 %&gt;% filter(Depth==&#39;SRF&#39;) %&gt;% select(Peptide_id,Time,log2_ave_intensity)
+
+# reshape the dataframe with timepoints
+library(maditr)
+v_names &lt;- c(&quot;T1&quot;,&quot;T2&quot;,&quot;T3&quot;,&quot;T4&quot;,&quot;T5&quot;,&quot;T6&quot;,&quot;T7&quot;,&quot;T8&quot;)
+df_8$Time &lt;- factor(df_8$Time, levels=v_names)
+dc_8 &lt;- dcast(df_8, Peptide_id ~ Time, value.var = &quot;log2_ave_intensity&quot;)
+# make Peptide_id more simpler (Pep_1 -&gt; 1)
+dc_8$Peptide_id &lt;- str_replace(dc_8$Peptide_id,&quot;Pep_&quot;,&quot;&quot;)
+# make first column into row name
+dc_8 &lt;- tibble::column_to_rownames(dc_8, var=&quot;Peptide_id&quot;)
+
+# DTW distances
+library(dtw)
+any(is.na(dc_8)) # False: there is no NA in the table</code></pre>
+<pre><code>[1] FALSE</code></pre>
+<pre class="r"><code>distMatrix &lt;- dist(dc_8, method=&quot;DTW&quot;)
+hc &lt;- hclust(distMatrix, method=&quot;average&quot;)
+plot(hc, cex=0.7, xlab=&#39;Hierarchical clustering of Distance(DTW) Matrix&#39;)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-11-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p>Draw the particular small cluster in the time series plot</p>
+<pre class="r"><code># function for plotting cluster of piptides
+time_series_clust_wError &lt;- function(df_filt78, depth, clust1){
+  theme_set(theme_bw())
+  # filter depth
+  df_filt78_s &lt;- df_filt78 %&gt;% filter(Depth == depth_vec[depth]) %&gt;% filter(Peptide_id %in% clust1)
+  ggplot(df_filt78_s, aes(x=elapsed_hours,y=log2_ave_intensity, group=Peptide_id)) +
+    geom_point(size=2, shape=21, color=color_vec[depth]) +
+    geom_line(color= color_vec[depth])+
+    geom_errorbar(aes(ymin=log2_error_down, ymax=log2_error_up), width=.05, position=position_dodge(.2),color=&#39;red&#39;)+
+    ylab(&quot;Mean log2 intensity (log2(18O/16O)) \n&quot;) +
+    xlab(&quot;\n Elapsed hours after 12:45pm June 26 2019 (day 05:17-20:30)&quot;) +
+    scale_x_continuous(breaks=seq(0,26,1))+
+    ggtitle(paste0(&quot;Time series intensity of peptide_id&quot;,&quot; (&quot;,depth_vec[depth],&quot;)&quot;,&quot;\n&quot;))+
+    ## adjust positions
+    theme(plot.title = element_text(size = 20,hjust = 0.5, family=&quot;serif&quot;)) + 
+    theme(axis.title.x = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
+    theme(axis.title.y = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
+    theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family=&quot;serif&quot;))+
+    theme(axis.text.y = element_text(size=10)) +
+    annotate(&quot;rect&quot;, xmin = 7.75, xmax = 16.53, ymin = -Inf, ymax = Inf, alpha = .2)
+    # theme(panel.grid.major = element_blank()) +
+    # theme(panel.grid.minor = element_blank())
+}
+
+# cluster1
+clust1 &lt;- c(&#39;149&#39;)
+clust1 &lt;- str_replace(clust1,&quot;^&quot;,&quot;Pep_&quot;) # make Peptide_id
+time_series_clust_wError(df_filt8, 1, clust1)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-12-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># cluster2
+clust2 &lt;- c(&quot;167&quot;,&quot;216&quot;,&quot;351&quot;,&quot;352&quot;,&quot;96&quot;,&quot;502&quot;,&quot;242&quot;, &quot;77&quot;,&quot;110&quot;,&quot;133&quot;, &quot;81&quot;,&quot;33&quot;,&quot;539&quot;,&quot;46&quot;,&quot;51&quot;, &quot;137&quot;,&quot;264&quot;,&quot;94&quot;,&quot;535&quot;,&quot;18&quot;,&quot;4&quot;, &quot;898&quot;, &quot;314&quot;, &quot;8&quot;)
+clust2 &lt;- str_replace(clust2,&quot;^&quot;,&quot;Pep_&quot;) # make Peptide_id
+time_series_clust_wError(df_filt8, 1, clust2)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-12-2.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># cluster
+clust3 &lt;- c(&quot;374&quot;,&quot;479&quot;,&quot;758&quot;,&quot;905&quot;,&quot;52&quot;,&quot;435&quot;,&quot;461&quot;,&quot;111&quot;,&quot;196&quot;,&quot;482&quot;,&quot;691&quot;,&quot;597&quot;,&quot;739&quot;,&quot;657&quot;,&quot;740&quot;)
+clust3 &lt;- str_replace(clust3,&quot;^&quot;,&quot;Pep_&quot;) # make Peptide_id
+time_series_clust_wError(df_filt8, 1, clust3)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-12-3.png" width="1056" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1631,22 +1703,25 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] data.table_1.13.6 formattable_0.2.1 ggplot2_3.3.3     stringr_1.4.0    
-[5] tidyr_1.1.2       dplyr_1.0.4       workflowr_1.6.2  
+ [1] dtw_1.22-3        proxy_0.4-24      maditr_0.7.4      data.table_1.13.6
+ [5] formattable_0.2.1 ggplot2_3.3.3     stringr_1.4.0     tidyr_1.1.2      
+ [9] dplyr_1.0.4       workflowr_1.6.2  
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.5        highr_0.8         pillar_1.4.7      compiler_4.0.3   
- [5] later_1.1.0.1     git2r_0.27.1      tools_4.0.3       digest_0.6.27    
- [9] evaluate_0.14     lifecycle_1.0.0   tibble_3.0.4      gtable_0.3.0     
-[13] pkgconfig_2.0.3   rlang_0.4.10      cli_2.3.0         DBI_1.1.1        
-[17] yaml_2.2.1        xfun_0.20         withr_2.4.1       knitr_1.31       
-[21] htmlwidgets_1.5.3 generics_0.1.0    fs_1.5.0          vctrs_0.3.6      
-[25] rprojroot_2.0.2   grid_4.0.3        tidyselect_1.1.0  glue_1.4.2       
-[29] R6_2.5.0          fansi_0.4.2       rmarkdown_2.6     farver_2.0.3     
-[33] purrr_0.3.4       magrittr_2.0.1    whisker_0.4       scales_1.1.1     
-[37] promises_1.1.1    ellipsis_0.3.1    htmltools_0.5.0   assertthat_0.2.1 
-[41] colorspace_2.0-0  httpuv_1.5.4      labeling_0.4.2    utf8_1.1.4       
-[45] stringi_1.5.3     munsell_0.5.0     crayon_1.4.1     </code></pre>
+ [1] tidyselect_1.1.0  xfun_0.20         bslib_0.2.4       purrr_0.3.4      
+ [5] colorspace_2.0-0  vctrs_0.3.6       generics_0.1.0    htmltools_0.5.1.1
+ [9] yaml_2.2.1        utf8_1.1.4        rlang_0.4.10      jquerylib_0.1.3  
+[13] later_1.1.0.1     pillar_1.5.0      glue_1.4.2        withr_2.4.1      
+[17] DBI_1.1.1         lifecycle_1.0.0   munsell_0.5.0     gtable_0.3.0     
+[21] htmlwidgets_1.5.3 evaluate_0.14     labeling_0.4.2    knitr_1.31       
+[25] httpuv_1.5.4      ps_1.5.0          fansi_0.4.2       highr_0.8        
+[29] Rcpp_1.0.5        promises_1.1.1    scales_1.1.1      jsonlite_1.7.2   
+[33] farver_2.0.3      fs_1.5.0          digest_0.6.27     stringi_1.5.3    
+[37] rprojroot_2.0.2   grid_4.0.3        cli_2.3.1         tools_4.0.3      
+[41] magrittr_2.0.1    sass_0.3.1        tibble_3.0.4      crayon_1.4.1     
+[45] whisker_0.4       pkgconfig_2.0.3   ellipsis_0.3.1    assertthat_0.2.1 
+[49] rmarkdown_2.7     rstudioapi_0.13   R6_2.5.0          git2r_0.27.1     
+[53] compiler_4.0.3   </code></pre>
 </div>
 </div>
 
@@ -1691,7 +1766,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
