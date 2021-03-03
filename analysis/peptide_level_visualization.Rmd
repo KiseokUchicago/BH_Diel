@@ -410,7 +410,7 @@ v_names <- c("T1","T2","T3","T4","T5","T6","T7","T8")
 df_8$Time <- factor(df_8$Time, levels=v_names)
 dc_8 <- dcast(df_8, Peptide_id ~ Time, value.var = "log2_ave_intensity")
 # make Peptide_id more simpler (Pep_1 -> 1)
-dc_8$Peptide_id <- str_replace(dc_8$Peptide_id,"Pep_","")
+dc_8$Peptide_id <- str_replace(dc_8$Peptide_id,"Pep_","P.")
 # make first column into row name
 dc_8 <- tibble::column_to_rownames(dc_8, var="Peptide_id")
 
@@ -452,17 +452,17 @@ time_series_clust_wError <- function(df_filt78, depth, clust1){
 
 # cluster1
 clust1 <- c('149')
-clust1 <- str_replace(clust1,"^","Pep_") # make Peptide_id
+clust1 <- str_replace(clust1,"P.","Pep_") # make Peptide_id
 time_series_clust_wError(df_filt8, 1, clust1)
 
 # cluster2
 clust2 <- c("167","216","351","352","96","502","242", "77","110","133", "81","33","539","46","51", "137","264","94","535","18","4", "898", "314", "8")
-clust2 <- str_replace(clust2,"^","Pep_") # make Peptide_id
+clust2 <- str_replace(clust2,"P.","Pep_") # make Peptide_id
 time_series_clust_wError(df_filt8, 1, clust2)
 
 # cluster
 clust3 <- c("374","479","758","905","52","435","461","111","196","482","691","597","739","657","740")
-clust3 <- str_replace(clust3,"^","Pep_") # make Peptide_id
+clust3 <- str_replace(clust3,"P.","Pep_") # make Peptide_id
 time_series_clust_wError(df_filt8, 1, clust3)
 
 ```
@@ -705,11 +705,39 @@ results <- rain(t(menetRNASeqMouseLiver), deltat=4, period=24, nr.series=2, peak
 best <- order(results$pVal)[1:10]
 xyplot(as.matrix(menetRNASeqMouseLiver[best, (0:5 * 2 + rep(c(1, 2), each = 6))]) ~rep(0:11 * 4 + 2, each = 10) |rownames(menetRNASeqMouseLiver)[best], scales = list(y = list(relation = 'free')), layout = c(2, 5), type = 'b', pch = 16, xlab = 'time', ylab = 'expression value', cex.lab = 1)
 
+
 ```
 
 ### Apply it to our data
 
 
+```{r}
+# setting our data into input format
+
+# let's try cluster our time series data
+colnames(df_filt8)
+df_8 <- df_filt8 %>% filter(Depth=='SRF') %>% select(Peptide_id,Time,log2_ave_intensity)
+
+# reshape the dataframe with timepoints
+library(maditr)
+v_names <- c("T1","T2","T3","T4","T5","T6","T7","T8")
+df_8$Time <- factor(df_8$Time, levels=v_names)
+dc_8 <- dcast(df_8, Peptide_id ~ Time, value.var = "log2_ave_intensity")
+# make Peptide_id more simpler (Pep_1 -> 1)
+dc_8$Peptide_id <- str_replace(dc_8$Peptide_id,"Pep_","P.")
+# make first column into row name
+dc_8 <- tibble::column_to_rownames(dc_8, var="Peptide_id")
+
+t(dc_8)
+
+rainresult <- rain(t(dc_8), period=8, deltat=1, peak.border=c(0.1,0.9))
+# pVal cut off 0.05
+rainresult %>% filter(pVal < 0.05)
+# pVal cut off 0.01
+rainresult %>% filter(pVal < 0.01)
+
+
+```
 
 
 
