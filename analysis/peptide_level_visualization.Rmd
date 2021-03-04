@@ -209,6 +209,9 @@ head(df_ave_rep2)
 
 # (3) import time metadata and merge
 (df_time <- read.table('data/Time_metadata.txt', header=T, sep='\t'))
+df_time$date_time <- str_replace(df_time$date_time, "/2019"," ")
+df_time$date_time <- str_replace(df_time$date_time, ":00$","")
+
 # left_join with average data
 df_ave2 <- df_ave_rep2 %>% left_join(df_time, by=c('Time'='timepoint'))
 head(df_ave2)
@@ -249,14 +252,14 @@ ggplot(df_filt78, aes(x=elapsed_hours,y=log2_ave_intensity, color=Depth, group=i
   geom_errorbar(aes(ymin=log2_error_down, ymax=log2_error_up), width=.2, position=position_dodge(.9))+
   scale_color_manual(values=cols) +
   ylab("log2 Mean intensity (log2(18O/16O)) \n") +
-  xlab("\n Elapsed hours after 12:45pm June 26 2019 (day 05:17-20:30)") +
-  scale_x_continuous(breaks=seq(0,26,1))+
+  xlab("\n Time of day on June 26 2019 (Daylight 05:17-20:30)") +
+  scale_x_continuous(breaks=df_time$elapsed_hours,labels =c(df_time$date_time))+
   ggtitle("Time series intensity of peptide_id \n")+
   ## adjust positions
   theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
   theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
   theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
-  theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family="serif"))+
+  theme(axis.text.x = element_text(hjust = 0.9, vjust=0.9,angle=40,size=13, family="serif"))+
   theme(axis.text.y = element_text(size=10)) +
   annotate("rect", xmin = 7.75, xmax = 16.53, ymin = -Inf, ymax = Inf, alpha = .2)
   # geom_rect(aes(xmin=7.75, xmax=16.53, ymin=0, ymax=Inf))
@@ -273,14 +276,14 @@ ggplot(df_filt78, aes(x=elapsed_hours,y=log2_ave_intensity, color=Depth, group=i
   # geom_errorbar(aes(ymin=log2_error_down, ymax=log2_error_up), width=.2, position=position_dodge(.9))+
   scale_color_manual(values=cols) +
   ylab("log2 Mean intensity (log2(18O/16O)) \n") +
-  xlab("\n Elapsed hours after 12:45pm June 26 2019 (day 05:17-20:30)") +
-  scale_x_continuous(breaks=seq(0,26,1))+
+  xlab("\n Time of day on June 26 2019 (Daylight 05:17-20:30)") +
+  scale_x_continuous(breaks=df_time$elapsed_hours,labels =c(df_time$date_time))+
   ggtitle("Time series intensity of peptide_id \n")+
   ## adjust positions
   theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
   theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
   theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
-  theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family="serif"))+
+  theme(axis.text.x = element_text(hjust = 0.9, vjust=0.9,angle=40,size=13, family="serif"))+
   theme(axis.text.y = element_text(size=10)) +
   annotate("rect", xmin = 7.75, xmax = 16.53, ymin = -Inf, ymax = Inf, alpha = .2)
 ```
@@ -303,15 +306,15 @@ time_series_1depth_woError <- function(df_filt78, depth){
   ggplot(df_filt78_s, aes(x=elapsed_hours,y=log2_ave_intensity, group=Peptide_id)) +
     geom_point(size=2, shape=21, color=color_vec[depth]) +
     geom_line(color= color_vec[depth])+
-    ylab("Mean log2 intensity (log2(18O/16O)) \n") +
-    xlab("\n Elapsed hours after 12:45pm June 26 2019 (day 05:17-20:30)") +
-    scale_x_continuous(breaks=seq(0,26,1))+
+    ylab("Log2 mean intensity (log2(18O/16O)) \n") +
+    xlab("\n Time of day on June 26 2019 (Daylight 05:17-20:30)") +
+    scale_x_continuous(breaks=df_time$elapsed_hours,labels =c(df_time$date_time))+
     ggtitle(paste0("Time series intensity of peptide_id"," (",depth_vec[depth],")","\n"))+
     ## adjust positions
     theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
     theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
     theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
-    theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family="serif"))+
+    theme(axis.text.x = element_text(hjust = 0.9, vjust=0.9,angle=40,size=13, family="serif"))+
     theme(axis.text.y = element_text(size=10)) +
     annotate("rect", xmin = 7.75, xmax = 16.53, ymin = -Inf, ymax = Inf, alpha = .2)
     # theme(panel.grid.major = element_blank()) +
@@ -326,15 +329,15 @@ time_series_1depth_wError <- function(df_filt78, depth){
     geom_point(size=2, shape=21, color=color_vec[depth]) +
     geom_line(color= color_vec[depth])+
     geom_errorbar(aes(ymin=log2_error_down, ymax=log2_error_up), width=.05, position=position_dodge(.2),color='red')+
-    ylab("Mean log2 intensity (log2(18O/16O)) \n") +
-    xlab("\n Elapsed hours after 12:45pm June 26 2019 (day 05:17-20:30)") +
-    scale_x_continuous(breaks=seq(0,26,1))+
+    ylab("Log2 mean intensity (log2(18O/16O)) \n") +
+    xlab("\n Time of day on June 26 2019 (Daylight 05:17-20:30)") +
+    scale_x_continuous(breaks=df_time$elapsed_hours,labels =c(df_time$date_time))+
     ggtitle(paste0("Time series intensity of peptide_id"," (",depth_vec[depth],")","\n"))+
     ## adjust positions
     theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
     theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
     theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
-    theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family="serif"))+
+    theme(axis.text.x = element_text(hjust = 0.9, vjust=0.9,angle=40,size=13, family="serif"))+
     theme(axis.text.y = element_text(size=10)) +
     annotate("rect", xmin = 7.75, xmax = 16.53, ymin = -Inf, ymax = Inf, alpha = .2)
     # theme(panel.grid.major = element_blank()) +
@@ -435,15 +438,15 @@ time_series_clust_wError <- function(df_filt78, depth, clust1){
     geom_point(size=2, shape=21, color=color_vec[depth]) +
     geom_line(color= color_vec[depth])+
     geom_errorbar(aes(ymin=log2_error_down, ymax=log2_error_up), width=.05, position=position_dodge(.2),color='red')+
-    ylab("Mean log2 intensity (log2(18O/16O)) \n") +
-    xlab("\n Elapsed hours after 12:45pm June 26 2019 (day 05:17-20:30)") +
-    scale_x_continuous(breaks=seq(0,26,1))+
+    ylab("Log2 mean intensity (log2(18O/16O)) \n") +
+    xlab("\n Time of day on June 26 2019 (Daylight 05:17-20:30)") +
+    scale_x_continuous(breaks=df_time$elapsed_hours,labels =c(df_time$date_time))+
     ggtitle(paste0("Time series intensity of peptide_id"," (",depth_vec[depth],")","\n"))+
     ## adjust positions
     theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
     theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
     theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
-    theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family="serif"))+
+    theme(axis.text.x = element_text(hjust = 0.9, vjust=0.9,angle=40,size=13, family="serif"))+
     theme(axis.text.y = element_text(size=10)) +
     annotate("rect", xmin = 7.75, xmax = 16.53, ymin = -Inf, ymax = Inf, alpha = .2)
     # theme(panel.grid.major = element_blank()) +
@@ -682,41 +685,12 @@ plot(pc_tp8)
 
 ### 6. RAIN analysis (Rhythmicity Analysis Incorporating Non-parametric methods)
 
-### Given code: https://rdrr.io/bioc/rain/f/inst/doc/rain.pdf
-```{r}
-# BiocManager::install('rain')
-
-set.seed(123)
-times <- c(1: 24) * 2
-sin <- 1 + 0.5 * sin(times / 24 * 2 * pi) + rnorm(24, 0, 0.3)
-saw <- rep(13:24 / 18 , 2) + rnorm(24, 0, 0.3)
-measure <- cbind(sin, saw)
-require('lattice')
-xyplot(t(measure)~rep(times, each=2) | c('sin', 'saw'),layout = c(1, 2), type = 'o', xlab = 'time', ylab = 'value', cex.lab = 0.6)
-
-require(rain)
-rainresult <- rain(measure, period=24, deltat=2, peak.border=c(0.1,0.9), verbose=FALSE)
-rainresult
-
-data(menetRNASeqMouseLiver)
-colnames(menetRNASeqMouseLiver)
-
-results <- rain(t(menetRNASeqMouseLiver), deltat=4, period=24, nr.series=2, peak.border=c(0.3, 0.7), verbose=FALSE)
-best <- order(results$pVal)[1:10]
-xyplot(as.matrix(menetRNASeqMouseLiver[best, (0:5 * 2 + rep(c(1, 2), each = 6))]) ~rep(0:11 * 4 + 2, each = 10) |rownames(menetRNASeqMouseLiver)[best], scales = list(y = list(relation = 'free')), layout = c(2, 5), type = 'b', pch = 16, xlab = 'time', ylab = 'expression value', cex.lab = 1)
-
-
-```
-
-### Apply it to our data
-
 
 ```{r}
 # setting our data into input format
-
-# let's try cluster our time series data
-colnames(df_filt8)
 df_8 <- df_filt8 %>% filter(Depth=='SRF') %>% select(Peptide_id,Time,log2_ave_intensity)
+df_filt8
+
 
 # reshape the dataframe with timepoints
 library(maditr)
@@ -729,6 +703,25 @@ dc_8$Peptide_id <- str_replace(dc_8$Peptide_id,"Pep_","P.")
 dc_8 <- tibble::column_to_rownames(dc_8, var="Peptide_id")
 
 t(dc_8)
+
+
+# setup time vector for RAIN (source: Maria's code provided to me 3/3/21)
+# The following code gives a vector where the times given in "t" are represented by a 1 in the vector "ft".
+# The time series in question lasted 84 hours and sampling times were every 4 hours, so the 
+# vector "ft" gives a 1 for each hour representing a sampling time, and ft could is a vector of 12 1's and deltat=4 in the RAIN call below. 
+t <- c(0, 3, 6, 9, 15, 19, 22, 25) 
+ft <- c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+
+rainresult <- rain(t(vsd), period=24, measure.sequence=ft, deltat=4)
+##add new column with corrected pvals
+fdr <- p.adjust(as.numeric(rainresult$pVal), method="fdr") # correct p-values for multiple testing
+
+# How many genes are significantly periodic?
+a=sum(fdr <0.05)
+print(a)
+
+
+
 
 rainresult <- rain(t(dc_8), period=8, deltat=1, peak.border=c(0.1,0.9))
 # pVal cut off 0.05
@@ -812,7 +805,7 @@ names(l_SRF8)
 ```
 
 
-### Archived: 5.3. dtwclust
+5.3. dtwclust
 the clustering itself may be shape-based, feature-based or model-based.\
 In the context of shape-based time-series clustering, it is common to utilize the Dynamic
 Time Warping (DTW) distance as dissimilarity measure (Aghabozorgi et al. 2015).\
@@ -929,6 +922,33 @@ data <- CharTraj[1L:20L]
 pc_k <- tsclust(data, k = 3L:5L, distance = "dtw_basic", centroid = "pam", seed = 94L)
 names(pc_k) <- paste0("k_", 3L:5L)
 sapply(pc_k, cvi, type = "internal")
+
+```
+
+
+6.1. Given code: https://rdrr.io/bioc/rain/f/inst/doc/rain.pdf
+```{r}
+# BiocManager::install('rain')
+
+set.seed(123)
+times <- c(1: 24) * 2
+sin <- 1 + 0.5 * sin(times / 24 * 2 * pi) + rnorm(24, 0, 0.3)
+saw <- rep(13:24 / 18 , 2) + rnorm(24, 0, 0.3)
+measure <- cbind(sin, saw)
+require('lattice')
+xyplot(t(measure)~rep(times, each=2) | c('sin', 'saw'),layout = c(1, 2), type = 'o', xlab = 'time', ylab = 'value', cex.lab = 0.6)
+
+require(rain)
+rainresult <- rain(measure, period=24, deltat=2, peak.border=c(0.1,0.9), verbose=FALSE)
+rainresult
+
+data(menetRNASeqMouseLiver)
+colnames(menetRNASeqMouseLiver)
+
+results <- rain(t(menetRNASeqMouseLiver), deltat=4, period=24, nr.series=2, peak.border=c(0.3, 0.7), verbose=FALSE)
+best <- order(results$pVal)[1:10]
+xyplot(as.matrix(menetRNASeqMouseLiver[best, (0:5 * 2 + rep(c(1, 2), each = 6))]) ~rep(0:11 * 4 + 2, each = 10) |rownames(menetRNASeqMouseLiver)[best], scales = list(y = list(relation = 'free')), layout = c(2, 5), type = 'b', pch = 16, xlab = 'time', ylab = 'expression value', cex.lab = 1)
+
 
 ```
 
