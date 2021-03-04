@@ -473,16 +473,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree7f223a8f8561ef76901926468a4d13e2f6bcda7btargetblank7f223a8a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/7f223a8f8561ef76901926468a4d13e2f6bcda7b" target="_blank">7f223a8</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree2a8d1baa0753a5fb1ce13c40005b1787bc4fbab4targetblank2a8d1baa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/2a8d1baa0753a5fb1ce13c40005b1787bc4fbab4" target="_blank">2a8d1ba</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree7f223a8f8561ef76901926468a4d13e2f6bcda7btargetblank7f223a8a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree2a8d1baa0753a5fb1ce13c40005b1787bc4fbab4targetblank2a8d1baa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/7f223a8f8561ef76901926468a4d13e2f6bcda7b" target="_blank">7f223a8</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/2a8d1baa0753a5fb1ce13c40005b1787bc4fbab4" target="_blank">2a8d1ba</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -620,6 +620,7 @@ Untracked files:
     Untracked:  63_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T8-SRF_filtered_PSMs.tsv
     Untracked:  63_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T8-SRF_filtered_PSMs.xlsx
     Untracked:  Hist_freq_of_peptide_id.pdf
+    Untracked:  Hist_intensity_replicate.pdf
     Untracked:  Hist_number of timepoints_peptide_appears.pdf
     Untracked:  P1_number_unique_peptide_per_sample.pdf
     Untracked:  P2_number_of_cumulative_unique_peptides.pdf
@@ -679,6 +680,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KiseokUchicago/BH_Diel/blob/2a8d1baa0753a5fb1ce13c40005b1787bc4fbab4/analysis/peptide_level_visualization.Rmd" target="_blank">2a8d1ba</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-04
+</td>
+<td>
+grid
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KiseokUchicago/BH_Diel/f77b37f32a9ff55d40ef7d579a5cfc42f19c2c21/docs/peptide_level_visualization.html" target="_blank">f77b37f</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-04
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1393,7 +1428,7 @@ p1</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-3-1.png" width="1056" style="display: block; margin: auto;" /> It seems to saturate as more samples are added.</p>
 </div>
 <div id="which-peptide_ids-are-present-in-allalmost-time-points" class="section level3">
-<h3>3.1. Which Peptide_ids are present in all(almost) time points?</h3>
+<h3>3. Which Peptide_ids are present in all(almost) time points?</h3>
 <p>Make a histogram of x-axis being the # of time points present, y-axis being the number of Peptide_ids<br />
 We need 3 histogram for (1) Surface, (2) DCL, and (3) BDCL</p>
 <pre class="r"><code># read in combined table of 24 samples (Replicate B)
@@ -2689,7 +2724,7 @@ Iteration 10: Changes / Distsum = 1 / 512.1642
     DBA Iteration: 1, 2, 3 - Converged!
 Iteration 11: Changes / Distsum = 0 / 512.1043
 
-    Elapsed time is 1.86 seconds.</code></pre>
+    Elapsed time is 2.08 seconds.</code></pre>
 <pre class="r"><code>internal_CVI(pc_dtw, &quot;Partial clustering with DTW distance&quot;)</code></pre>
 <pre><code>    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
          11, 12 - Converged!
@@ -2749,7 +2784,7 @@ Iteration 6: Changes / Distsum = 6 / 596.5909
     DBA Iteration: 1, 2 - Converged!
 Iteration 7: Changes / Distsum = 0 / 596.7076
 
-    Elapsed time is 0.1 seconds.</code></pre>
+    Elapsed time is 0.11 seconds.</code></pre>
 <pre class="r"><code>pc_dtw5 &lt;- tsclust(l_SRF8_z, k = 5L,
   distance = &quot;dtw_basic&quot;, centroid = &quot;dba&quot;,
   trace = TRUE, seed = 8,
@@ -2802,7 +2837,7 @@ Iteration 8: Changes / Distsum = 1 / 570.2049
     DBA Iteration: 1, 2, 3 - Converged!
 Iteration 9: Changes / Distsum =  0 / 570.166
 
-    Elapsed time is 0.15 seconds.</code></pre>
+    Elapsed time is 0.14 seconds.</code></pre>
 <pre class="r"><code>pc_dtw7 &lt;- tsclust(l_SRF8_z, k = 7L,
   distance = &quot;dtw_basic&quot;, centroid = &quot;dba&quot;,
   trace = TRUE, seed = 8,
@@ -2900,7 +2935,7 @@ Iteration 14: Changes / Distsum = 2 / 546.6194
     DBA Iteration: 1, 2, 3 - Converged!
 Iteration 15: Changes / Distsum = 0 / 546.5289
 
-    Elapsed time is 0.21 seconds.</code></pre>
+    Elapsed time is 0.22 seconds.</code></pre>
 <pre class="r"><code># Prototypes for 4 clusters
 plot(pc_dtw4)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-15-2.png" width="1056" style="display: block; margin: auto;" /></p>
@@ -3744,7 +3779,7 @@ Iteration 9: Changes / Distsum = 1 / 511.7074
     DBA Iteration: 1, 2 - Converged!
 Iteration 10: Changes / Distsum =  0 / 511.633
 
-    Elapsed time is 2.58 seconds.</code></pre>
+    Elapsed time is 2.55 seconds.</code></pre>
 <pre class="r"><code>internal_CVI(pc_dtwlb, &quot;Partial clustering with DTW_lb distance&quot;)</code></pre>
 <pre><code>    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
          11, 12 - Converged!
@@ -4029,7 +4064,7 @@ Iteration 14: Changes / Distsum = 2 / 44.10935
 Iteration 15: Changes / Distsum = 2 / 44.09725
 Iteration 16: Changes / Distsum = 0 / 44.09232
 
-    Elapsed time is 6.42 seconds.</code></pre>
+    Elapsed time is 6.2 seconds.</code></pre>
 <pre class="r"><code>internal_CVI(pc_ks, &quot;Partial clustering with k-shape method&quot;)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-17-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># use 3 or 4 clusters
@@ -4051,7 +4086,7 @@ Iteration 12: Changes / Distsum = 4 / 69.30983
 Iteration 13: Changes / Distsum = 1 / 69.29236
 Iteration 14: Changes / Distsum =  0 / 69.2913
 
-    Elapsed time is 0.65 seconds.</code></pre>
+    Elapsed time is 0.64 seconds.</code></pre>
 <pre class="r"><code>pc_ks4 &lt;- tsclust(l_SRF8_z, k = 4L,
   distance = &quot;sbd&quot;, centroid = &quot;shape&quot;,
   seed = 8, trace = TRUE)</code></pre>
@@ -4089,7 +4124,7 @@ Iteration 31: Changes / Distsum = 2 / 61.02398
 Iteration 32: Changes / Distsum = 1 / 61.01079
 Iteration 33: Changes / Distsum = 0 / 61.00639
 
-    Elapsed time is 1.47 seconds.</code></pre>
+    Elapsed time is 1.45 seconds.</code></pre>
 <pre class="r"><code>pc_ks5 &lt;- tsclust(l_SRF8_z, k = 5L,
   distance = &quot;sbd&quot;, centroid = &quot;shape&quot;,
   seed = 8, trace = TRUE)</code></pre>
@@ -4117,7 +4152,7 @@ Iteration 21: Changes / Distsum =  5 / 57.9328
 Iteration 22: Changes / Distsum = 2 / 57.88911
 Iteration 23: Changes / Distsum = 0 / 57.87923
 
-    Elapsed time is 1.07 seconds.</code></pre>
+    Elapsed time is 1.02 seconds.</code></pre>
 <pre class="r"><code># Prototypes for 3 clusters
 plot(pc_ks3)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-17-2.png" width="1056" style="display: block; margin: auto;" /></p>
@@ -4156,7 +4191,7 @@ TADPole completed for k = 8 &amp; dc = 1.5
 TADPole completed for k = 9 &amp; dc = 1.5
 TADPole completed for k = 10 &amp; dc = 1.5
 
-    Elapsed time is 0.39 seconds.</code></pre>
+    Elapsed time is 0.36 seconds.</code></pre>
 <pre class="r"><code>internal_CVI(pc_tp, &quot;Partial clustering with Tadpole method&quot;)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># use 8 clusters
@@ -4176,7 +4211,7 @@ Performing cluster assignment
 
 TADPole completed for k = 8 &amp; dc = 1.5
 
-    Elapsed time is 0.3 seconds.</code></pre>
+    Elapsed time is 0.28 seconds.</code></pre>
 <pre class="r"><code># Prototypes for 8 clusters
 plot(pc_tp8)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-2.png" width="1056" style="display: block; margin: auto;" /></p>
@@ -4800,12 +4835,12 @@ P.135 0.008200168     2          6      8 0.9942119</code></pre>
 hist_intensity &lt;- function(depth=&quot;SRF&quot;,time=&quot;T1&quot;){
   df_ave_SRF_T1 &lt;- df_ave %&gt;% filter(Time==time &amp; Depth ==depth)
   theme_set(theme_bw())
-  ggplot(df_ave_SRF_T1, aes(x=log2_Mean_intensity)) +
+  h1 &lt;- ggplot(df_ave_SRF_T1, aes(x=log2_Mean_intensity)) +
     geom_freqpoly(binwidth = 0.05, aes(color=Replicate)) +
     scale_fill_brewer(palette=&#39;Set2&#39;) +
     ylab(&quot;Intensity \n&quot;) +
     xlab(&quot;\n Frequency of intensity&quot;) +
-    ggtitle(paste0(&quot;Distribution of peptide intensity in each replicate for sample (&quot;,depth,&quot;-&quot;,time,&quot;) \n&quot;))+
+    ggtitle(paste0(&quot;Histogram of sample (&quot;,depth,&quot;-&quot;,time,&quot;) \n&quot;))+
     ## adjust positions
     theme(plot.title = element_text(size = 20,hjust = 0.5, family=&quot;serif&quot;)) + 
     theme(axis.title.x = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
@@ -4814,6 +4849,7 @@ hist_intensity &lt;- function(depth=&quot;SRF&quot;,time=&quot;T1&quot;){
     theme(axis.text.y = element_text(size=10))
     # theme(panel.grid.major = element_blank())
     # theme(panel.grid.minor = element_blank()) 
+  return(h1)
 }
 
 hist_intensity(depth=&quot;SRF&quot;,time=&quot;T1&quot;)</code></pre>
@@ -4832,6 +4868,27 @@ hist_intensity(depth=&quot;SRF&quot;,time=&quot;T1&quot;)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-20-7.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>hist_intensity(depth=&quot;SRF&quot;,time=&quot;T8&quot;)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-20-8.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># draw histogram in multigrids
+library(gridExtra)
+paste0(&quot;T&quot;,1L:8L)</code></pre>
+<pre><code>[1] &quot;T1&quot; &quot;T2&quot; &quot;T3&quot; &quot;T4&quot; &quot;T5&quot; &quot;T6&quot; &quot;T7&quot; &quot;T8&quot;</code></pre>
+<pre class="r"><code>l &lt;- list()
+for (i in paste0(&quot;T&quot;,1L:8L)){
+  print(i)
+  l[[i]] &lt;- hist_intensity(depth=&quot;SRF&quot;,time=i)
+}</code></pre>
+<pre><code>[1] &quot;T1&quot;
+[1] &quot;T2&quot;
+[1] &quot;T3&quot;
+[1] &quot;T4&quot;
+[1] &quot;T5&quot;
+[1] &quot;T6&quot;
+[1] &quot;T7&quot;
+[1] &quot;T8&quot;</code></pre>
+<pre class="r"><code>length(l)</code></pre>
+<pre><code>[1] 8</code></pre>
+<pre class="r"><code>grid.arrange(grobs = l, ncol=3)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-20-9.png" width="1056" style="display: block; margin: auto;" /></p>
 </div>
 <div id="archived-not-using-this-part" class="section level3">
 <h3>Archived: Not using this part</h3>
@@ -5050,13 +5107,13 @@ attached base packages:
 [8] base     
 
 other attached packages:
- [1] lattice_0.20-41     rain_1.24.0         multtest_2.46.0    
- [4] Biobase_2.50.0      BiocGenerics_0.36.0 gmp_0.6-2          
- [7] TSclust_1.3.1       cluster_2.1.0       pdc_1.0.3          
-[10] dtwclust_5.5.6      dtw_1.22-3          proxy_0.4-24       
-[13] maditr_0.7.4        data.table_1.14.0   formattable_0.2.1  
-[16] ggplot2_3.3.3       stringr_1.4.0       tidyr_1.1.2        
-[19] dplyr_1.0.4         workflowr_1.6.2    
+ [1] lattice_0.20-41     gridExtra_2.3       rain_1.24.0        
+ [4] multtest_2.46.0     Biobase_2.50.0      BiocGenerics_0.36.0
+ [7] gmp_0.6-2           TSclust_1.3.1       cluster_2.1.0      
+[10] pdc_1.0.3           dtwclust_5.5.6      dtw_1.22-3         
+[13] proxy_0.4-24        maditr_0.7.4        data.table_1.14.0  
+[16] formattable_0.2.1   ggplot2_3.3.3       stringr_1.4.0      
+[19] tidyr_1.1.2         dplyr_1.0.4         workflowr_1.6.2    
 
 loaded via a namespace (and not attached):
   [1] bigmemory_4.5.36        bigmemory.sri_0.1.3     colorspace_2.0-0       
