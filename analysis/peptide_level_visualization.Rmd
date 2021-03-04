@@ -117,7 +117,7 @@ p1
 It seems to saturate as more samples are added.
 
 
-### 3. Which Peptide_ids are present in all(almost) time points?
+### 3.1. Which Peptide_ids are present in all(almost) time points?
 Make a histogram of x-axis being the # of time points present, y-axis being the number of Peptide_ids \
 We need 3 histogram for (1) Surface, (2) DCL, and (3) BDCL
 
@@ -504,7 +504,7 @@ l_BDCL8 <- make_list(df_filt8,'BDCL')
 
 ```
 
-(1) Hierarchical clustering w/ shape based distance
+#### (1) Hierarchical clustering w/ shape based distance
 
 ```{r}
 # input into tsclust
@@ -555,7 +555,7 @@ plot(hc_sbd4)
 plot(hc_sbd4, type = "sc")
 ```
 
-(2-1) partial clustering methods - DTW
+#### (2-1) partial clustering methods - DTW
 
 ```{r}
 ### partial clustering methods
@@ -599,7 +599,7 @@ plot(pc_dtw7)
 
 ```
 
-(2-2) partial clustering methods - DTW_lb
+#### (2-2) partial clustering methods - DTW_lb
 cross-distance matrix is NOT symmetric, which can be problematic for
 
 ```{r}
@@ -626,7 +626,7 @@ plot(pc_dtwlb8)
 
 ```
 
-(2-3) partial clustering methods - k-shape
+#### (2-3) partial clustering methods - k-shape
 
 ```{r}
 # k-shape method
@@ -660,7 +660,7 @@ plot(pc_ks5)
 ```
 
 
-(2-4) partial clustering methods - Tadpole 
+#### (2-4) partial clustering methods - Tadpole 
 problematic for our dataset (series' cross-distance matrix is NOT symmetric)
 
 ```{r}
@@ -715,7 +715,8 @@ t <- c(0, 3, 6, 9, 15, 19, 22, 25)
 # {1, 0, 1, 1, 0, 1} and a matrix x
 t <- c(1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,1,0,0,1) # adjusted for irregular repeats
 
-#
+# RAIN analysis
+library(rain)
 rainresult <- rain(t(dc_8), period=8, measure.sequence=t, deltat=1)
 ##add new column with corrected pvals
 p.adjust(as.numeric(rainresult$pVal), method="bonferroni")
@@ -731,6 +732,40 @@ rainresult %>% filter(pVal < 0.01)
 
 ```
 
+### 6.2. Checking the intensity distribution of peptides in each sample
+
+
+```{r}
+# function to plot histogram
+hist_intensity <- function(depth="SRF",time="T1"){
+  df_ave_SRF_T1 <- df_ave %>% filter(Time==time & Depth ==depth)
+  theme_set(theme_bw())
+  ggplot(df_ave_SRF_T1, aes(x=log2_Mean_intensity)) +
+    geom_freqpoly(binwidth = 0.05, aes(color=Replicate)) +
+    scale_fill_brewer(palette='Set2') +
+    ylab("Intensity \n") +
+    xlab("\n Frequency of intensity") +
+    ggtitle(paste0("Distribution of peptide intensity in each replicate for sample (",depth,"-",time,") \n"))+
+    ## adjust positions
+    theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
+    theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
+    theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
+    theme(axis.text.x = element_text(angle = 90, hjust = 0.5, vjust=0.3,size=13, family="serif"))+
+    theme(axis.text.y = element_text(size=10))
+    # theme(panel.grid.major = element_blank())
+    # theme(panel.grid.minor = element_blank()) 
+}
+
+hist_intensity(depth="SRF",time="T1")
+hist_intensity(depth="SRF",time="T2")
+hist_intensity(depth="SRF",time="T3")
+hist_intensity(depth="SRF",time="T4")
+hist_intensity(depth="SRF",time="T5")
+hist_intensity(depth="SRF",time="T6")
+hist_intensity(depth="SRF",time="T7")
+hist_intensity(depth="SRF",time="T8")
+
+```
 
 
 
