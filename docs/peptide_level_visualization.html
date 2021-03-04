@@ -473,16 +473,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree21703f26decd3e16e0d1f5930a890f499b1ecadatargetblank21703f2a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/21703f26decd3e16e0d1f5930a890f499b1ecada" target="_blank">21703f2</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltreec6a81a1791ff2d152d4afefb1b87f0d47b4c97b6targetblankc6a81a1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/c6a81a1791ff2d152d4afefb1b87f0d47b4c97b6" target="_blank">c6a81a1</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree21703f26decd3e16e0d1f5930a890f499b1ecadatargetblank21703f2a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltreec6a81a1791ff2d152d4afefb1b87f0d47b4c97b6targetblankc6a81a1a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/21703f26decd3e16e0d1f5930a890f499b1ecada" target="_blank">21703f2</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/c6a81a1791ff2d152d4afefb1b87f0d47b4c97b6" target="_blank">c6a81a1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -634,6 +634,7 @@ Untracked files:
     Untracked:  Replicate_B_combined.xlsx
     Untracked:  Time_series_intesity_all.pdf
     Untracked:  data/Time_metadata.txt
+    Untracked:  data/counts_example.csv
     Untracked:  data/diel-Feb21/
     Untracked:  data/diel-Feb25/
     Untracked:  data/diel-Feb26/
@@ -678,6 +679,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KiseokUchicago/BH_Diel/blob/c6a81a1791ff2d152d4afefb1b87f0d47b4c97b6/analysis/peptide_level_visualization.Rmd" target="_blank">c6a81a1</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-03
+</td>
+<td>
+x-axis label
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KiseokUchicago/BH_Diel/cd5bef3583bb77b123c9e13ff671a87dcc3aa64c/docs/peptide_level_visualization.html" target="_blank">cd5bef3</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-03
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1504,7 +1539,10 @@ head(df_ave_rep2)</code></pre>
 6        T6  6/27/2019 7:45:00            19
 7        T7 6/27/2019 10:45:00            22
 8        T8 6/27/2019 13:45:00            25</code></pre>
-<pre class="r"><code># left_join with average data
+<pre class="r"><code>df_time$date_time &lt;- str_replace(df_time$date_time, &quot;/2019&quot;,&quot; &quot;)
+df_time$date_time &lt;- str_replace(df_time$date_time, &quot;:00$&quot;,&quot;&quot;)
+
+# left_join with average data
 df_ave2 &lt;- df_ave_rep2 %&gt;% left_join(df_time, by=c(&#39;Time&#39;=&#39;timepoint&#39;))
 head(df_ave2)</code></pre>
 <pre><code># A tibble: 6 x 12
@@ -1575,14 +1613,14 @@ ggplot(df_filt78, aes(x=elapsed_hours,y=log2_ave_intensity, color=Depth, group=i
   geom_errorbar(aes(ymin=log2_error_down, ymax=log2_error_up), width=.2, position=position_dodge(.9))+
   scale_color_manual(values=cols) +
   ylab(&quot;log2 Mean intensity (log2(18O/16O)) \n&quot;) +
-  xlab(&quot;\n Elapsed hours after 12:45pm June 26 2019 (day 05:17-20:30)&quot;) +
-  scale_x_continuous(breaks=seq(0,26,1))+
+  xlab(&quot;\n Time of day on June 26 2019 (Daylight 05:17-20:30)&quot;) +
+  scale_x_continuous(breaks=df_time$elapsed_hours,labels =c(df_time$date_time))+
   ggtitle(&quot;Time series intensity of peptide_id \n&quot;)+
   ## adjust positions
   theme(plot.title = element_text(size = 20,hjust = 0.5, family=&quot;serif&quot;)) + 
   theme(axis.title.x = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
   theme(axis.title.y = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
-  theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family=&quot;serif&quot;))+
+  theme(axis.text.x = element_text(hjust = 0.9, vjust=0.9,angle=40,size=13, family=&quot;serif&quot;))+
   theme(axis.text.y = element_text(size=10)) +
   annotate(&quot;rect&quot;, xmin = 7.75, xmax = 16.53, ymin = -Inf, ymax = Inf, alpha = .2)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-6-1.png" width="1056" style="display: block; margin: auto;" /></p>
@@ -1597,14 +1635,14 @@ ggplot(df_filt78, aes(x=elapsed_hours,y=log2_ave_intensity, color=Depth, group=i
   # geom_errorbar(aes(ymin=log2_error_down, ymax=log2_error_up), width=.2, position=position_dodge(.9))+
   scale_color_manual(values=cols) +
   ylab(&quot;log2 Mean intensity (log2(18O/16O)) \n&quot;) +
-  xlab(&quot;\n Elapsed hours after 12:45pm June 26 2019 (day 05:17-20:30)&quot;) +
-  scale_x_continuous(breaks=seq(0,26,1))+
+  xlab(&quot;\n Time of day on June 26 2019 (Daylight 05:17-20:30)&quot;) +
+  scale_x_continuous(breaks=df_time$elapsed_hours,labels =c(df_time$date_time))+
   ggtitle(&quot;Time series intensity of peptide_id \n&quot;)+
   ## adjust positions
   theme(plot.title = element_text(size = 20,hjust = 0.5, family=&quot;serif&quot;)) + 
   theme(axis.title.x = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
   theme(axis.title.y = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
-  theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family=&quot;serif&quot;))+
+  theme(axis.text.x = element_text(hjust = 0.9, vjust=0.9,angle=40,size=13, family=&quot;serif&quot;))+
   theme(axis.text.y = element_text(size=10)) +
   annotate(&quot;rect&quot;, xmin = 7.75, xmax = 16.53, ymin = -Inf, ymax = Inf, alpha = .2)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-7-1.png" width="1056" style="display: block; margin: auto;" /></p>
@@ -1623,15 +1661,15 @@ time_series_1depth_woError &lt;- function(df_filt78, depth){
   ggplot(df_filt78_s, aes(x=elapsed_hours,y=log2_ave_intensity, group=Peptide_id)) +
     geom_point(size=2, shape=21, color=color_vec[depth]) +
     geom_line(color= color_vec[depth])+
-    ylab(&quot;Mean log2 intensity (log2(18O/16O)) \n&quot;) +
-    xlab(&quot;\n Elapsed hours after 12:45pm June 26 2019 (day 05:17-20:30)&quot;) +
-    scale_x_continuous(breaks=seq(0,26,1))+
+    ylab(&quot;Log2 mean intensity (log2(18O/16O)) \n&quot;) +
+    xlab(&quot;\n Time of day on June 26 2019 (Daylight 05:17-20:30)&quot;) +
+    scale_x_continuous(breaks=df_time$elapsed_hours,labels =c(df_time$date_time))+
     ggtitle(paste0(&quot;Time series intensity of peptide_id&quot;,&quot; (&quot;,depth_vec[depth],&quot;)&quot;,&quot;\n&quot;))+
     ## adjust positions
     theme(plot.title = element_text(size = 20,hjust = 0.5, family=&quot;serif&quot;)) + 
     theme(axis.title.x = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
     theme(axis.title.y = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
-    theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family=&quot;serif&quot;))+
+    theme(axis.text.x = element_text(hjust = 0.9, vjust=0.9,angle=40,size=13, family=&quot;serif&quot;))+
     theme(axis.text.y = element_text(size=10)) +
     annotate(&quot;rect&quot;, xmin = 7.75, xmax = 16.53, ymin = -Inf, ymax = Inf, alpha = .2)
     # theme(panel.grid.major = element_blank()) +
@@ -1646,15 +1684,15 @@ time_series_1depth_wError &lt;- function(df_filt78, depth){
     geom_point(size=2, shape=21, color=color_vec[depth]) +
     geom_line(color= color_vec[depth])+
     geom_errorbar(aes(ymin=log2_error_down, ymax=log2_error_up), width=.05, position=position_dodge(.2),color=&#39;red&#39;)+
-    ylab(&quot;Mean log2 intensity (log2(18O/16O)) \n&quot;) +
-    xlab(&quot;\n Elapsed hours after 12:45pm June 26 2019 (day 05:17-20:30)&quot;) +
-    scale_x_continuous(breaks=seq(0,26,1))+
+    ylab(&quot;Log2 mean intensity (log2(18O/16O)) \n&quot;) +
+    xlab(&quot;\n Time of day on June 26 2019 (Daylight 05:17-20:30)&quot;) +
+    scale_x_continuous(breaks=df_time$elapsed_hours,labels =c(df_time$date_time))+
     ggtitle(paste0(&quot;Time series intensity of peptide_id&quot;,&quot; (&quot;,depth_vec[depth],&quot;)&quot;,&quot;\n&quot;))+
     ## adjust positions
     theme(plot.title = element_text(size = 20,hjust = 0.5, family=&quot;serif&quot;)) + 
     theme(axis.title.x = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
     theme(axis.title.y = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
-    theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family=&quot;serif&quot;))+
+    theme(axis.text.x = element_text(hjust = 0.9, vjust=0.9,angle=40,size=13, family=&quot;serif&quot;))+
     theme(axis.text.y = element_text(size=10)) +
     annotate(&quot;rect&quot;, xmin = 7.75, xmax = 16.53, ymin = -Inf, ymax = Inf, alpha = .2)
     # theme(panel.grid.major = element_blank()) +
@@ -1750,15 +1788,15 @@ time_series_clust_wError &lt;- function(df_filt78, depth, clust1){
     geom_point(size=2, shape=21, color=color_vec[depth]) +
     geom_line(color= color_vec[depth])+
     geom_errorbar(aes(ymin=log2_error_down, ymax=log2_error_up), width=.05, position=position_dodge(.2),color=&#39;red&#39;)+
-    ylab(&quot;Mean log2 intensity (log2(18O/16O)) \n&quot;) +
-    xlab(&quot;\n Elapsed hours after 12:45pm June 26 2019 (day 05:17-20:30)&quot;) +
-    scale_x_continuous(breaks=seq(0,26,1))+
+    ylab(&quot;Log2 mean intensity (log2(18O/16O)) \n&quot;) +
+    xlab(&quot;\n Time of day on June 26 2019 (Daylight 05:17-20:30)&quot;) +
+    scale_x_continuous(breaks=df_time$elapsed_hours,labels =c(df_time$date_time))+
     ggtitle(paste0(&quot;Time series intensity of peptide_id&quot;,&quot; (&quot;,depth_vec[depth],&quot;)&quot;,&quot;\n&quot;))+
     ## adjust positions
     theme(plot.title = element_text(size = 20,hjust = 0.5, family=&quot;serif&quot;)) + 
     theme(axis.title.x = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
     theme(axis.title.y = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
-    theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family=&quot;serif&quot;))+
+    theme(axis.text.x = element_text(hjust = 0.9, vjust=0.9,angle=40,size=13, family=&quot;serif&quot;))+
     theme(axis.text.y = element_text(size=10)) +
     annotate(&quot;rect&quot;, xmin = 7.75, xmax = 16.53, ymin = -Inf, ymax = Inf, alpha = .2)
     # theme(panel.grid.major = element_blank()) +
@@ -2582,7 +2620,7 @@ Iteration 10: Changes / Distsum = 1 / 512.1642
     DBA Iteration: 1, 2, 3 - Converged!
 Iteration 11: Changes / Distsum = 0 / 512.1043
 
-    Elapsed time is 2.19 seconds.</code></pre>
+    Elapsed time is 1.84 seconds.</code></pre>
 <pre class="r"><code>internal_CVI(pc_dtw, &quot;Partial clustering with DTW distance&quot;)</code></pre>
 <pre><code>    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
          11, 12 - Converged!
@@ -2642,7 +2680,7 @@ Iteration 6: Changes / Distsum = 6 / 596.5909
     DBA Iteration: 1, 2 - Converged!
 Iteration 7: Changes / Distsum = 0 / 596.7076
 
-    Elapsed time is 0.11 seconds.</code></pre>
+    Elapsed time is 0.1 seconds.</code></pre>
 <pre class="r"><code>pc_dtw5 &lt;- tsclust(l_SRF8_z, k = 5L,
   distance = &quot;dtw_basic&quot;, centroid = &quot;dba&quot;,
   trace = TRUE, seed = 8,
@@ -2695,7 +2733,7 @@ Iteration 8: Changes / Distsum = 1 / 570.2049
     DBA Iteration: 1, 2, 3 - Converged!
 Iteration 9: Changes / Distsum =  0 / 570.166
 
-    Elapsed time is 0.37 seconds.</code></pre>
+    Elapsed time is 0.14 seconds.</code></pre>
 <pre class="r"><code>pc_dtw7 &lt;- tsclust(l_SRF8_z, k = 7L,
   distance = &quot;dtw_basic&quot;, centroid = &quot;dba&quot;,
   trace = TRUE, seed = 8,
@@ -2793,7 +2831,7 @@ Iteration 14: Changes / Distsum = 2 / 546.6194
     DBA Iteration: 1, 2, 3 - Converged!
 Iteration 15: Changes / Distsum = 0 / 546.5289
 
-    Elapsed time is 0.24 seconds.</code></pre>
+    Elapsed time is 0.22 seconds.</code></pre>
 <pre class="r"><code># Prototypes for 4 clusters
 plot(pc_dtw4)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-15-2.png" width="1056" style="display: block; margin: auto;" /></p>
@@ -3634,7 +3672,7 @@ Iteration 9: Changes / Distsum = 1 / 511.7074
     DBA Iteration: 1, 2 - Converged!
 Iteration 10: Changes / Distsum =  0 / 511.633
 
-    Elapsed time is 2.94 seconds.</code></pre>
+    Elapsed time is 2.62 seconds.</code></pre>
 <pre class="r"><code>internal_CVI(pc_dtwlb, &quot;Partial clustering with DTW_lb distance&quot;)</code></pre>
 <pre><code>    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
          11, 12 - Converged!
@@ -3739,7 +3777,7 @@ Iteration 10: Changes / Distsum = 3 / 545.5444
     DBA Iteration: 1, 2 - Converged!
 Iteration 11: Changes / Distsum = 0 / 545.6608
 
-    Elapsed time is 0.23 seconds.</code></pre>
+    Elapsed time is 0.2 seconds.</code></pre>
 <pre class="r"><code># Prototypes for 8 clusters
 plot(pc_dtwlb8)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-16-2.png" width="1056" style="display: block; margin: auto;" /></p>
@@ -3917,7 +3955,7 @@ Iteration 14: Changes / Distsum = 2 / 44.10935
 Iteration 15: Changes / Distsum = 2 / 44.09725
 Iteration 16: Changes / Distsum = 0 / 44.09232
 
-    Elapsed time is 7.03 seconds.</code></pre>
+    Elapsed time is 6.35 seconds.</code></pre>
 <pre class="r"><code>internal_CVI(pc_ks, &quot;Partial clustering with k-shape method&quot;)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-17-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># use 3 or 4 clusters
@@ -3939,7 +3977,7 @@ Iteration 12: Changes / Distsum = 4 / 69.30983
 Iteration 13: Changes / Distsum = 1 / 69.29236
 Iteration 14: Changes / Distsum =  0 / 69.2913
 
-    Elapsed time is 0.71 seconds.</code></pre>
+    Elapsed time is 0.61 seconds.</code></pre>
 <pre class="r"><code>pc_ks4 &lt;- tsclust(l_SRF8_z, k = 4L,
   distance = &quot;sbd&quot;, centroid = &quot;shape&quot;,
   seed = 8, trace = TRUE)</code></pre>
@@ -3977,7 +4015,7 @@ Iteration 31: Changes / Distsum = 2 / 61.02398
 Iteration 32: Changes / Distsum = 1 / 61.01079
 Iteration 33: Changes / Distsum = 0 / 61.00639
 
-    Elapsed time is 1.63 seconds.</code></pre>
+    Elapsed time is 1.49 seconds.</code></pre>
 <pre class="r"><code>pc_ks5 &lt;- tsclust(l_SRF8_z, k = 5L,
   distance = &quot;sbd&quot;, centroid = &quot;shape&quot;,
   seed = 8, trace = TRUE)</code></pre>
@@ -4005,7 +4043,7 @@ Iteration 21: Changes / Distsum =  5 / 57.9328
 Iteration 22: Changes / Distsum = 2 / 57.88911
 Iteration 23: Changes / Distsum = 0 / 57.87923
 
-    Elapsed time is 1.19 seconds.</code></pre>
+    Elapsed time is 1.08 seconds.</code></pre>
 <pre class="r"><code># Prototypes for 3 clusters
 plot(pc_ks3)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-17-2.png" width="1056" style="display: block; margin: auto;" /></p>
@@ -4041,7 +4079,7 @@ TADPole completed for k = 8 &amp; dc = 1.5
 TADPole completed for k = 9 &amp; dc = 1.5
 TADPole completed for k = 10 &amp; dc = 1.5
 
-    Elapsed time is 0.44 seconds.</code></pre>
+    Elapsed time is 0.38 seconds.</code></pre>
 <pre class="r"><code>internal_CVI(pc_tp, &quot;Partial clustering with Tadpole method&quot;)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># use 8 clusters
@@ -4061,55 +4099,33 @@ Performing cluster assignment
 
 TADPole completed for k = 8 &amp; dc = 1.5
 
-    Elapsed time is 0.33 seconds.</code></pre>
+    Elapsed time is 0.3 seconds.</code></pre>
 <pre class="r"><code># Prototypes for 8 clusters
 plot(pc_tp8)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-2.png" width="1056" style="display: block; margin: auto;" /></p>
 </div>
 <div id="rain-analysis-rhythmicity-analysis-incorporating-non-parametric-methods" class="section level3">
 <h3>6. RAIN analysis (Rhythmicity Analysis Incorporating Non-parametric methods)</h3>
-</div>
-<div id="given-code-httpsrdrr.iobiocrainfinstdocrain.pdf" class="section level3">
-<h3>Given code: <a href="https://rdrr.io/bioc/rain/f/inst/doc/rain.pdf" class="uri">https://rdrr.io/bioc/rain/f/inst/doc/rain.pdf</a></h3>
-<pre class="r"><code># BiocManager::install(&#39;rain&#39;)
-
-set.seed(123)
-times &lt;- c(1: 24) * 2
-sin &lt;- 1 + 0.5 * sin(times / 24 * 2 * pi) + rnorm(24, 0, 0.3)
-saw &lt;- rep(13:24 / 18 , 2) + rnorm(24, 0, 0.3)
-measure &lt;- cbind(sin, saw)
-require(&#39;lattice&#39;)
-xyplot(t(measure)~rep(times, each=2) | c(&#39;sin&#39;, &#39;saw&#39;),layout = c(1, 2), type = &#39;o&#39;, xlab = &#39;time&#39;, ylab = &#39;value&#39;, cex.lab = 0.6)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-19-1.png" width="1056" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>require(rain)
-rainresult &lt;- rain(measure, period=24, deltat=2, peak.border=c(0.1,0.9), verbose=FALSE)
-rainresult</code></pre>
-<pre><code>            pVal phase peak.shape period
-sin 5.176859e-06     6         12     24
-saw 1.162142e-02    24          2     24</code></pre>
-<pre class="r"><code>data(menetRNASeqMouseLiver)
-colnames(menetRNASeqMouseLiver)</code></pre>
-<pre><code> [1] &quot;ZT_2_1&quot;  &quot;ZT_2_2&quot;  &quot;ZT_6_1&quot;  &quot;ZT_6_2&quot;  &quot;ZT_10_1&quot; &quot;ZT_10_2&quot; &quot;ZT_14_1&quot;
- [8] &quot;ZT_14_2&quot; &quot;ZT_18_1&quot; &quot;ZT_18_2&quot; &quot;ZT_22_1&quot; &quot;ZT_22_2&quot;</code></pre>
-<pre class="r"><code>results &lt;- rain(t(menetRNASeqMouseLiver), deltat=4, period=24, nr.series=2, peak.border=c(0.3, 0.7), verbose=FALSE)
-best &lt;- order(results$pVal)[1:10]
-xyplot(as.matrix(menetRNASeqMouseLiver[best, (0:5 * 2 + rep(c(1, 2), each = 6))]) ~rep(0:11 * 4 + 2, each = 10) |rownames(menetRNASeqMouseLiver)[best], scales = list(y = list(relation = &#39;free&#39;)), layout = c(2, 5), type = &#39;b&#39;, pch = 16, xlab = &#39;time&#39;, ylab = &#39;expression value&#39;, cex.lab = 1)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-19-2.png" width="1056" style="display: block; margin: auto;" /></p>
-</div>
-<div id="apply-it-to-our-data" class="section level3">
-<h3>Apply it to our data</h3>
 <pre class="r"><code># setting our data into input format
-
-# let&#39;s try cluster our time series data
-colnames(df_filt8)</code></pre>
-<pre><code> [1] &quot;Time&quot;               &quot;Depth&quot;              &quot;Peptide_id&quot;        
- [4] &quot;log2_ave_intensity&quot; &quot;sd_intensity&quot;       &quot;ave_intensity&quot;     
- [7] &quot;rel_error&quot;          &quot;log2_sd_intensity&quot;  &quot;log2_error_up&quot;     
-[10] &quot;log2_error_down&quot;    &quot;date_time&quot;          &quot;elapsed_hours&quot;     
-[13] &quot;Timepoints&quot;        </code></pre>
-<pre class="r"><code>df_8 &lt;- df_filt8 %&gt;% filter(Depth==&#39;SRF&#39;) %&gt;% select(Peptide_id,Time,log2_ave_intensity)
-
-# reshape the dataframe with timepoints
+df_8 &lt;- df_filt8 %&gt;% filter(Depth==&#39;SRF&#39;) %&gt;% select(Peptide_id,Time,log2_ave_intensity)
+df_filt8</code></pre>
+<pre><code># A tibble: 7,104 x 13
+   Time  Depth Peptide_id log2_ave_intensi~ sd_intensity ave_intensity rel_error
+   &lt;chr&gt; &lt;fct&gt; &lt;chr&gt;                  &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;
+ 1 T1    BDCL  Pep_1                 -0.781       0.173          0.582    0.297 
+ 2 T1    BDCL  Pep_10                -0.204       0.160          0.868    0.184 
+ 3 T1    BDCL  Pep_100               -1.02        0.0770         0.493    0.156 
+ 4 T1    BDCL  Pep_101               -0.968       0.0619         0.511    0.121 
+ 5 T1    BDCL  Pep_102               -1.21        0.109          0.432    0.251 
+ 6 T1    BDCL  Pep_103               -0.402       0.0572         0.757    0.0756
+ 7 T1    BDCL  Pep_104               -0.628       0.0958         0.647    0.148 
+ 8 T1    BDCL  Pep_105               -0.496       0.0706         0.709    0.0995
+ 9 T1    BDCL  Pep_106               -0.617       0.145          0.652    0.222 
+10 T1    BDCL  Pep_107               -0.933       0.0970         0.524    0.185 
+# ... with 7,094 more rows, and 6 more variables: log2_sd_intensity &lt;dbl&gt;,
+#   log2_error_up &lt;dbl&gt;, log2_error_down &lt;dbl&gt;, date_time &lt;chr&gt;,
+#   elapsed_hours &lt;int&gt;, Timepoints &lt;int&gt;</code></pre>
+<pre class="r"><code># reshape the dataframe with timepoints
 library(maditr)
 v_names &lt;- c(&quot;T1&quot;,&quot;T2&quot;,&quot;T3&quot;,&quot;T4&quot;,&quot;T5&quot;,&quot;T6&quot;,&quot;T7&quot;,&quot;T8&quot;)
 df_8$Time &lt;- factor(df_8$Time, levels=v_names)
@@ -4750,114 +4766,31 @@ T5 -0.3716837 -0.40442114 -0.7759049  0.3037301 -0.2998436 -0.4785340
 T6 -0.4827336  0.70512987 -0.8181087  0.3783358 -0.2290668 -0.4324683
 T7 -0.9142296  0.22623210 -1.4711163  0.4419436 -0.8029640 -0.9811872
 T8 -0.9320970 -0.08865371 -1.4735341  2.3243480 -0.9297310 -0.9616573</code></pre>
-<pre class="r"><code>rainresult &lt;- rain(t(dc_8), period=8, deltat=1, peak.border=c(0.1,0.9))
-# pVal cut off 0.05
+<pre class="r"><code># setup time vector for RAIN (source: Maria&#39;s code provided to me 3/3/21)
+# The following code gives a vector where the times given in &quot;t&quot; are represented by a 1 in the vector &quot;ft&quot;.
+# The time series in question lasted 84 hours and sampling times were every 4 hours, so the 
+# vector &quot;ft&quot; gives a 1 for each hour representing a sampling time, and ft could is a vector of 12 1&#39;s and deltat=4 in the RAIN call below. 
+t &lt;- c(0, 3, 6, 9, 15, 19, 22, 25) 
+ft &lt;- c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+
+rainresult &lt;- rain(t(vsd), period=24, measure.sequence=ft, deltat=4)</code></pre>
+<pre><code>Error in rain(t(vsd), period = 24, measure.sequence = ft, deltat = 4): could not find function &quot;rain&quot;</code></pre>
+<pre class="r"><code>##add new column with corrected pvals
+fdr &lt;- p.adjust(as.numeric(rainresult$pVal), method=&quot;fdr&quot;) # correct p-values for multiple testing</code></pre>
+<pre><code>Error in p.adjust(as.numeric(rainresult$pVal), method = &quot;fdr&quot;): object &#39;rainresult&#39; not found</code></pre>
+<pre class="r"><code># How many genes are significantly periodic?
+a=sum(fdr &lt;0.05)</code></pre>
+<pre><code>Error in eval(expr, envir, enclos): object &#39;fdr&#39; not found</code></pre>
+<pre class="r"><code>print(a)</code></pre>
+<pre><code>Error in print(a): object &#39;a&#39; not found</code></pre>
+<pre class="r"><code>rainresult &lt;- rain(t(dc_8), period=8, deltat=1, peak.border=c(0.1,0.9))</code></pre>
+<pre><code>Error in rain(t(dc_8), period = 8, deltat = 1, peak.border = c(0.1, 0.9)): could not find function &quot;rain&quot;</code></pre>
+<pre class="r"><code># pVal cut off 0.05
 rainresult %&gt;% filter(pVal &lt; 0.05)</code></pre>
-<pre><code>             pVal phase peak.shape period
-P.106 0.041717050     4          4      8
-P.111 0.033199679     4          3      8
-P.113 0.033199679     5          3      8
-P.117 0.031034483     4          5      8
-P.124 0.020414395     5          2      8
-P.127 0.041717050     5          4      8
-P.129 0.036086608     4          3      8
-P.131 0.005239823     5          4      8
-P.132 0.034643144     4          3      8
-P.136 0.035364876     4          3      8
-P.137 0.042623942     5          4      8
-P.139 0.028692262     4          3      8
-P.148 0.036808340     4          5      8
-P.151 0.033199679     4          5      8
-P.153 0.020021810     5          2      8
-P.154 0.033199679     5          3      8
-P.155 0.036808340     5          3      8
-P.156 0.033921411     5          3      8
-P.159 0.033199679     4          3      8
-P.162 0.040810157     4          4      8
-P.176 0.042623942     5          4      8
-P.18  0.031034483     4          5      8
-P.181 0.020414395     5          2      8
-P.187 0.036808340     5          3      8
-P.191 0.033921411     4          3      8
-P.20  0.033921411     4          3      8
-P.202 0.032477947     4          5      8
-P.208 0.033921411     4          3      8
-P.21  0.042623942     4          4      8
-P.215 0.036808340     5          3      8
-P.230 0.044437727     4          4      8
-P.235 0.019236641     5          2      8
-P.236 0.033199679     4          3      8
-P.241 0.020414395     5          2      8
-P.256 0.031034483     4          5      8
-P.266 0.036808340     4          3      8
-P.269 0.042623942     4          4      8
-P.272 0.040517241     5          4      8
-P.274 0.035364876     4          3      8
-P.276 0.045344619     4          4      8
-P.277 0.035364876     4          3      8
-P.280 0.002050164     5          2      8
-P.282 0.039695269     4          3      8
-P.283 0.020414395     5          2      8
-P.286 0.040517241     3          4      8
-P.288 0.033921411     5          3      8
-P.30  0.003608661     4          5      8
-P.300 0.042623942     4          4      8
-P.302 0.036086608     5          3      8
-P.303 0.036808340     5          3      8
-P.311 0.042623942     5          4      8
-P.314 0.032477947     4          5      8
-P.319 0.033199679     4          5      8
-P.323 0.035364876     4          3      8
-P.327 0.033921411     4          5      8
-P.328 0.036086608     5          3      8
-P.332 0.031034483     5          5      8
-P.336 0.038793103     5          4      8
-P.343 0.041717050     4          4      8
-P.344 0.033199679     4          3      8
-P.350 0.033921411     4          3      8
-P.355 0.032477947     4          3      8
-P.363 0.034643144     4          3      8
-P.369 0.004534462     5          4      8
-P.377 0.035364876     4          3      8
-P.381 0.042623942     5          4      8
-P.382 0.031034483     4          3      8
-P.390 0.017914977     5          2      8
-P.4   0.031034483     4          5      8
-P.401 0.020021810     5          2      8
-P.408 0.020414395     5          2      8
-P.41  0.041717050     4          4      8
-P.417 0.036808340     5          3      8
-P.423 0.036808340     5          3      8
-P.440 0.045344619     5          4      8
-P.456 0.033921411     5          3      8
-P.465 0.033199679     4          3      8
-P.496 0.044437727     4          4      8
-P.505 0.040517241     3          4      8
-P.519 0.031034483     4          5      8
-P.530 0.045344619     5          4      8
-P.537 0.042623942     4          4      8
-P.584 0.004534462     5          4      8
-P.649 0.017682438     6          1      8
-P.657 0.044437727     4          4      8
-P.66  0.039695269     4          3      8
-P.77  0.007640789     3          7      8
-P.79  0.039695269     4          3      8
-P.811 0.020414395     5          2      8
-P.84  0.041717050     4          4      8
-P.89  0.003849238     5          3      8
-P.898 0.038251804     6          3      8
-P.92  0.041717050     4          4      8
-P.96  0.033921411     8          3      8</code></pre>
+<pre><code>Error in filter(., pVal &lt; 0.05): object &#39;rainresult&#39; not found</code></pre>
 <pre class="r"><code># pVal cut off 0.01
 rainresult %&gt;% filter(pVal &lt; 0.01)</code></pre>
-<pre><code>             pVal phase peak.shape period
-P.131 0.005239823     5          4      8
-P.280 0.002050164     5          2      8
-P.30  0.003608661     4          5      8
-P.369 0.004534462     5          4      8
-P.584 0.004534462     5          4      8
-P.77  0.007640789     3          7      8
-P.89  0.003849238     5          3      8</code></pre>
+<pre><code>Error in filter(., pVal &lt; 0.01): object &#39;rainresult&#39; not found</code></pre>
 </div>
 <div id="archived-not-using-this-part" class="section level3">
 <h3>Archived: Not using this part</h3>
@@ -4910,10 +4843,7 @@ sapply(pc_k, cvi, type = &quot;internal&quot;)
 
 
 names(l_SRF8)</code></pre>
-</div>
-<div id="archived-5.3.-dtwclust" class="section level3">
-<h3>Archived: 5.3. dtwclust</h3>
-<p>the clustering itself may be shape-based, feature-based or model-based.<br />
+<p>5.3. dtwclust the clustering itself may be shape-based, feature-based or model-based.<br />
 In the context of shape-based time-series clustering, it is common to utilize the Dynamic Time Warping (DTW) distance as dissimilarity measure (Aghabozorgi et al. 2015).<br />
 DTW is a dynamic programming algorithm that compares two series and tries to find the optimum warping path between them under certain constraints, such as monotonicity. It started being used by the data mining community to overcome some of the limitations associated with the Euclidean distance (Ratanamahatana and Keogh 2004; Berndt and Clifford 1994).<br />
 <a href="https://cran.r-project.org/web/packages/dtwclust/vignettes/dtwclust.pdf" class="uri">https://cran.r-project.org/web/packages/dtwclust/vignettes/dtwclust.pdf</a></p>
@@ -5023,6 +4953,31 @@ data &lt;- CharTraj[1L:20L]
 pc_k &lt;- tsclust(data, k = 3L:5L, distance = &quot;dtw_basic&quot;, centroid = &quot;pam&quot;, seed = 94L)
 names(pc_k) &lt;- paste0(&quot;k_&quot;, 3L:5L)
 sapply(pc_k, cvi, type = &quot;internal&quot;)</code></pre>
+<p>6.1. Given code: <a href="https://rdrr.io/bioc/rain/f/inst/doc/rain.pdf" class="uri">https://rdrr.io/bioc/rain/f/inst/doc/rain.pdf</a></p>
+<pre class="r"><code># BiocManager::install(&#39;rain&#39;)
+
+set.seed(123)
+times &lt;- c(1: 24) * 2
+sin &lt;- 1 + 0.5 * sin(times / 24 * 2 * pi) + rnorm(24, 0, 0.3)
+saw &lt;- rep(13:24 / 18 , 2) + rnorm(24, 0, 0.3)
+measure &lt;- cbind(sin, saw)
+require(&#39;lattice&#39;)
+xyplot(t(measure)~rep(times, each=2) | c(&#39;sin&#39;, &#39;saw&#39;),layout = c(1, 2), type = &#39;o&#39;, xlab = &#39;time&#39;, ylab = &#39;value&#39;, cex.lab = 0.6)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-22-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>require(rain)
+rainresult &lt;- rain(measure, period=24, deltat=2, peak.border=c(0.1,0.9), verbose=FALSE)
+rainresult</code></pre>
+<pre><code>            pVal phase peak.shape period
+sin 5.176859e-06     6         12     24
+saw 1.162142e-02    24          2     24</code></pre>
+<pre class="r"><code>data(menetRNASeqMouseLiver)
+colnames(menetRNASeqMouseLiver)</code></pre>
+<pre><code> [1] &quot;ZT_2_1&quot;  &quot;ZT_2_2&quot;  &quot;ZT_6_1&quot;  &quot;ZT_6_2&quot;  &quot;ZT_10_1&quot; &quot;ZT_10_2&quot; &quot;ZT_14_1&quot;
+ [8] &quot;ZT_14_2&quot; &quot;ZT_18_1&quot; &quot;ZT_18_2&quot; &quot;ZT_22_1&quot; &quot;ZT_22_2&quot;</code></pre>
+<pre class="r"><code>results &lt;- rain(t(menetRNASeqMouseLiver), deltat=4, period=24, nr.series=2, peak.border=c(0.3, 0.7), verbose=FALSE)
+best &lt;- order(results$pVal)[1:10]
+xyplot(as.matrix(menetRNASeqMouseLiver[best, (0:5 * 2 + rep(c(1, 2), each = 6))]) ~rep(0:11 * 4 + 2, each = 10) |rownames(menetRNASeqMouseLiver)[best], scales = list(y = list(relation = &#39;free&#39;)), layout = c(2, 5), type = &#39;b&#39;, pch = 16, xlab = &#39;time&#39;, ylab = &#39;expression value&#39;, cex.lab = 1)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-22-2.png" width="1056" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -5058,7 +5013,7 @@ other attached packages:
  [4] BiocGenerics_0.36.0 gmp_0.6-2           lattice_0.20-41    
  [7] TSclust_1.3.1       cluster_2.1.0       pdc_1.0.3          
 [10] dtwclust_5.5.6      dtw_1.22-3          proxy_0.4-24       
-[13] maditr_0.7.4        data.table_1.13.6   formattable_0.2.1  
+[13] maditr_0.7.4        data.table_1.14.0   formattable_0.2.1  
 [16] ggplot2_3.3.3       stringr_1.4.0       tidyr_1.1.2        
 [19] dplyr_1.0.4         workflowr_1.6.2    
 
@@ -5066,7 +5021,7 @@ loaded via a namespace (and not attached):
   [1] bigmemory_4.5.36        bigmemory.sri_0.1.3     colorspace_2.0-0       
   [4] ellipsis_0.3.1          class_7.3-17            modeltools_0.2-23      
   [7] rprojroot_2.0.2         fs_1.5.0                clue_0.3-58            
- [10] rstudioapi_0.13         farver_2.0.3            ggrepel_0.9.1          
+ [10] rstudioapi_0.13         farver_2.1.0            ggrepel_0.9.1          
  [13] RSpectra_0.16-0         fansi_0.4.2             splines_4.0.3          
  [16] codetools_0.2-16        knitr_1.31              longitudinalData_2.4.1 
  [19] jsonlite_1.7.2          nloptr_1.2.2.2          shiny_1.6.0            
@@ -5078,7 +5033,7 @@ loaded via a namespace (and not attached):
  [37] vctrs_0.3.6             urca_1.3-0              nlme_3.1-149           
  [40] clv_0.3-2.2             iterators_1.0.13        crosstalk_1.1.1        
  [43] lmtest_0.9-38           timeDate_3043.102       xfun_0.20              
- [46] ps_1.5.0                mime_0.10               miniUI_0.1.1.1         
+ [46] ps_1.6.0                mime_0.10               miniUI_0.1.1.1         
  [49] lifecycle_1.0.0         MASS_7.3-53             zoo_1.8-8              
  [52] scales_1.1.1            promises_1.1.1          yaml_2.2.1             
  [55] quantmod_0.4.18         curl_4.3                sass_0.3.1             
@@ -5093,7 +5048,7 @@ loaded via a namespace (and not attached):
  [82] survival_3.2-7          nnet_7.3-14             tibble_3.0.4           
  [85] crayon_1.4.1            KernSmooth_2.23-17      utf8_1.1.4             
  [88] rmarkdown_2.7           grid_4.0.3              flexclust_1.4-0        
- [91] git2r_0.27.1            forecast_8.13           digest_0.6.27          
+ [91] git2r_0.28.0            forecast_8.13           digest_0.6.27          
  [94] webshot_0.5.2           xtable_1.8-4            httpuv_1.5.4           
  [97] RcppParallel_5.0.3      stats4_4.0.3            munsell_0.5.0          
 [100] bslib_0.2.4             tcltk_4.0.3             quadprog_1.5-8         
