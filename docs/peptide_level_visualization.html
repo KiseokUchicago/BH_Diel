@@ -382,7 +382,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-03-03
+<strong>Last updated:</strong> 2021-03-04
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -473,16 +473,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree19d1e6c3242b4fd500c1500ad77e6ea298da142ftargetblank19d1e6ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/19d1e6c3242b4fd500c1500ad77e6ea298da142f" target="_blank">19d1e6c</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree7f223a8f8561ef76901926468a4d13e2f6bcda7btargetblank7f223a8a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/7f223a8f8561ef76901926468a4d13e2f6bcda7b" target="_blank">7f223a8</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree19d1e6c3242b4fd500c1500ad77e6ea298da142ftargetblank19d1e6ca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree7f223a8f8561ef76901926468a4d13e2f6bcda7btargetblank7f223a8a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/19d1e6c3242b4fd500c1500ad77e6ea298da142f" target="_blank">19d1e6c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/7f223a8f8561ef76901926468a4d13e2f6bcda7b" target="_blank">7f223a8</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -679,6 +679,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KiseokUchicago/BH_Diel/blob/7f223a8f8561ef76901926468a4d13e2f6bcda7b/analysis/peptide_level_visualization.Rmd" target="_blank">7f223a8</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-04
+</td>
+<td>
+intensity_histogram
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KiseokUchicago/BH_Diel/3eb4d8892bf9cefac7d0cc85d46628e66e0de6b6/docs/peptide_level_visualization.html" target="_blank">3eb4d88</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-03
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1359,7 +1393,7 @@ p1</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-3-1.png" width="1056" style="display: block; margin: auto;" /> It seems to saturate as more samples are added.</p>
 </div>
 <div id="which-peptide_ids-are-present-in-allalmost-time-points" class="section level3">
-<h3>3. Which Peptide_ids are present in all(almost) time points?</h3>
+<h3>3.1. Which Peptide_ids are present in all(almost) time points?</h3>
 <p>Make a histogram of x-axis being the # of time points present, y-axis being the number of Peptide_ids<br />
 We need 3 histogram for (1) Surface, (2) DCL, and (3) BDCL</p>
 <pre class="r"><code># read in combined table of 24 samples (Replicate B)
@@ -1885,9 +1919,8 @@ colnames(df_filt8)</code></pre>
 l_SRF8 &lt;- make_list(df_filt8,&#39;SRF&#39;)
 l_DCL8 &lt;- make_list(df_filt8,&#39;DCL&#39;)
 l_BDCL8 &lt;- make_list(df_filt8,&#39;BDCL&#39;)</code></pre>
-<ol style="list-style-type: decimal">
-<li>Hierarchical clustering w/ shape based distance</li>
-</ol>
+<div id="hierarchical-clustering-w-shape-based-distance" class="section level4">
+<h4>(1) Hierarchical clustering w/ shape based distance</h4>
 <pre class="r"><code># input into tsclust
 library(dtwclust)
 require(&quot;TSclust&quot;)
@@ -1939,7 +1972,9 @@ plot(hc_sbd4)</code></pre>
 <pre class="r"><code># The series and the obtained prototypes can be plotted too
 plot(hc_sbd4, type = &quot;sc&quot;)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-14-7.png" width="1056" style="display: block; margin: auto;" /></p>
-<p>(2-1) partial clustering methods - DTW</p>
+</div>
+<div id="partial-clustering-methods---dtw" class="section level4">
+<h4>(2-1) partial clustering methods - DTW</h4>
 <pre class="r"><code>### partial clustering methods
 # z-normalization
 l_SRF8_z &lt;- zscore(l_SRF8)
@@ -2654,7 +2689,7 @@ Iteration 10: Changes / Distsum = 1 / 512.1642
     DBA Iteration: 1, 2, 3 - Converged!
 Iteration 11: Changes / Distsum = 0 / 512.1043
 
-    Elapsed time is 1.55 seconds.</code></pre>
+    Elapsed time is 1.86 seconds.</code></pre>
 <pre class="r"><code>internal_CVI(pc_dtw, &quot;Partial clustering with DTW distance&quot;)</code></pre>
 <pre><code>    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
          11, 12 - Converged!
@@ -2714,7 +2749,7 @@ Iteration 6: Changes / Distsum = 6 / 596.5909
     DBA Iteration: 1, 2 - Converged!
 Iteration 7: Changes / Distsum = 0 / 596.7076
 
-    Elapsed time is 0.09 seconds.</code></pre>
+    Elapsed time is 0.1 seconds.</code></pre>
 <pre class="r"><code>pc_dtw5 &lt;- tsclust(l_SRF8_z, k = 5L,
   distance = &quot;dtw_basic&quot;, centroid = &quot;dba&quot;,
   trace = TRUE, seed = 8,
@@ -2767,7 +2802,7 @@ Iteration 8: Changes / Distsum = 1 / 570.2049
     DBA Iteration: 1, 2, 3 - Converged!
 Iteration 9: Changes / Distsum =  0 / 570.166
 
-    Elapsed time is 0.11 seconds.</code></pre>
+    Elapsed time is 0.15 seconds.</code></pre>
 <pre class="r"><code>pc_dtw7 &lt;- tsclust(l_SRF8_z, k = 7L,
   distance = &quot;dtw_basic&quot;, centroid = &quot;dba&quot;,
   trace = TRUE, seed = 8,
@@ -2865,7 +2900,7 @@ Iteration 14: Changes / Distsum = 2 / 546.6194
     DBA Iteration: 1, 2, 3 - Converged!
 Iteration 15: Changes / Distsum = 0 / 546.5289
 
-    Elapsed time is 0.19 seconds.</code></pre>
+    Elapsed time is 0.21 seconds.</code></pre>
 <pre class="r"><code># Prototypes for 4 clusters
 plot(pc_dtw4)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-15-2.png" width="1056" style="display: block; margin: auto;" /></p>
@@ -2875,7 +2910,10 @@ plot(pc_dtw5)</code></pre>
 <pre class="r"><code># Prototypes for 7 clusters
 plot(pc_dtw7)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-15-4.png" width="1056" style="display: block; margin: auto;" /></p>
-<p>(2-2) partial clustering methods - DTW_lb cross-distance matrix is NOT symmetric, which can be problematic for</p>
+</div>
+<div id="partial-clustering-methods---dtw_lb" class="section level4">
+<h4>(2-2) partial clustering methods - DTW_lb</h4>
+<p>cross-distance matrix is NOT symmetric, which can be problematic for</p>
 <pre class="r"><code># DTW_lb distance method
 pc_dtwlb &lt;- tsclust(l_SRF8_z, k = 2L:10L,
   distance = &quot;dtw_lb&quot;, centroid = &quot;dba&quot;,
@@ -3706,7 +3744,7 @@ Iteration 9: Changes / Distsum = 1 / 511.7074
     DBA Iteration: 1, 2 - Converged!
 Iteration 10: Changes / Distsum =  0 / 511.633
 
-    Elapsed time is 2.18 seconds.</code></pre>
+    Elapsed time is 2.58 seconds.</code></pre>
 <pre class="r"><code>internal_CVI(pc_dtwlb, &quot;Partial clustering with DTW_lb distance&quot;)</code></pre>
 <pre><code>    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
          11, 12 - Converged!
@@ -3811,11 +3849,13 @@ Iteration 10: Changes / Distsum = 3 / 545.5444
     DBA Iteration: 1, 2 - Converged!
 Iteration 11: Changes / Distsum = 0 / 545.6608
 
-    Elapsed time is 0.19 seconds.</code></pre>
+    Elapsed time is 0.2 seconds.</code></pre>
 <pre class="r"><code># Prototypes for 8 clusters
 plot(pc_dtwlb8)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-16-2.png" width="1056" style="display: block; margin: auto;" /></p>
-<p>(2-3) partial clustering methods - k-shape</p>
+</div>
+<div id="partial-clustering-methods---k-shape" class="section level4">
+<h4>(2-3) partial clustering methods - k-shape</h4>
 <pre class="r"><code># k-shape method
 pc_ks &lt;- tsclust(l_SRF8_z, k = 2L:10L,
   distance = &quot;sbd&quot;, centroid = &quot;shape&quot;,
@@ -3989,7 +4029,7 @@ Iteration 14: Changes / Distsum = 2 / 44.10935
 Iteration 15: Changes / Distsum = 2 / 44.09725
 Iteration 16: Changes / Distsum = 0 / 44.09232
 
-    Elapsed time is 5.77 seconds.</code></pre>
+    Elapsed time is 6.42 seconds.</code></pre>
 <pre class="r"><code>internal_CVI(pc_ks, &quot;Partial clustering with k-shape method&quot;)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-17-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># use 3 or 4 clusters
@@ -4011,7 +4051,7 @@ Iteration 12: Changes / Distsum = 4 / 69.30983
 Iteration 13: Changes / Distsum = 1 / 69.29236
 Iteration 14: Changes / Distsum =  0 / 69.2913
 
-    Elapsed time is 0.62 seconds.</code></pre>
+    Elapsed time is 0.65 seconds.</code></pre>
 <pre class="r"><code>pc_ks4 &lt;- tsclust(l_SRF8_z, k = 4L,
   distance = &quot;sbd&quot;, centroid = &quot;shape&quot;,
   seed = 8, trace = TRUE)</code></pre>
@@ -4049,7 +4089,7 @@ Iteration 31: Changes / Distsum = 2 / 61.02398
 Iteration 32: Changes / Distsum = 1 / 61.01079
 Iteration 33: Changes / Distsum = 0 / 61.00639
 
-    Elapsed time is 1.33 seconds.</code></pre>
+    Elapsed time is 1.47 seconds.</code></pre>
 <pre class="r"><code>pc_ks5 &lt;- tsclust(l_SRF8_z, k = 5L,
   distance = &quot;sbd&quot;, centroid = &quot;shape&quot;,
   seed = 8, trace = TRUE)</code></pre>
@@ -4077,7 +4117,7 @@ Iteration 21: Changes / Distsum =  5 / 57.9328
 Iteration 22: Changes / Distsum = 2 / 57.88911
 Iteration 23: Changes / Distsum = 0 / 57.87923
 
-    Elapsed time is 0.97 seconds.</code></pre>
+    Elapsed time is 1.07 seconds.</code></pre>
 <pre class="r"><code># Prototypes for 3 clusters
 plot(pc_ks3)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-17-2.png" width="1056" style="display: block; margin: auto;" /></p>
@@ -4087,7 +4127,10 @@ plot(pc_ks4)</code></pre>
 <pre class="r"><code># Prototypes for 5 clusters
 plot(pc_ks5)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-17-4.png" width="1056" style="display: block; margin: auto;" /></p>
-<p>(2-4) partial clustering methods - Tadpole problematic for our dataset (series’ cross-distance matrix is NOT symmetric)</p>
+</div>
+<div id="partial-clustering-methods---tadpole" class="section level4">
+<h4>(2-4) partial clustering methods - Tadpole</h4>
+<p>problematic for our dataset (series’ cross-distance matrix is NOT symmetric)</p>
 <pre class="r"><code># Tadpole method
 pc_tp &lt;- tsclust(l_SRF8_z, k = 2L:10L, type = &quot;t&quot;,
   seed = 8, trace = TRUE,
@@ -4113,7 +4156,7 @@ TADPole completed for k = 8 &amp; dc = 1.5
 TADPole completed for k = 9 &amp; dc = 1.5
 TADPole completed for k = 10 &amp; dc = 1.5
 
-    Elapsed time is 0.35 seconds.</code></pre>
+    Elapsed time is 0.39 seconds.</code></pre>
 <pre class="r"><code>internal_CVI(pc_tp, &quot;Partial clustering with Tadpole method&quot;)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># use 8 clusters
@@ -4133,10 +4176,11 @@ Performing cluster assignment
 
 TADPole completed for k = 8 &amp; dc = 1.5
 
-    Elapsed time is 0.26 seconds.</code></pre>
+    Elapsed time is 0.3 seconds.</code></pre>
 <pre class="r"><code># Prototypes for 8 clusters
 plot(pc_tp8)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-2.png" width="1056" style="display: block; margin: auto;" /></p>
+</div>
 </div>
 <div id="rain-analysis-rhythmicity-analysis-incorporating-non-parametric-methods" class="section level3">
 <h3>6. RAIN analysis (Rhythmicity Analysis Incorporating Non-parametric methods)</h3>
@@ -4657,22 +4701,137 @@ t &lt;- c(0, 3, 6, 9, 15, 19, 22, 25)
 # {1, 0, 1, 1, 0, 1} and a matrix x
 t &lt;- c(1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,1,0,0,1) # adjusted for irregular repeats
 
-#
-rainresult &lt;- rain(t(dc_8), period=8, measure.sequence=t, deltat=1)</code></pre>
-<pre><code>Error in rain(t(dc_8), period = 8, measure.sequence = t, deltat = 1): could not find function &quot;rain&quot;</code></pre>
-<pre class="r"><code>##add new column with corrected pvals
+# RAIN analysis
+library(rain)
+rainresult &lt;- rain(t(dc_8), period=8, measure.sequence=t, deltat=1)
+##add new column with corrected pvals
 p.adjust(as.numeric(rainresult$pVal), method=&quot;bonferroni&quot;)</code></pre>
-<pre><code>Error in p.adjust(as.numeric(rainresult$pVal), method = &quot;bonferroni&quot;): object &#39;rainresult&#39; not found</code></pre>
+<pre><code>  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ [38] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ [75] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[112] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[149] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[186] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[223] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[260] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[297] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[334] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[371] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[408] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</code></pre>
 <pre class="r"><code>p.adjust(as.numeric(rainresult$pVal), method=&quot;fdr&quot;)</code></pre>
-<pre><code>Error in p.adjust(as.numeric(rainresult$pVal), method = &quot;fdr&quot;): object &#39;rainresult&#39; not found</code></pre>
-<pre class="r"><code>rainresult$fdr &lt;- p.adjust(as.numeric(rainresult$pVal), method=&quot;fdr&quot;) # correct p-values for multiple testing</code></pre>
-<pre><code>Error in p.adjust(as.numeric(rainresult$pVal), method = &quot;fdr&quot;): object &#39;rainresult&#39; not found</code></pre>
-<pre class="r"><code># pVal cut off 0.05
+<pre><code>  [1] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+  [8] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+ [15] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+ [22] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+ [29] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+ [36] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+ [43] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+ [50] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+ [57] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+ [64] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+ [71] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+ [78] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+ [85] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+ [92] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+ [99] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[106] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[113] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[120] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[127] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[134] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[141] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[148] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[155] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[162] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[169] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[176] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[183] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[190] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[197] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[204] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[211] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[218] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[225] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[232] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[239] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[246] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[253] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[260] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[267] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[274] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[281] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[288] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[295] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[302] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[309] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[316] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[323] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[330] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[337] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[344] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[351] 0.9942119 0.9942119 0.9951640 0.9942119 0.9942119 0.9942119 0.9942119
+[358] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[365] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[372] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[379] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[386] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[393] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[400] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[407] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[414] 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119 0.9942119
+[421] 0.9942119 0.9942119 0.9942119 0.9942119</code></pre>
+<pre class="r"><code>rainresult$fdr &lt;- p.adjust(as.numeric(rainresult$pVal), method=&quot;fdr&quot;) # correct p-values for multiple testing
+
+# pVal cut off 0.05
 rainresult %&gt;% filter(pVal &lt; 0.05)</code></pre>
-<pre><code>Error in filter(., pVal &lt; 0.05): object &#39;rainresult&#39; not found</code></pre>
+<pre><code>             pVal phase peak.shape period       fdr
+P.135 0.008200168     2          6      8 0.9942119
+P.226 0.011345337     4          3      8 0.9942119
+P.312 0.017057569     2          4      8 0.9942119
+P.434 0.037934668     2          5      8 0.9942119</code></pre>
 <pre class="r"><code># pVal cut off 0.01
 rainresult %&gt;% filter(pVal &lt; 0.01)</code></pre>
-<pre><code>Error in filter(., pVal &lt; 0.01): object &#39;rainresult&#39; not found</code></pre>
+<pre><code>             pVal phase peak.shape period       fdr
+P.135 0.008200168     2          6      8 0.9942119</code></pre>
+</div>
+<div id="checking-the-intensity-distribution-of-peptides-in-each-sample" class="section level3">
+<h3>6.2. Checking the intensity distribution of peptides in each sample</h3>
+<pre class="r"><code># function to plot histogram
+hist_intensity &lt;- function(depth=&quot;SRF&quot;,time=&quot;T1&quot;){
+  df_ave_SRF_T1 &lt;- df_ave %&gt;% filter(Time==time &amp; Depth ==depth)
+  theme_set(theme_bw())
+  ggplot(df_ave_SRF_T1, aes(x=log2_Mean_intensity)) +
+    geom_freqpoly(binwidth = 0.05, aes(color=Replicate)) +
+    scale_fill_brewer(palette=&#39;Set2&#39;) +
+    ylab(&quot;Intensity \n&quot;) +
+    xlab(&quot;\n Frequency of intensity&quot;) +
+    ggtitle(paste0(&quot;Distribution of peptide intensity in each replicate for sample (&quot;,depth,&quot;-&quot;,time,&quot;) \n&quot;))+
+    ## adjust positions
+    theme(plot.title = element_text(size = 20,hjust = 0.5, family=&quot;serif&quot;)) + 
+    theme(axis.title.x = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
+    theme(axis.title.y = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
+    theme(axis.text.x = element_text(angle = 90, hjust = 0.5, vjust=0.3,size=13, family=&quot;serif&quot;))+
+    theme(axis.text.y = element_text(size=10))
+    # theme(panel.grid.major = element_blank())
+    # theme(panel.grid.minor = element_blank()) 
+}
+
+hist_intensity(depth=&quot;SRF&quot;,time=&quot;T1&quot;)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-20-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>hist_intensity(depth=&quot;SRF&quot;,time=&quot;T2&quot;)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-20-2.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>hist_intensity(depth=&quot;SRF&quot;,time=&quot;T3&quot;)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-20-3.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>hist_intensity(depth=&quot;SRF&quot;,time=&quot;T4&quot;)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-20-4.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>hist_intensity(depth=&quot;SRF&quot;,time=&quot;T5&quot;)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-20-5.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>hist_intensity(depth=&quot;SRF&quot;,time=&quot;T6&quot;)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-20-6.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>hist_intensity(depth=&quot;SRF&quot;,time=&quot;T7&quot;)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-20-7.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>hist_intensity(depth=&quot;SRF&quot;,time=&quot;T8&quot;)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-20-8.png" width="1056" style="display: block; margin: auto;" /></p>
 </div>
 <div id="archived-not-using-this-part" class="section level3">
 <h3>Archived: Not using this part</h3>
@@ -4845,7 +5004,7 @@ saw &lt;- rep(13:24 / 18 , 2) + rnorm(24, 0, 0.3)
 measure &lt;- cbind(sin, saw)
 require(&#39;lattice&#39;)
 xyplot(t(measure)~rep(times, each=2) | c(&#39;sin&#39;, &#39;saw&#39;),layout = c(1, 2), type = &#39;o&#39;, xlab = &#39;time&#39;, ylab = &#39;value&#39;, cex.lab = 0.6)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-22-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-23-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>require(rain)
 rainresult &lt;- rain(measure, period=24, deltat=2, peak.border=c(0.1,0.9), verbose=FALSE)
 rainresult</code></pre>
@@ -4859,7 +5018,7 @@ colnames(menetRNASeqMouseLiver)</code></pre>
 <pre class="r"><code>results &lt;- rain(t(menetRNASeqMouseLiver), deltat=4, period=24, nr.series=2, peak.border=c(0.3, 0.7), verbose=FALSE)
 best &lt;- order(results$pVal)[1:10]
 xyplot(as.matrix(menetRNASeqMouseLiver[best, (0:5 * 2 + rep(c(1, 2), each = 6))]) ~rep(0:11 * 4 + 2, each = 10) |rownames(menetRNASeqMouseLiver)[best], scales = list(y = list(relation = &#39;free&#39;)), layout = c(2, 5), type = &#39;b&#39;, pch = 16, xlab = &#39;time&#39;, ylab = &#39;expression value&#39;, cex.lab = 1)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-22-2.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-23-2.png" width="1056" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -4891,8 +5050,8 @@ attached base packages:
 [8] base     
 
 other attached packages:
- [1] rain_1.24.0         multtest_2.46.0     Biobase_2.50.0     
- [4] BiocGenerics_0.36.0 gmp_0.6-2           lattice_0.20-41    
+ [1] lattice_0.20-41     rain_1.24.0         multtest_2.46.0    
+ [4] Biobase_2.50.0      BiocGenerics_0.36.0 gmp_0.6-2          
  [7] TSclust_1.3.1       cluster_2.1.0       pdc_1.0.3          
 [10] dtwclust_5.5.6      dtw_1.22-3          proxy_0.4-24       
 [13] maditr_0.7.4        data.table_1.14.0   formattable_0.2.1  
