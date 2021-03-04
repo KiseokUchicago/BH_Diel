@@ -473,16 +473,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree2a8d1baa0753a5fb1ce13c40005b1787bc4fbab4targetblank2a8d1baa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/2a8d1baa0753a5fb1ce13c40005b1787bc4fbab4" target="_blank">2a8d1ba</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree227f4ae68bd8936606faff4c78622c261dffb648targetblank227f4aea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/227f4ae68bd8936606faff4c78622c261dffb648" target="_blank">227f4ae</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree2a8d1baa0753a5fb1ce13c40005b1787bc4fbab4targetblank2a8d1baa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree227f4ae68bd8936606faff4c78622c261dffb648targetblank227f4aea" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/2a8d1baa0753a5fb1ce13c40005b1787bc4fbab4" target="_blank">2a8d1ba</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/227f4ae68bd8936606faff4c78622c261dffb648" target="_blank">227f4ae</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -621,6 +621,7 @@ Untracked files:
     Untracked:  63_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T8-SRF_filtered_PSMs.xlsx
     Untracked:  Hist_freq_of_peptide_id.pdf
     Untracked:  Hist_intensity_replicate.pdf
+    Untracked:  Hist_intensity_spec_level.pdf
     Untracked:  Hist_number of timepoints_peptide_appears.pdf
     Untracked:  P1_number_unique_peptide_per_sample.pdf
     Untracked:  P2_number_of_cumulative_unique_peptides.pdf
@@ -680,6 +681,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KiseokUchicago/BH_Diel/blob/227f4ae68bd8936606faff4c78622c261dffb648/analysis/peptide_level_visualization.Rmd" target="_blank">227f4ae</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-04
+</td>
+<td>
+spec_level
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KiseokUchicago/BH_Diel/c974307139ff5f126397f0e41c958cd2f37eaaa9/docs/peptide_level_visualization.html" target="_blank">c974307</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-04
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -2724,7 +2759,7 @@ Iteration 10: Changes / Distsum = 1 / 512.1642
     DBA Iteration: 1, 2, 3 - Converged!
 Iteration 11: Changes / Distsum = 0 / 512.1043
 
-    Elapsed time is 2.08 seconds.</code></pre>
+    Elapsed time is 1.71 seconds.</code></pre>
 <pre class="r"><code>internal_CVI(pc_dtw, &quot;Partial clustering with DTW distance&quot;)</code></pre>
 <pre><code>    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
          11, 12 - Converged!
@@ -2784,7 +2819,7 @@ Iteration 6: Changes / Distsum = 6 / 596.5909
     DBA Iteration: 1, 2 - Converged!
 Iteration 7: Changes / Distsum = 0 / 596.7076
 
-    Elapsed time is 0.11 seconds.</code></pre>
+    Elapsed time is 0.08 seconds.</code></pre>
 <pre class="r"><code>pc_dtw5 &lt;- tsclust(l_SRF8_z, k = 5L,
   distance = &quot;dtw_basic&quot;, centroid = &quot;dba&quot;,
   trace = TRUE, seed = 8,
@@ -2837,7 +2872,7 @@ Iteration 8: Changes / Distsum = 1 / 570.2049
     DBA Iteration: 1, 2, 3 - Converged!
 Iteration 9: Changes / Distsum =  0 / 570.166
 
-    Elapsed time is 0.14 seconds.</code></pre>
+    Elapsed time is 0.11 seconds.</code></pre>
 <pre class="r"><code>pc_dtw7 &lt;- tsclust(l_SRF8_z, k = 7L,
   distance = &quot;dtw_basic&quot;, centroid = &quot;dba&quot;,
   trace = TRUE, seed = 8,
@@ -2935,7 +2970,7 @@ Iteration 14: Changes / Distsum = 2 / 546.6194
     DBA Iteration: 1, 2, 3 - Converged!
 Iteration 15: Changes / Distsum = 0 / 546.5289
 
-    Elapsed time is 0.22 seconds.</code></pre>
+    Elapsed time is 0.19 seconds.</code></pre>
 <pre class="r"><code># Prototypes for 4 clusters
 plot(pc_dtw4)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-15-2.png" width="1056" style="display: block; margin: auto;" /></p>
@@ -3779,7 +3814,7 @@ Iteration 9: Changes / Distsum = 1 / 511.7074
     DBA Iteration: 1, 2 - Converged!
 Iteration 10: Changes / Distsum =  0 / 511.633
 
-    Elapsed time is 2.55 seconds.</code></pre>
+    Elapsed time is 2.17 seconds.</code></pre>
 <pre class="r"><code>internal_CVI(pc_dtwlb, &quot;Partial clustering with DTW_lb distance&quot;)</code></pre>
 <pre><code>    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
          11, 12 - Converged!
@@ -3884,7 +3919,7 @@ Iteration 10: Changes / Distsum = 3 / 545.5444
     DBA Iteration: 1, 2 - Converged!
 Iteration 11: Changes / Distsum = 0 / 545.6608
 
-    Elapsed time is 0.2 seconds.</code></pre>
+    Elapsed time is 0.17 seconds.</code></pre>
 <pre class="r"><code># Prototypes for 8 clusters
 plot(pc_dtwlb8)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-16-2.png" width="1056" style="display: block; margin: auto;" /></p>
@@ -4064,7 +4099,7 @@ Iteration 14: Changes / Distsum = 2 / 44.10935
 Iteration 15: Changes / Distsum = 2 / 44.09725
 Iteration 16: Changes / Distsum = 0 / 44.09232
 
-    Elapsed time is 6.2 seconds.</code></pre>
+    Elapsed time is 5.95 seconds.</code></pre>
 <pre class="r"><code>internal_CVI(pc_ks, &quot;Partial clustering with k-shape method&quot;)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-17-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># use 3 or 4 clusters
@@ -4086,7 +4121,7 @@ Iteration 12: Changes / Distsum = 4 / 69.30983
 Iteration 13: Changes / Distsum = 1 / 69.29236
 Iteration 14: Changes / Distsum =  0 / 69.2913
 
-    Elapsed time is 0.64 seconds.</code></pre>
+    Elapsed time is 0.61 seconds.</code></pre>
 <pre class="r"><code>pc_ks4 &lt;- tsclust(l_SRF8_z, k = 4L,
   distance = &quot;sbd&quot;, centroid = &quot;shape&quot;,
   seed = 8, trace = TRUE)</code></pre>
@@ -4124,7 +4159,7 @@ Iteration 31: Changes / Distsum = 2 / 61.02398
 Iteration 32: Changes / Distsum = 1 / 61.01079
 Iteration 33: Changes / Distsum = 0 / 61.00639
 
-    Elapsed time is 1.45 seconds.</code></pre>
+    Elapsed time is 1.4 seconds.</code></pre>
 <pre class="r"><code>pc_ks5 &lt;- tsclust(l_SRF8_z, k = 5L,
   distance = &quot;sbd&quot;, centroid = &quot;shape&quot;,
   seed = 8, trace = TRUE)</code></pre>
@@ -4152,7 +4187,7 @@ Iteration 21: Changes / Distsum =  5 / 57.9328
 Iteration 22: Changes / Distsum = 2 / 57.88911
 Iteration 23: Changes / Distsum = 0 / 57.87923
 
-    Elapsed time is 1.02 seconds.</code></pre>
+    Elapsed time is 1 seconds.</code></pre>
 <pre class="r"><code># Prototypes for 3 clusters
 plot(pc_ks3)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-17-2.png" width="1056" style="display: block; margin: auto;" /></p>
@@ -4191,7 +4226,7 @@ TADPole completed for k = 8 &amp; dc = 1.5
 TADPole completed for k = 9 &amp; dc = 1.5
 TADPole completed for k = 10 &amp; dc = 1.5
 
-    Elapsed time is 0.36 seconds.</code></pre>
+    Elapsed time is 0.39 seconds.</code></pre>
 <pre class="r"><code>internal_CVI(pc_tp, &quot;Partial clustering with Tadpole method&quot;)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># use 8 clusters
@@ -4211,7 +4246,7 @@ Performing cluster assignment
 
 TADPole completed for k = 8 &amp; dc = 1.5
 
-    Elapsed time is 0.28 seconds.</code></pre>
+    Elapsed time is 0.29 seconds.</code></pre>
 <pre class="r"><code># Prototypes for 8 clusters
 plot(pc_tp8)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-2.png" width="1056" style="display: block; margin: auto;" /></p>
@@ -4831,6 +4866,9 @@ P.135 0.008200168     2          6      8 0.9942119</code></pre>
 </div>
 <div id="checking-the-intensity-distribution-of-peptides-in-each-sample" class="section level3">
 <h3>6.2. Checking the intensity distribution of peptides in each sample</h3>
+<ol style="list-style-type: decimal">
+<li>Peptide level histograms</li>
+</ol>
 <pre class="r"><code># function to plot histogram
 hist_intensity &lt;- function(depth=&quot;SRF&quot;,time=&quot;T1&quot;){
   df_ave_SRF_T1 &lt;- df_ave %&gt;% filter(Time==time &amp; Depth ==depth)
@@ -4889,6 +4927,67 @@ for (i in paste0(&quot;T&quot;,1L:8L)){
 <pre><code>[1] 8</code></pre>
 <pre class="r"><code>grid.arrange(grobs = l, ncol=3)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-20-9.png" width="1056" style="display: block; margin: auto;" /></p>
+<ol start="2" style="list-style-type: decimal">
+<li>Spectra level histograms</li>
+</ol>
+<pre class="r"><code># function to plot histogram
+hist_intensity_spec &lt;- function(depth=&quot;SRF&quot;,time=&quot;T1&quot;){
+  df_int_SRF_T1 &lt;- df_int %&gt;% filter(Time==time &amp; Depth ==depth) %&gt;% select(-Peptide_id)
+  theme_set(theme_bw())
+  h1 &lt;- ggplot(df_int_SRF_T1, aes(x=log2.18O.16O.Ratio)) +
+    geom_freqpoly(binwidth = 0.05, aes(color=Replicate)) +
+    scale_fill_brewer(palette=&#39;Set2&#39;) +
+    ylab(&quot;Intensity \n&quot;) +
+    xlab(&quot;\n Frequency of intensity (Spec-level)&quot;) +
+    ggtitle(paste0(&quot;Histogram of sample (&quot;,depth,&quot;-&quot;,time,&quot;) \n&quot;))+
+    ## adjust positions
+    theme(plot.title = element_text(size = 20,hjust = 0.5, family=&quot;serif&quot;)) + 
+    theme(axis.title.x = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
+    theme(axis.title.y = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
+    theme(axis.text.x = element_text(angle = 90, hjust = 0.5, vjust=0.3,size=13, family=&quot;serif&quot;))+
+    theme(axis.text.y = element_text(size=10))
+    # theme(panel.grid.major = element_blank())
+    # theme(panel.grid.minor = element_blank()) 
+  return(h1)
+}
+
+hist_intensity_spec(depth=&quot;SRF&quot;,time=&quot;T1&quot;)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-21-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>hist_intensity_spec(depth=&quot;SRF&quot;,time=&quot;T2&quot;)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-21-2.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>hist_intensity_spec(depth=&quot;SRF&quot;,time=&quot;T3&quot;)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-21-3.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>hist_intensity_spec(depth=&quot;SRF&quot;,time=&quot;T4&quot;)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-21-4.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>hist_intensity_spec(depth=&quot;SRF&quot;,time=&quot;T5&quot;)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-21-5.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>hist_intensity_spec(depth=&quot;SRF&quot;,time=&quot;T6&quot;)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-21-6.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>hist_intensity_spec(depth=&quot;SRF&quot;,time=&quot;T7&quot;)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-21-7.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>hist_intensity_spec(depth=&quot;SRF&quot;,time=&quot;T8&quot;)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-21-8.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># draw histogram in multigrids
+library(gridExtra)
+paste0(&quot;T&quot;,1L:8L)</code></pre>
+<pre><code>[1] &quot;T1&quot; &quot;T2&quot; &quot;T3&quot; &quot;T4&quot; &quot;T5&quot; &quot;T6&quot; &quot;T7&quot; &quot;T8&quot;</code></pre>
+<pre class="r"><code>l &lt;- list()
+for (i in paste0(&quot;T&quot;,1L:8L)){
+  print(i)
+  l[[i]] &lt;- hist_intensity_spec(depth=&quot;SRF&quot;,time=i)
+}</code></pre>
+<pre><code>[1] &quot;T1&quot;
+[1] &quot;T2&quot;
+[1] &quot;T3&quot;
+[1] &quot;T4&quot;
+[1] &quot;T5&quot;
+[1] &quot;T6&quot;
+[1] &quot;T7&quot;
+[1] &quot;T8&quot;</code></pre>
+<pre class="r"><code>length(l)</code></pre>
+<pre><code>[1] 8</code></pre>
+<pre class="r"><code>grid.arrange(grobs = l, ncol=3)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-21-9.png" width="1056" style="display: block; margin: auto;" /></p>
 </div>
 <div id="archived-not-using-this-part" class="section level3">
 <h3>Archived: Not using this part</h3>
@@ -5061,7 +5160,7 @@ saw &lt;- rep(13:24 / 18 , 2) + rnorm(24, 0, 0.3)
 measure &lt;- cbind(sin, saw)
 require(&#39;lattice&#39;)
 xyplot(t(measure)~rep(times, each=2) | c(&#39;sin&#39;, &#39;saw&#39;),layout = c(1, 2), type = &#39;o&#39;, xlab = &#39;time&#39;, ylab = &#39;value&#39;, cex.lab = 0.6)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-23-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-24-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>require(rain)
 rainresult &lt;- rain(measure, period=24, deltat=2, peak.border=c(0.1,0.9), verbose=FALSE)
 rainresult</code></pre>
@@ -5075,7 +5174,7 @@ colnames(menetRNASeqMouseLiver)</code></pre>
 <pre class="r"><code>results &lt;- rain(t(menetRNASeqMouseLiver), deltat=4, period=24, nr.series=2, peak.border=c(0.3, 0.7), verbose=FALSE)
 best &lt;- order(results$pVal)[1:10]
 xyplot(as.matrix(menetRNASeqMouseLiver[best, (0:5 * 2 + rep(c(1, 2), each = 6))]) ~rep(0:11 * 4 + 2, each = 10) |rownames(menetRNASeqMouseLiver)[best], scales = list(y = list(relation = &#39;free&#39;)), layout = c(2, 5), type = &#39;b&#39;, pch = 16, xlab = &#39;time&#39;, ylab = &#39;expression value&#39;, cex.lab = 1)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-23-2.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-24-2.png" width="1056" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
