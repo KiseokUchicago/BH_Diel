@@ -734,6 +734,7 @@ rainresult %>% filter(pVal < 0.01)
 
 ### 6.2. Checking the intensity distribution of peptides in each sample
 
+(1) Peptide level histograms
 
 ```{r}
 # function to plot histogram
@@ -781,8 +782,53 @@ grid.arrange(grobs = l, ncol=3)
 
 ```
 
+(2) Spectra level histograms
 
+```{r}
+# function to plot histogram
+hist_intensity_spec <- function(depth="SRF",time="T1"){
+  df_int_SRF_T1 <- df_int %>% filter(Time==time & Depth ==depth) %>% select(-Peptide_id)
+  theme_set(theme_bw())
+  h1 <- ggplot(df_int_SRF_T1, aes(x=log2.18O.16O.Ratio)) +
+    geom_freqpoly(binwidth = 0.05, aes(color=Replicate)) +
+    scale_fill_brewer(palette='Set2') +
+    ylab("Intensity \n") +
+    xlab("\n Frequency of intensity (Spec-level)") +
+    ggtitle(paste0("Histogram of sample (",depth,"-",time,") \n"))+
+    ## adjust positions
+    theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
+    theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
+    theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
+    theme(axis.text.x = element_text(angle = 90, hjust = 0.5, vjust=0.3,size=13, family="serif"))+
+    theme(axis.text.y = element_text(size=10))
+    # theme(panel.grid.major = element_blank())
+    # theme(panel.grid.minor = element_blank()) 
+  return(h1)
+}
 
+hist_intensity_spec(depth="SRF",time="T1")
+hist_intensity_spec(depth="SRF",time="T2")
+hist_intensity_spec(depth="SRF",time="T3")
+hist_intensity_spec(depth="SRF",time="T4")
+hist_intensity_spec(depth="SRF",time="T5")
+hist_intensity_spec(depth="SRF",time="T6")
+hist_intensity_spec(depth="SRF",time="T7")
+hist_intensity_spec(depth="SRF",time="T8")
+
+# draw histogram in multigrids
+library(gridExtra)
+paste0("T",1L:8L)
+
+l <- list()
+for (i in paste0("T",1L:8L)){
+  print(i)
+  l[[i]] <- hist_intensity_spec(depth="SRF",time=i)
+}
+length(l)
+
+grid.arrange(grobs = l, ncol=3)
+
+```
 
 
 
