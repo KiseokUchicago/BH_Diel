@@ -117,7 +117,7 @@ p1
 It seems to saturate as more samples are added.
 
 
-### 3.1. Which Peptide_ids are present in all(almost) time points?
+### 3. Which Peptide_ids are present in all(almost) time points?
 Make a histogram of x-axis being the # of time points present, y-axis being the number of Peptide_ids \
 We need 3 histogram for (1) Surface, (2) DCL, and (3) BDCL
 
@@ -740,12 +740,12 @@ rainresult %>% filter(pVal < 0.01)
 hist_intensity <- function(depth="SRF",time="T1"){
   df_ave_SRF_T1 <- df_ave %>% filter(Time==time & Depth ==depth)
   theme_set(theme_bw())
-  ggplot(df_ave_SRF_T1, aes(x=log2_Mean_intensity)) +
+  h1 <- ggplot(df_ave_SRF_T1, aes(x=log2_Mean_intensity)) +
     geom_freqpoly(binwidth = 0.05, aes(color=Replicate)) +
     scale_fill_brewer(palette='Set2') +
     ylab("Intensity \n") +
     xlab("\n Frequency of intensity") +
-    ggtitle(paste0("Distribution of peptide intensity in each replicate for sample (",depth,"-",time,") \n"))+
+    ggtitle(paste0("Histogram of sample (",depth,"-",time,") \n"))+
     ## adjust positions
     theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
     theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
@@ -754,6 +754,7 @@ hist_intensity <- function(depth="SRF",time="T1"){
     theme(axis.text.y = element_text(size=10))
     # theme(panel.grid.major = element_blank())
     # theme(panel.grid.minor = element_blank()) 
+  return(h1)
 }
 
 hist_intensity(depth="SRF",time="T1")
@@ -764,6 +765,19 @@ hist_intensity(depth="SRF",time="T5")
 hist_intensity(depth="SRF",time="T6")
 hist_intensity(depth="SRF",time="T7")
 hist_intensity(depth="SRF",time="T8")
+
+# draw histogram in multigrids
+library(gridExtra)
+paste0("T",1L:8L)
+
+l <- list()
+for (i in paste0("T",1L:8L)){
+  print(i)
+  l[[i]] <- hist_intensity(depth="SRF",time=i)
+}
+length(l)
+
+grid.arrange(grobs = l, ncol=3)
 
 ```
 
