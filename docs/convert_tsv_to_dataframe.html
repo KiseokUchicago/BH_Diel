@@ -21,6 +21,15 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -48,11 +57,6 @@ div.section {
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -65,32 +69,6 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
 
 
 
@@ -101,10 +79,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -121,40 +95,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -182,7 +129,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -194,7 +141,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -205,10 +152,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -220,7 +180,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -346,13 +305,13 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
 
 
 
@@ -392,7 +351,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -423,7 +382,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-03-02
+<strong>Last updated:</strong> 2021-03-08
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -514,16 +473,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree7f26b0f0ed5a088087ff67171af9bd22c65efe5ftargetblank7f26b0fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/7f26b0f0ed5a088087ff67171af9bd22c65efe5f" target="_blank">7f26b0f</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree52d2f3cc2eeddf54b96a8fd538594cbc2acd6452targetblank52d2f3ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/52d2f3cc2eeddf54b96a8fd538594cbc2acd6452" target="_blank">52d2f3c</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree7f26b0f0ed5a088087ff67171af9bd22c65efe5ftargetblank7f26b0fa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree52d2f3cc2eeddf54b96a8fd538594cbc2acd6452targetblank52d2f3ca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/7f26b0f0ed5a088087ff67171af9bd22c65efe5f" target="_blank">7f26b0f</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/52d2f3cc2eeddf54b96a8fd538594cbc2acd6452" target="_blank">52d2f3c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -661,6 +620,8 @@ Untracked files:
     Untracked:  63_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T8-SRF_filtered_PSMs.tsv
     Untracked:  63_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T8-SRF_filtered_PSMs.xlsx
     Untracked:  Hist_freq_of_peptide_id.pdf
+    Untracked:  Hist_intensity_replicate.pdf
+    Untracked:  Hist_intensity_spec_level.pdf
     Untracked:  Hist_number of timepoints_peptide_appears.pdf
     Untracked:  P1_number_unique_peptide_per_sample.pdf
     Untracked:  P2_number_of_cumulative_unique_peptides.pdf
@@ -675,10 +636,16 @@ Untracked files:
     Untracked:  Replicate_B_combined.xlsx
     Untracked:  Time_series_intesity_all.pdf
     Untracked:  data/Time_metadata.txt
+    Untracked:  data/counts_example.csv
     Untracked:  data/diel-Feb21/
     Untracked:  data/diel-Feb25/
     Untracked:  data/diel-Feb26/
     Untracked:  data/diel-Mar2/
+    Untracked:  data/synthetic_control.data.txt
+    Untracked:  hclust_DTW_average_wide.pdf
+
+Unstaged changes:
+    Modified:   analysis/peptide_level_visualization.Rmd
 
 </code></pre>
 <p>
@@ -717,6 +684,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KiseokUchicago/BH_Diel/blob/52d2f3cc2eeddf54b96a8fd538594cbc2acd6452/analysis/convert_tsv_to_dataframe.Rmd" target="_blank">52d2f3c</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-08
+</td>
+<td>
+reversed intensity and centered by subtracting median
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KiseokUchicago/BH_Diel/52cb18451f2c50292d084abf3126d330ef6be2bb/docs/convert_tsv_to_dataframe.html" target="_blank">52cb184</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-02
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1070,16 +1071,19 @@ head(df7)</code></pre>
 4  False
 5  False
 6  False</code></pre>
-<pre class="r"><code># Arrange column order
-df8 &lt;- df7 %&gt;% select(Spec_id, Base.Peptide.Sequence, log2.18O.16O.Ratio,SampleID,Index,Cruise,Station,Isotope, Replicate, Time, Depth, SpectrumID, ScanID, Target., Decoy.)
-head(df8)   </code></pre>
-<pre><code>          Spec_id Base.Peptide.Sequence log2.18O.16O.Ratio  SampleID Index
-1 BDCL_T1_B_56549  LLSENVDAIIGAASSGVSLK        -0.60046965 BDCL_T1_B     1
-2 BDCL_T1_B_48736    SVFVNQASSEGIGQALAK        -0.09393621 BDCL_T1_B     2
-3 BDCL_T1_B_50215    EEIASVASISAADTEIGR        -1.17728746 BDCL_T1_B     3
-4 BDCL_T1_B_47756    GQADIGLLGSTAGTQLNR        -0.82806202 BDCL_T1_B     4
-5 BDCL_T1_B_48571    SVFVNQASSEGIGQALAK        -1.05946785 BDCL_T1_B     5
-6 BDCL_T1_B_56779 AMLQDIAVLTGGTVITDELGR        -0.70018147 BDCL_T1_B     6
+<pre class="r"><code># important to reverse the ratio
+df8 &lt;- df7 %&gt;% mutate(log2.16O.18O.Ratio = -log2.18O.16O.Ratio)
+
+# Arrange column order
+df9 &lt;- df8 %&gt;% select(Spec_id, Base.Peptide.Sequence, log2.16O.18O.Ratio,SampleID,Index,Cruise,Station,Isotope, Replicate, Time, Depth, SpectrumID, ScanID, Target., Decoy.)
+head(df9)   </code></pre>
+<pre><code>          Spec_id Base.Peptide.Sequence log2.16O.18O.Ratio  SampleID Index
+1 BDCL_T1_B_56549  LLSENVDAIIGAASSGVSLK         0.60046965 BDCL_T1_B     1
+2 BDCL_T1_B_48736    SVFVNQASSEGIGQALAK         0.09393621 BDCL_T1_B     2
+3 BDCL_T1_B_50215    EEIASVASISAADTEIGR         1.17728746 BDCL_T1_B     3
+4 BDCL_T1_B_47756    GQADIGLLGSTAGTQLNR         0.82806202 BDCL_T1_B     4
+5 BDCL_T1_B_48571    SVFVNQASSEGIGQALAK         1.05946785 BDCL_T1_B     5
+6 BDCL_T1_B_56779 AMLQDIAVLTGGTVITDELGR         0.70018147 BDCL_T1_B     6
      Cruise Station Isotope Replicate Time Depth SpectrumID ScanID Target.
 1 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      49728  56549    True
 2 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      42413  48736    True
@@ -1095,38 +1099,43 @@ head(df8)   </code></pre>
 5  False
 6  False</code></pre>
 <pre class="r"><code># screen and remove Decoy = True
-df9 &lt;- df8 %&gt;% filter(Decoy.==&#39;False&#39;)
+df10 &lt;- df9 %&gt;% filter(Decoy.==&#39;False&#39;)
 # confirm
-df9[df9$Decoy.==&#39;True&#39;,]</code></pre>
-<pre><code> [1] Spec_id               Base.Peptide.Sequence log2.18O.16O.Ratio   
+df10[df10$Decoy.==&#39;True&#39;,]</code></pre>
+<pre><code> [1] Spec_id               Base.Peptide.Sequence log2.16O.18O.Ratio   
  [4] SampleID              Index                 Cruise               
  [7] Station               Isotope               Replicate            
 [10] Time                  Depth                 SpectrumID           
 [13] ScanID                Target.               Decoy.               
 &lt;0 rows&gt; (or 0-length row.names)</code></pre>
-<pre class="r"><code># final form
-head(df9)</code></pre>
-<pre><code>          Spec_id Base.Peptide.Sequence log2.18O.16O.Ratio  SampleID Index
-1 BDCL_T1_B_56549  LLSENVDAIIGAASSGVSLK        -0.60046965 BDCL_T1_B     1
-2 BDCL_T1_B_48736    SVFVNQASSEGIGQALAK        -0.09393621 BDCL_T1_B     2
-3 BDCL_T1_B_50215    EEIASVASISAADTEIGR        -1.17728746 BDCL_T1_B     3
-4 BDCL_T1_B_47756    GQADIGLLGSTAGTQLNR        -0.82806202 BDCL_T1_B     4
-5 BDCL_T1_B_48571    SVFVNQASSEGIGQALAK        -1.05946785 BDCL_T1_B     5
-6 BDCL_T1_B_56779 AMLQDIAVLTGGTVITDELGR        -0.70018147 BDCL_T1_B     6
-     Cruise Station Isotope Replicate Time Depth SpectrumID ScanID Target.
-1 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      49728  56549    True
-2 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      42413  48736    True
-3 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      43799  50215    True
-4 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      41495  47756    True
-5 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      42258  48571    True
-6 CyanoSUMI   MI41M  18OMix         B   T1  BDCL      49943  56779    True
-  Decoy.
-1  False
-2  False
-3  False
-4  False
-5  False
-6  False</code></pre>
+<pre class="r"><code># subtract median the intensity after filtering =&gt; output change to cent.log2.16O.18O.Ratio (centered)
+median(df10$log2.16O.18O.Ratio)</code></pre>
+<pre><code>[1] 0.6346337</code></pre>
+<pre class="r"><code>df11 &lt;- df10 %&gt;% mutate(cent.log2.16O.18O.Ratio = log2.16O.18O.Ratio - median(df10$log2.16O.18O.Ratio)) %&gt;%
+  select(Spec_id, Base.Peptide.Sequence, log2.16O.18O.Ratio,cent.log2.16O.18O.Ratio, SampleID,Index,Cruise,Station,Isotope, Replicate, Time, Depth, SpectrumID, ScanID, Target., Decoy.)
+# final form
+head(df11)</code></pre>
+<pre><code>          Spec_id Base.Peptide.Sequence log2.16O.18O.Ratio
+1 BDCL_T1_B_56549  LLSENVDAIIGAASSGVSLK         0.60046965
+2 BDCL_T1_B_48736    SVFVNQASSEGIGQALAK         0.09393621
+3 BDCL_T1_B_50215    EEIASVASISAADTEIGR         1.17728746
+4 BDCL_T1_B_47756    GQADIGLLGSTAGTQLNR         0.82806202
+5 BDCL_T1_B_48571    SVFVNQASSEGIGQALAK         1.05946785
+6 BDCL_T1_B_56779 AMLQDIAVLTGGTVITDELGR         0.70018147
+  cent.log2.16O.18O.Ratio  SampleID Index    Cruise Station Isotope Replicate
+1             -0.03416409 BDCL_T1_B     1 CyanoSUMI   MI41M  18OMix         B
+2             -0.54069753 BDCL_T1_B     2 CyanoSUMI   MI41M  18OMix         B
+3              0.54265372 BDCL_T1_B     3 CyanoSUMI   MI41M  18OMix         B
+4              0.19342828 BDCL_T1_B     4 CyanoSUMI   MI41M  18OMix         B
+5              0.42483411 BDCL_T1_B     5 CyanoSUMI   MI41M  18OMix         B
+6              0.06554773 BDCL_T1_B     6 CyanoSUMI   MI41M  18OMix         B
+  Time Depth SpectrumID ScanID Target. Decoy.
+1   T1  BDCL      49728  56549    True  False
+2   T1  BDCL      42413  48736    True  False
+3   T1  BDCL      43799  50215    True  False
+4   T1  BDCL      41495  47756    True  False
+5   T1  BDCL      42258  48571    True  False
+6   T1  BDCL      49943  56779    True  False</code></pre>
 </div>
 <div id="doing-it-for-all-tsv-files" class="section level3">
 <h3>Doing it for all tsv files</h3>
@@ -1154,17 +1163,25 @@ convert_tsv &lt;- function(file_number, filename){
   df7 &lt;- df6 %&gt;% unite(c(&#39;Depth&#39;,&#39;Time&#39;,&#39;Replicate&#39;,&#39;ScanID&#39;),col=Spec_id, remove=F) 
   df7 &lt;- df7 %&gt;% unite(c(&#39;Depth&#39;,&#39;Time&#39;,&#39;Replicate&#39;),col=SampleID, remove=F) 
   head(df7)
-  # Arrange column order
-  df8 &lt;- df7 %&gt;% select(Spec_id, Base.Peptide.Sequence, log2.18O.16O.Ratio,SampleID,Index,Cruise,Station,Isotope, Replicate, Time, Depth, SpectrumID, ScanID, Target., Decoy.)
-  # screen and remove Decoy = True
-  df9 &lt;- df8 %&gt;% filter(Decoy.==&#39;False&#39;)
-  # confirm
-  df9[df9$Decoy.==&#39;True&#39;,]
+  # important to reverse the ratio
+  df8 &lt;- df7 %&gt;% mutate(log2.16O.18O.Ratio = -log2.18O.16O.Ratio)
   
+  # Arrange column order
+  df9 &lt;- df8 %&gt;% select(Spec_id, Base.Peptide.Sequence, log2.16O.18O.Ratio,SampleID,Index,Cruise,Station,Isotope, Replicate, Time, Depth, SpectrumID, ScanID, Target., Decoy.)
+  head(df9)   
+  # screen and remove Decoy = True
+  df10 &lt;- df9 %&gt;% filter(Decoy.==&#39;False&#39;)
+  # confirm
+  df10[df10$Decoy.==&#39;True&#39;,]
+  
+  # subtract median the intensity after filtering =&gt; output change to cent.log2.16O.18O.Ratio (centered)
+  median(df10$log2.16O.18O.Ratio)
+  df11 &lt;- df10 %&gt;% mutate(cent.log2.16O.18O.Ratio = log2.16O.18O.Ratio - median(df10$log2.16O.18O.Ratio)) %&gt;%
+    select(Spec_id, Base.Peptide.Sequence, log2.16O.18O.Ratio,cent.log2.16O.18O.Ratio, SampleID,Index,Cruise,Station,Isotope, Replicate, Time, Depth, SpectrumID, ScanID, Target., Decoy.)
   # final form
-  head(df9)
-  write.table(df9,file=paste0(file_number,&#39;_&#39;,filename), sep=&#39;\t&#39;,row.names = F)
-  openxlsx::write.xlsx(df9,paste0(file_number,&#39;_&#39;,str_remove(filename,&#39;.tsv&#39;),&#39;.xlsx&#39;),rowNames=F)
+  head(df11)
+  write.table(df11,file=paste0(file_number,&#39;_&#39;,filename), sep=&#39;\t&#39;,row.names = F)
+  openxlsx::write.xlsx(df11,paste0(file_number,&#39;_&#39;,str_remove(filename,&#39;.tsv&#39;),&#39;.xlsx&#39;),rowNames=F)
 }
 
 # list all files in certain folder
@@ -1317,54 +1334,54 @@ tsv_files  &lt;- list.files(pattern = &#39;^[0-9].*_PSMs\\.tsv&#39;)
 tables &lt;- lapply(tsv_files, read.table, header = TRUE)
 combined_tsv &lt;- do.call(rbind , tables)
 head(combined_tsv)</code></pre>
-<pre><code>          Spec_id Base.Peptide.Sequence log2.18O.16O.Ratio  SampleID Index
-1 BDCL_T1_A_39859    NTVGGGLPVMTGPGFVDK         -0.5928105 BDCL_T1_A     1
-2 BDCL_T1_A_45254    SVFVNQASSEGIGQALAK         -1.0214321 BDCL_T1_A     2
-3 BDCL_T1_A_39843    NTVGGGLPVMTGPGFVDK         -0.4909865 BDCL_T1_A     3
-4 BDCL_T1_A_34716       GFGFVEMDSQEGAQK         -0.6611921 BDCL_T1_A     4
-5 BDCL_T1_A_50767      LLDQGQAGDNVGILLR         -0.8198039 BDCL_T1_A     5
-6 BDCL_T1_A_44469    GQADIGLLGSTAGTQLNR         -0.8216291 BDCL_T1_A     6
-     Cruise Station Isotope Replicate Time Depth SpectrumID ScanID Target.
-1 CyanoSUMI   MI41M  18OMix         A   T1  BDCL      34516  39859    True
-2 CyanoSUMI   MI41M  18OMix         A   T1  BDCL      39569  45254    True
-3 CyanoSUMI   MI41M  18OMix         A   T1  BDCL      34501  39843    True
-4 CyanoSUMI   MI41M  18OMix         A   T1  BDCL      29699  34716    True
-5 CyanoSUMI   MI41M  18OMix         A   T1  BDCL      44732  50767    True
-6 CyanoSUMI   MI41M  18OMix         A   T1  BDCL      38834  44469    True
-  Decoy.
-1  False
-2  False
-3  False
-4  False
-5  False
-6  False</code></pre>
+<pre><code>          Spec_id Base.Peptide.Sequence log2.16O.18O.Ratio
+1 BDCL_T1_A_39859    NTVGGGLPVMTGPGFVDK          0.5928105
+2 BDCL_T1_A_45254    SVFVNQASSEGIGQALAK          1.0214321
+3 BDCL_T1_A_39843    NTVGGGLPVMTGPGFVDK          0.4909865
+4 BDCL_T1_A_34716       GFGFVEMDSQEGAQK          0.6611921
+5 BDCL_T1_A_50767      LLDQGQAGDNVGILLR          0.8198039
+6 BDCL_T1_A_44469    GQADIGLLGSTAGTQLNR          0.8216291
+  cent.log2.16O.18O.Ratio  SampleID Index    Cruise Station Isotope Replicate
+1             -0.18097898 BDCL_T1_A     1 CyanoSUMI   MI41M  18OMix         A
+2              0.24764266 BDCL_T1_A     2 CyanoSUMI   MI41M  18OMix         A
+3             -0.28280292 BDCL_T1_A     3 CyanoSUMI   MI41M  18OMix         A
+4             -0.11259732 BDCL_T1_A     4 CyanoSUMI   MI41M  18OMix         A
+5              0.04601442 BDCL_T1_A     5 CyanoSUMI   MI41M  18OMix         A
+6              0.04783963 BDCL_T1_A     6 CyanoSUMI   MI41M  18OMix         A
+  Time Depth SpectrumID ScanID Target. Decoy.
+1   T1  BDCL      34516  39859    True  False
+2   T1  BDCL      39569  45254    True  False
+3   T1  BDCL      34501  39843    True  False
+4   T1  BDCL      29699  34716    True  False
+5   T1  BDCL      44732  50767    True  False
+6   T1  BDCL      38834  44469    True  False</code></pre>
 <pre class="r"><code>dim(combined_tsv)</code></pre>
-<pre><code>[1] 87419    15</code></pre>
+<pre><code>[1] 87419    16</code></pre>
 <pre class="r"><code># give unique peptide id&#39;s for all peptides
 # give peptide name by frequency (peptide with greatest frequency gets Pep_1)
 df_p &lt;- transform(combined_tsv, freq= ave(seq(nrow(combined_tsv)), Base.Peptide.Sequence, FUN=length))
 df_p[order(-df_p$freq), ] %&gt;% head()</code></pre>
-<pre><code>            Spec_id Base.Peptide.Sequence log2.18O.16O.Ratio  SampleID Index
-25  BDCL_T1_A_31195       AELIDAMAAGSGLSK         -0.3969800 BDCL_T1_A    25
-49  BDCL_T1_A_31179       AELIDAMAAGSGLSK         -0.5078004 BDCL_T1_A    49
-69  BDCL_T1_A_31003       AELIDAMAAGSGLSK         -0.3509932 BDCL_T1_A    69
-72  BDCL_T1_A_31022       AELIDAMAAGSGLSK         -0.4062575 BDCL_T1_A    72
-142 BDCL_T1_A_31372       AELIDAMAAGSGLSK         -0.4000644 BDCL_T1_A   142
-180 BDCL_T1_A_31355       AELIDAMAAGSGLSK         -0.3204865 BDCL_T1_A   180
-       Cruise Station Isotope Replicate Time Depth SpectrumID ScanID Target.
-25  CyanoSUMI   MI41M  18OMix         A   T1  BDCL      26401  31195    True
-49  CyanoSUMI   MI41M  18OMix         A   T1  BDCL      26386  31179    True
-69  CyanoSUMI   MI41M  18OMix         A   T1  BDCL      26221  31003    True
-72  CyanoSUMI   MI41M  18OMix         A   T1  BDCL      26239  31022    True
-142 CyanoSUMI   MI41M  18OMix         A   T1  BDCL      26567  31372    True
-180 CyanoSUMI   MI41M  18OMix         A   T1  BDCL      26551  31355    True
-    Decoy. freq
-25   False  784
-49   False  784
-69   False  784
-72   False  784
-142  False  784
-180  False  784</code></pre>
+<pre><code>            Spec_id Base.Peptide.Sequence log2.16O.18O.Ratio
+25  BDCL_T1_A_31195       AELIDAMAAGSGLSK          0.3969800
+49  BDCL_T1_A_31179       AELIDAMAAGSGLSK          0.5078004
+69  BDCL_T1_A_31003       AELIDAMAAGSGLSK          0.3509932
+72  BDCL_T1_A_31022       AELIDAMAAGSGLSK          0.4062575
+142 BDCL_T1_A_31372       AELIDAMAAGSGLSK          0.4000644
+180 BDCL_T1_A_31355       AELIDAMAAGSGLSK          0.3204865
+    cent.log2.16O.18O.Ratio  SampleID Index    Cruise Station Isotope Replicate
+25               -0.3768094 BDCL_T1_A    25 CyanoSUMI   MI41M  18OMix         A
+49               -0.2659891 BDCL_T1_A    49 CyanoSUMI   MI41M  18OMix         A
+69               -0.4227962 BDCL_T1_A    69 CyanoSUMI   MI41M  18OMix         A
+72               -0.3675320 BDCL_T1_A    72 CyanoSUMI   MI41M  18OMix         A
+142              -0.3737250 BDCL_T1_A   142 CyanoSUMI   MI41M  18OMix         A
+180              -0.4533029 BDCL_T1_A   180 CyanoSUMI   MI41M  18OMix         A
+    Time Depth SpectrumID ScanID Target. Decoy. freq
+25    T1  BDCL      26401  31195    True  False  784
+49    T1  BDCL      26386  31179    True  False  784
+69    T1  BDCL      26221  31003    True  False  784
+72    T1  BDCL      26239  31022    True  False  784
+142   T1  BDCL      26567  31372    True  False  784
+180   T1  BDCL      26551  31355    True  False  784</code></pre>
 <pre class="r"><code>df_pepid &lt;- df_p %&gt;% select(Base.Peptide.Sequence,freq) %&gt;% arrange(desc(freq)) %&gt;% unique() %&gt;% arrange()
 
 # Distribution of frequency of each Peptide_id in all samples
@@ -1412,56 +1429,59 @@ write.table(df_pepid3,&quot;Peptide_id.tsv&quot;, sep=&#39;\t&#39;,row.names = F
 combined_tsv_pepid &lt;- combined_tsv %&gt;% left_join(df_pepid3, by=c(&#39;Base.Peptide.Sequence&#39;=&#39;Base.Peptide.Sequence&#39;)) %&gt;% select(-freq)
 
 colnames(combined_tsv_pepid)</code></pre>
-<pre><code> [1] &quot;Spec_id&quot;               &quot;Base.Peptide.Sequence&quot; &quot;log2.18O.16O.Ratio&quot;   
- [4] &quot;SampleID&quot;              &quot;Index&quot;                 &quot;Cruise&quot;               
- [7] &quot;Station&quot;               &quot;Isotope&quot;               &quot;Replicate&quot;            
-[10] &quot;Time&quot;                  &quot;Depth&quot;                 &quot;SpectrumID&quot;           
-[13] &quot;ScanID&quot;                &quot;Target.&quot;               &quot;Decoy.&quot;               
-[16] &quot;Peptide_id&quot;           </code></pre>
+<pre><code> [1] &quot;Spec_id&quot;                 &quot;Base.Peptide.Sequence&quot;  
+ [3] &quot;log2.16O.18O.Ratio&quot;      &quot;cent.log2.16O.18O.Ratio&quot;
+ [5] &quot;SampleID&quot;                &quot;Index&quot;                  
+ [7] &quot;Cruise&quot;                  &quot;Station&quot;                
+ [9] &quot;Isotope&quot;                 &quot;Replicate&quot;              
+[11] &quot;Time&quot;                    &quot;Depth&quot;                  
+[13] &quot;SpectrumID&quot;              &quot;ScanID&quot;                 
+[15] &quot;Target.&quot;                 &quot;Decoy.&quot;                 
+[17] &quot;Peptide_id&quot;             </code></pre>
 <pre class="r"><code>head(combined_tsv_pepid)</code></pre>
-<pre><code>          Spec_id Base.Peptide.Sequence log2.18O.16O.Ratio  SampleID Index
-1 BDCL_T1_A_39859    NTVGGGLPVMTGPGFVDK         -0.5928105 BDCL_T1_A     1
-2 BDCL_T1_A_45254    SVFVNQASSEGIGQALAK         -1.0214321 BDCL_T1_A     2
-3 BDCL_T1_A_39843    NTVGGGLPVMTGPGFVDK         -0.4909865 BDCL_T1_A     3
-4 BDCL_T1_A_34716       GFGFVEMDSQEGAQK         -0.6611921 BDCL_T1_A     4
-5 BDCL_T1_A_50767      LLDQGQAGDNVGILLR         -0.8198039 BDCL_T1_A     5
-6 BDCL_T1_A_44469    GQADIGLLGSTAGTQLNR         -0.8216291 BDCL_T1_A     6
-     Cruise Station Isotope Replicate Time Depth SpectrumID ScanID Target.
-1 CyanoSUMI   MI41M  18OMix         A   T1  BDCL      34516  39859    True
-2 CyanoSUMI   MI41M  18OMix         A   T1  BDCL      39569  45254    True
-3 CyanoSUMI   MI41M  18OMix         A   T1  BDCL      34501  39843    True
-4 CyanoSUMI   MI41M  18OMix         A   T1  BDCL      29699  34716    True
-5 CyanoSUMI   MI41M  18OMix         A   T1  BDCL      44732  50767    True
-6 CyanoSUMI   MI41M  18OMix         A   T1  BDCL      38834  44469    True
-  Decoy. Peptide_id
-1  False     Pep_34
-2  False    Pep_267
-3  False     Pep_34
-4  False      Pep_5
-5  False     Pep_65
-6  False    Pep_145</code></pre>
+<pre><code>          Spec_id Base.Peptide.Sequence log2.16O.18O.Ratio
+1 BDCL_T1_A_39859    NTVGGGLPVMTGPGFVDK          0.5928105
+2 BDCL_T1_A_45254    SVFVNQASSEGIGQALAK          1.0214321
+3 BDCL_T1_A_39843    NTVGGGLPVMTGPGFVDK          0.4909865
+4 BDCL_T1_A_34716       GFGFVEMDSQEGAQK          0.6611921
+5 BDCL_T1_A_50767      LLDQGQAGDNVGILLR          0.8198039
+6 BDCL_T1_A_44469    GQADIGLLGSTAGTQLNR          0.8216291
+  cent.log2.16O.18O.Ratio  SampleID Index    Cruise Station Isotope Replicate
+1             -0.18097898 BDCL_T1_A     1 CyanoSUMI   MI41M  18OMix         A
+2              0.24764266 BDCL_T1_A     2 CyanoSUMI   MI41M  18OMix         A
+3             -0.28280292 BDCL_T1_A     3 CyanoSUMI   MI41M  18OMix         A
+4             -0.11259732 BDCL_T1_A     4 CyanoSUMI   MI41M  18OMix         A
+5              0.04601442 BDCL_T1_A     5 CyanoSUMI   MI41M  18OMix         A
+6              0.04783963 BDCL_T1_A     6 CyanoSUMI   MI41M  18OMix         A
+  Time Depth SpectrumID ScanID Target. Decoy. Peptide_id
+1   T1  BDCL      34516  39859    True  False     Pep_34
+2   T1  BDCL      39569  45254    True  False    Pep_267
+3   T1  BDCL      34501  39843    True  False     Pep_34
+4   T1  BDCL      29699  34716    True  False      Pep_5
+5   T1  BDCL      44732  50767    True  False     Pep_65
+6   T1  BDCL      38834  44469    True  False    Pep_145</code></pre>
 <pre class="r"><code>tail(combined_tsv_pepid)</code></pre>
-<pre><code>             Spec_id Base.Peptide.Sequence log2.18O.16O.Ratio SampleID Index
-87414 SRF_T8_C_36385          TVFAPTDEAFAK         -0.6994099 SRF_T8_C   201
-87415 SRF_T8_C_39109         TATLGTAEIASLR         -0.3236297 SRF_T8_C   202
-87416 SRF_T8_C_33010         NAAIGSGELAGLR         -0.1417181 SRF_T8_C   203
-87417 SRF_T8_C_43445       EFVDGAWAPSAPTVK         -0.3346053 SRF_T8_C   204
-87418 SRF_T8_C_52141          AVIALLNIFDDR         -0.2781826 SRF_T8_C   205
-87419 SRF_T8_C_47618         AMLEDIAILTGGK         -1.5152827 SRF_T8_C   206
-         Cruise Station Isotope Replicate Time Depth SpectrumID ScanID Target.
-87414 CyanoSUMI   MI41M  18OMix         C   T8   SRF      31045  36385    True
-87415 CyanoSUMI   MI41M  18OMix         C   T8   SRF      33599  39109    True
-87416 CyanoSUMI   MI41M  18OMix         C   T8   SRF      27881  33010    True
-87417 CyanoSUMI   MI41M  18OMix         C   T8   SRF      37664  43445    True
-87418 CyanoSUMI   MI41M  18OMix         C   T8   SRF      45817  52141    True
-87419 CyanoSUMI   MI41M  18OMix         C   T8   SRF      41576  47618    True
-      Decoy. Peptide_id
-87414  False     Pep_20
-87415  False    Pep_117
-87416  False     Pep_18
-87417  False      Pep_8
-87418  False    Pep_182
-87419  False     Pep_95</code></pre>
+<pre><code>             Spec_id Base.Peptide.Sequence log2.16O.18O.Ratio
+87414 SRF_T8_C_36385          TVFAPTDEAFAK          0.6994099
+87415 SRF_T8_C_39109         TATLGTAEIASLR          0.3236297
+87416 SRF_T8_C_33010         NAAIGSGELAGLR          0.1417181
+87417 SRF_T8_C_43445       EFVDGAWAPSAPTVK          0.3346053
+87418 SRF_T8_C_52141          AVIALLNIFDDR          0.2781826
+87419 SRF_T8_C_47618         AMLEDIAILTGGK          1.5152827
+      cent.log2.16O.18O.Ratio SampleID Index    Cruise Station Isotope
+87414             0.414845543 SRF_T8_C   201 CyanoSUMI   MI41M  18OMix
+87415             0.039065332 SRF_T8_C   202 CyanoSUMI   MI41M  18OMix
+87416            -0.142846328 SRF_T8_C   203 CyanoSUMI   MI41M  18OMix
+87417             0.050040917 SRF_T8_C   204 CyanoSUMI   MI41M  18OMix
+87418            -0.006381815 SRF_T8_C   205 CyanoSUMI   MI41M  18OMix
+87419             1.230718366 SRF_T8_C   206 CyanoSUMI   MI41M  18OMix
+      Replicate Time Depth SpectrumID ScanID Target. Decoy. Peptide_id
+87414         C   T8   SRF      31045  36385    True  False     Pep_20
+87415         C   T8   SRF      33599  39109    True  False    Pep_117
+87416         C   T8   SRF      27881  33010    True  False     Pep_18
+87417         C   T8   SRF      37664  43445    True  False      Pep_8
+87418         C   T8   SRF      45817  52141    True  False    Pep_182
+87419         C   T8   SRF      41576  47618    True  False     Pep_95</code></pre>
 <pre class="r"><code># check whether there is no NA value in the dataframe
 any(is.na.data.frame(combined_tsv_pepid))</code></pre>
 <pre><code>[1] FALSE</code></pre>
@@ -1496,17 +1516,19 @@ other attached packages:
 [5] dplyr_1.0.4     workflowr_1.6.2
 
 loaded via a namespace (and not attached):
- [1] zip_2.1.1        Rcpp_1.0.5       highr_0.8        pillar_1.4.7    
- [5] compiler_4.0.3   later_1.1.0.1    git2r_0.27.1     tools_4.0.3     
- [9] digest_0.6.27    evaluate_0.14    lifecycle_1.0.0  tibble_3.0.4    
-[13] gtable_0.3.0     pkgconfig_2.0.3  rlang_0.4.10     DBI_1.1.1       
-[17] yaml_2.2.1       xfun_0.20        withr_2.4.1      knitr_1.31      
-[21] generics_0.1.0   fs_1.5.0         vctrs_0.3.6      rprojroot_2.0.2 
-[25] grid_4.0.3       tidyselect_1.1.0 glue_1.4.2       R6_2.5.0        
-[29] rmarkdown_2.6    farver_2.0.3     purrr_0.3.4      magrittr_2.0.1  
-[33] whisker_0.4      scales_1.1.1     promises_1.1.1   ellipsis_0.3.1  
-[37] htmltools_0.5.0  assertthat_0.2.1 colorspace_2.0-0 httpuv_1.5.4    
-[41] labeling_0.4.2   stringi_1.5.3    munsell_0.5.0    crayon_1.4.1    </code></pre>
+ [1] zip_2.1.1         Rcpp_1.0.5        highr_0.8         pillar_1.5.0     
+ [5] compiler_4.0.3    bslib_0.2.4       later_1.1.0.1     jquerylib_0.1.3  
+ [9] git2r_0.28.0      tools_4.0.3       digest_0.6.27     gtable_0.3.0     
+[13] jsonlite_1.7.2    evaluate_0.14     lifecycle_1.0.0   tibble_3.0.4     
+[17] pkgconfig_2.0.3   rlang_0.4.10      DBI_1.1.1         yaml_2.2.1       
+[21] xfun_0.20         withr_2.4.1       knitr_1.31        generics_0.1.0   
+[25] fs_1.5.0          vctrs_0.3.6       sass_0.3.1        grid_4.0.3       
+[29] rprojroot_2.0.2   tidyselect_1.1.0  glue_1.4.2        R6_2.5.0         
+[33] fansi_0.4.2       rmarkdown_2.7     farver_2.1.0      purrr_0.3.4      
+[37] magrittr_2.0.1    whisker_0.4       scales_1.1.1      promises_1.1.1   
+[41] ellipsis_0.3.1    htmltools_0.5.1.1 assertthat_0.2.1  colorspace_2.0-0 
+[45] httpuv_1.5.4      labeling_0.4.2    utf8_1.1.4        stringi_1.5.3    
+[49] munsell_0.5.0     crayon_1.4.1     </code></pre>
 </div>
 </div>
 
@@ -1551,7 +1573,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
