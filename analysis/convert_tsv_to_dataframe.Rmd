@@ -41,16 +41,23 @@ colnames(df6)
 df7 <- df6 %>% unite(c('Depth','Time','Replicate','ScanID'),col=Spec_id, remove=F) 
 df7 <- df7 %>% unite(c('Depth','Time','Replicate'),col=SampleID, remove=F) 
 head(df7)
-# Arrange column order
-df8 <- df7 %>% select(Spec_id, Base.Peptide.Sequence, log2.18O.16O.Ratio,SampleID,Index,Cruise,Station,Isotope, Replicate, Time, Depth, SpectrumID, ScanID, Target., Decoy.)
-head(df8)   
-# screen and remove Decoy = True
-df9 <- df8 %>% filter(Decoy.=='False')
-# confirm
-df9[df9$Decoy.=='True',]
+# important to reverse the ratio
+df8 <- df7 %>% mutate(log2.16O.18O.Ratio = -log2.18O.16O.Ratio)
 
+# Arrange column order
+df9 <- df8 %>% select(Spec_id, Base.Peptide.Sequence, log2.16O.18O.Ratio,SampleID,Index,Cruise,Station,Isotope, Replicate, Time, Depth, SpectrumID, ScanID, Target., Decoy.)
+head(df9)   
+# screen and remove Decoy = True
+df10 <- df9 %>% filter(Decoy.=='False')
+# confirm
+df10[df10$Decoy.=='True',]
+
+# subtract median the intensity after filtering => output change to cent.log2.16O.18O.Ratio (centered)
+median(df10$log2.16O.18O.Ratio)
+df11 <- df10 %>% mutate(cent.log2.16O.18O.Ratio = log2.16O.18O.Ratio - median(df10$log2.16O.18O.Ratio)) %>%
+  select(Spec_id, Base.Peptide.Sequence, log2.16O.18O.Ratio,cent.log2.16O.18O.Ratio, SampleID,Index,Cruise,Station,Isotope, Replicate, Time, Depth, SpectrumID, ScanID, Target., Decoy.)
 # final form
-head(df9)
+head(df11)
 
 ```
 
@@ -81,17 +88,25 @@ convert_tsv <- function(file_number, filename){
   df7 <- df6 %>% unite(c('Depth','Time','Replicate','ScanID'),col=Spec_id, remove=F) 
   df7 <- df7 %>% unite(c('Depth','Time','Replicate'),col=SampleID, remove=F) 
   head(df7)
-  # Arrange column order
-  df8 <- df7 %>% select(Spec_id, Base.Peptide.Sequence, log2.18O.16O.Ratio,SampleID,Index,Cruise,Station,Isotope, Replicate, Time, Depth, SpectrumID, ScanID, Target., Decoy.)
-  # screen and remove Decoy = True
-  df9 <- df8 %>% filter(Decoy.=='False')
-  # confirm
-  df9[df9$Decoy.=='True',]
+  # important to reverse the ratio
+  df8 <- df7 %>% mutate(log2.16O.18O.Ratio = -log2.18O.16O.Ratio)
   
+  # Arrange column order
+  df9 <- df8 %>% select(Spec_id, Base.Peptide.Sequence, log2.16O.18O.Ratio,SampleID,Index,Cruise,Station,Isotope, Replicate, Time, Depth, SpectrumID, ScanID, Target., Decoy.)
+  head(df9)   
+  # screen and remove Decoy = True
+  df10 <- df9 %>% filter(Decoy.=='False')
+  # confirm
+  df10[df10$Decoy.=='True',]
+  
+  # subtract median the intensity after filtering => output change to cent.log2.16O.18O.Ratio (centered)
+  median(df10$log2.16O.18O.Ratio)
+  df11 <- df10 %>% mutate(cent.log2.16O.18O.Ratio = log2.16O.18O.Ratio - median(df10$log2.16O.18O.Ratio)) %>%
+    select(Spec_id, Base.Peptide.Sequence, log2.16O.18O.Ratio,cent.log2.16O.18O.Ratio, SampleID,Index,Cruise,Station,Isotope, Replicate, Time, Depth, SpectrumID, ScanID, Target., Decoy.)
   # final form
-  head(df9)
-  write.table(df9,file=paste0(file_number,'_',filename), sep='\t',row.names = F)
-  openxlsx::write.xlsx(df9,paste0(file_number,'_',str_remove(filename,'.tsv'),'.xlsx'),rowNames=F)
+  head(df11)
+  write.table(df11,file=paste0(file_number,'_',filename), sep='\t',row.names = F)
+  openxlsx::write.xlsx(df11,paste0(file_number,'_',str_remove(filename,'.tsv'),'.xlsx'),rowNames=F)
 }
 
 # list all files in certain folder
