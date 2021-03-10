@@ -180,8 +180,8 @@ tail(combined_tsv_pepid)
 # check whether there is no NA value in the dataframe
 any(is.na.data.frame(combined_tsv_pepid))
 
-write.table(combined_tsv_pepid,"Replicate_ABC63_combined.tsv", sep='\t',row.names = F)
-openxlsx::write.xlsx(combined_tsv_pepid,'Replicate_ABC63_combined.xlsx',rowNames=F)
+write.table(combined_tsv_pepid,"Replicate_ABC67_combined.tsv", sep='\t',row.names = F)
+openxlsx::write.xlsx(combined_tsv_pepid,'Replicate_ABC67_combined.xlsx',rowNames=F)
 
 
 ```

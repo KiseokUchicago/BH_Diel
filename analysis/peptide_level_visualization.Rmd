@@ -27,11 +27,11 @@ library(formattable)
 
 ```{r}
 # read in combined table of 24 samples (Replicate B)
-df_pep <- read.table("Replicate_ABC63_combined.tsv",sep='\t',header = T)
+df_pep <- read.table("Replicate_ABC67_combined.tsv",sep='\t',header = T)
 
 # count unique peptide per sample
 df_uni <- df_pep %>% group_by(SampleID) %>% summarize(uniq_pep = length(unique(Base.Peptide.Sequence)))
-df_uni1 <- df_uni %>% separate(SampleID, sep='_', into= c('Depth','Time','Replicate'),remove = F) %>% select(-Time, -Replicate)
+df_uni1 <- df_uni %>% separate(SampleID, sep='_', into= c('Depth','Time','Replicate'),remove = F)
 df_uni2 <- df_uni1 %>% arrange(desc(Depth))
 
 # get the order right from SRF -> DCL -> BDCL
@@ -60,17 +60,51 @@ uniq1 <- ggplot(df_uni2, aes(x=SampleID, fill=Depth, y=uniq_pep)) +  ## I put fi
 uniq2 <- uniq1 + geom_text(aes(x=df_uni$SampleID, y=df_uni$uniq_pep, label=df_uni$uniq_pep),
             size = 3, hjust = 0.5, position = position_stack(vjust = +1.05), family="serif")
 uniq2
-
 ```
 
-sample DCL_T8 doesn't seem to have good quality MS data. 
+sample DCL_T8 doesn't seem to have good quality MS data. \ 
+DCL_T8_A was added and now it seems okay.
+
+### 1.1. Unique number of peptides per timepoint
+Are there any differences across time points? \
+Nope.
+
+```{r}
+# get # of unique peptides
+df_uniq <- df_pep %>% group_by(Time,Depth) %>% summarize(uniq_pep = length(unique(Base.Peptide.Sequence)))
+df_uniq1 <- df_uniq %>% arrange(desc(Depth))
+
+# get the order right from SRF -> DCL -> BDCL
+df_uniq1$Depth <- factor(df_uniq1$Depth, levels = c('SRF','DCL','BDCL'))
+
+# Making barplot
+theme_set(theme_bw())
+cols <- c('SRF'='#fc8d62','DCL'='#66c2a5','BDCL'='#8da0cb')
+time1 <- ggplot(df_uniq1, aes(x=Time, fill=Depth, y=uniq_pep)) +  ## I put fill=value which was wrong
+  geom_bar(stat="identity",position="dodge") +
+  scale_fill_manual(values=cols) +
+  ylab("Number of unique peptide sequence \n") +
+  xlab("\n SampleID") +
+  ggtitle("Number of unique peptide sequences per timepoint (including all replicates)")+
+  ## adjust positions
+  theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family="serif"))+
+  theme(axis.text.y = element_text(size=10))+
+  theme(panel.grid.major = element_blank()) +
+  theme(panel.grid.minor = element_blank())
+
+time1
+
+```
 
 
 ### 2. Number of accumulative uniq peptides (sequence): Does it saturate?
 
 ```{r}
 # read in combined table of 24 samples (Replicate B)
-df_pep <- read.table("Replicate_ABC63_combined.tsv",sep='\t',header = T)
+df_pep <- read.table("Replicate_ABC67_combined.tsv",sep='\t',header = T)
 
 # get unique peptides per sample
 dt <- df_pep %>% select(SampleID, Base.Peptide.Sequence) %>% unique()
@@ -92,7 +126,7 @@ dt.out[, Base.Peptide.Sequence := cummax(Base.Peptide.Sequence)]
 
 # getting ready to make plot
 df.out <- tibble::rowid_to_column(dt.out) 
-df.out2 <- df.out %>% select(rowid, Base.Peptide.Sequence) %>% rename(value=Base.Peptide.Sequence)
+df.out2 <- df.out %>% select(rowid, Base.Peptide.Sequence) %>% rename(value=Base.Peptide.Sequence) ## 3366 unique peptides
 # Making line plot
 theme_set(theme_bw())
 
@@ -123,7 +157,7 @@ We need 3 histogram for (1) Surface, (2) DCL, and (3) BDCL
 
 ```{r}
 # read in combined table of 24 samples (Replicate B)
-df_pep <- read.table("Replicate_ABC63_combined.tsv",sep='\t',header = T)
+df_pep <- read.table("Replicate_ABC67_combined.tsv",sep='\t',header = T)
 
 # (1) Surface
 colnames(df_pep)
@@ -173,37 +207,75 @@ ggplot(df_all2, aes(Timepoints)) + geom_bar(aes(fill=Depth), position='dodge') +
 
 ```
 
-Why does DCL have so less?
+### 3.2. For the peptides that show up only in 1 time point
+
+
+```{r}
+# filter peptides that appear only once
+df_once <- df_all2 %>% filter(Timepoints ==1)
+# innerjoin to get only the peptide_id from above (that appear once)
+df_norep <- df_all %>% select(-SampleID) %>% unique() # get unique peptide_id per Sample (not replicate)
+df_once2 <- inner_join(df_norep,df_once,by=c("Depth"="Depth","Peptide_id"="Peptide_id"))
+df_once2$Depth <- factor(df_once2$Depth, levels = c('SRF','DCL','BDCL'))
+
+
+# Histogram
+theme_set(theme_bw())
+ggplot(df_once2, aes(Time)) + geom_bar(aes(fill=Depth), position='dodge') +
+  scale_fill_manual(values=cols) +
+  ylab("Number of unique peptides \n") +
+  xlab("\n Sampling Timepoint") +
+  # scale_x_continuous(breaks=seq(1,8,1))+
+  ggtitle("For peptide_ids detected once, in what timepoint is it detected? \n")+
+  ## adjust positions
+  theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family="serif"))+
+  theme(axis.text.y = element_text(size=10))
+  # theme(panel.grid.major = element_blank())
+  # theme(panel.grid.minor = element_blank())
+
+```
+In the surface and deep chlorophyll layer at T1 and T7, the numbers seem to surge. \
+This is when the sun is at its peak.
 
 ### 4. Plotting time series fluctuation for the peptides
-First retrieve the log intensity value for all peptides (average over the same spec_id)
+First retrieve the log abundance_ratio value for all peptides (average over the same spec_id)
 
 ```{r}
 # (1) Get list of peptides that are present in 7 or 8 timepoints
 df_all2_filt <- df_all2 %>% filter(Timepoints > 6) %>% unique() 
 
-# (2) Let's average the intensity for each unique peptide
-df_int <- df_pep %>% select(Peptide_id, Spec_id, log2.18O.16O.Ratio, SampleID, Time, Depth, Replicate) %>% unique() %>% arrange(Peptide_id)
+# (2) Let's average the abundance_ratio for each unique peptide
+df_int <- df_pep %>% select(Peptide_id, Spec_id, cent.log2.16O.18O.Ratio, SampleID, Time, Depth, Replicate) %>%
+  unique() %>% arrange(Peptide_id)
 head(df_int)
-# first average the spectrum_id per sample 
-# important to make sure to take log2 after averaging the original value(2^x)
 df_int %>% filter(Peptide_id=='Pep_1' & Time =='T1' & SampleID == 'BDCL_T1_A')
-df_ave <- df_int %>% group_by(SampleID, Time, Depth, Replicate, Peptide_id) %>% summarize(log2_Mean_intensity=log2(mean(2^log2.18O.16O.Ratio))) %>% ungroup()
+# first average the spectrum_id per sample 
+# important to make sure to take the mean of the log raio (instead of taking log2 after averaging the original value(2^x))
+df_ave <- df_int %>% group_by(SampleID, Time, Depth, Replicate, Peptide_id) %>%
+  summarize(Mean_abundance_ratio=mean(cent.log2.16O.18O.Ratio),
+            SD_pep=sd(cent.log2.16O.18O.Ratio)) %>% ungroup()
 head(df_ave)
+df_ave %>% filter(Peptide_id=='Pep_1' & Time =='T1',Depth=="BDCL") # check
 
-df_ave %>% filter(Peptide_id=='Pep_1' & Time =='T1' & SampleID == 'BDCL_T1_A') # check if Pep_1 in sample 'BDCL_T1_A' is -0.5059 (yes correct)
-
-# then average and error by replicate
+# Now, average and error by replicate
 # see here for calculating error bar in log scale (https://faculty.washington.edu/stuve/log_error.pdf)
-# for example of Pep_1
-df_ave %>% group_by(SampleID) %>% filter(Peptide_id=='Pep_1') %>% head(10)
-# calculate average and error bar for intensity
-df_ave_rep <- df_ave %>% group_by(Time, Depth, Peptide_id) %>% summarize(log2_ave_intensity=log2(mean(2^log2_Mean_intensity)), sd_intensity=sd(2^log2_Mean_intensity)) %>% ungroup()
-head(df_ave_rep)
+# but here we will not use the method in the link above
+# calculate average and error bar for abundance_ratio
+# SE calculated with Jake Waldbauer's method: sqrt(se(Mean_abundance_ratio)^2 +(mean(SD_pep))^2))
+# standard error
+se <- function(x) sd(x)/sqrt(length(x))
+df_ave_rep <- df_ave %>% group_by(Time, Depth, Peptide_id) %>%
+  summarize(Ave_abundance_ratio=mean(Mean_abundance_ratio),
+            SE_abundance_ratio=sqrt((se(Mean_abundance_ratio))^2 +(mean(SD_pep))^2)) %>% ungroup()
+head(df_ave_rep,10)
 # why is there no sd for Pep_1004?
-df_ave %>% group_by(SampleID) %>% filter(Peptide_id=='Pep_1004') # there is only 1 sample for T1 BDCL 
-# log scale error bar: d(log2y)=1/log2 * (dy / y)
-df_ave_rep2 <- df_ave_rep %>% mutate(ave_intensity = 2^log2_ave_intensity) %>% mutate(rel_error = sd_intensity/ave_intensity) %>% mutate(log2_sd_intensity = (1/log(2))*rel_error) %>% mutate(log2_error_up=log2_ave_intensity+log2_sd_intensity) %>% mutate(log2_error_down=log2_ave_intensity-log2_sd_intensity)
+df_ave %>% group_by(SampleID) %>% filter(Peptide_id=='Pep_1003') # there is only 1 sample for T1 BDCL 
+
+df_ave_rep2 <- df_ave_rep %>% mutate(error_up=Ave_abundance_ratio+SE_abundance_ratio) %>%
+  mutate(error_down=Ave_abundance_ratio-SE_abundance_ratio)
 
 head(df_ave_rep2)
 
@@ -225,20 +297,25 @@ colnames(df_ave2)
 colnames(df_time)
 colnames(df_filt78)
 
-df_filt78 %>% select(Peptide_id) %>% unique() %>% dim() # 736 peptides for peptides in 7 or 8 timepoints
+df_filt78 %>% select(Peptide_id) %>% unique() %>% dim() # 841 peptides for peptides in 7 or 8 timepoints
 df_filt78$Depth <- factor(df_filt78$Depth, levels = c('SRF','DCL','BDCL'))
 
 # get only 8 ones
 df_filt8 <- df_filt78 %>% filter(Timepoints > 7)
-df_filt8 %>% select(Peptide_id) %>% unique() %>% dim() # 539 peptides for peptides in all 8 timepoints
+df_filt8 %>% select(Peptide_id) %>% unique() %>% dim() # 661 peptides for peptides in all 8 timepoints
 df_filt8$Depth <- factor(df_filt8$Depth, levels = c('SRF','DCL','BDCL'))
 
 # get only 7 ones
 df_filt7 <- df_filt78 %>% filter(Timepoints == 7)
-df_filt7 %>% select(Peptide_id) %>% unique() %>% dim() # 533 peptides for peptides in 7 timepoints
-df_filt8$Depth <- factor(df_filt8$Depth, levels = c('SRF','DCL','BDCL'))
+df_filt7 %>% select(Peptide_id) %>% unique() %>% dim() # 356 peptides for peptides in 7 timepoints
+df_filt7$Depth <- factor(df_filt7$Depth, levels = c('SRF','DCL','BDCL'))
 
 ```
+
+Now I do it differently: just + and - the standard error.
+This is how I used to derive the error bar before (https://faculty.washington.edu/stuve/log_error.pdf)
+log scale error bar: d(log2y)=1/log2 * (dy / y)
+df_ave_rep2 <- df_ave_rep %>% mutate(ave_abundance_ratio = 2^Ave_abundance_ratio) %>% mutate(rel_error = sd_abundance_ratio/ave_abundance_ratio) %>% mutate(log2_sd_abundance_ratio = (1/log(2))*rel_error) %>% mutate(error_up=Ave_abundance_ratio+log2_sd_abundance_ratio) %>% mutate(error_down=Ave_abundance_ratio-log2_sd_abundance_ratio)
 
 Plot for peptides present in 7 or 8 timepoints
 ```{r}
@@ -246,15 +323,15 @@ Plot for peptides present in 7 or 8 timepoints
 # (4) Plot the scatter plot with error bars
 theme_set(theme_bw())
 
-ggplot(df_filt78, aes(x=elapsed_hours,y=log2_ave_intensity, color=Depth, group=interaction(Peptide_id,Depth))) +
+ggplot(df_filt78, aes(x=elapsed_hours,y=Ave_abundance_ratio, color=Depth, group=interaction(Peptide_id,Depth))) +
   geom_point(size=2, shape=21) +
   geom_line()+
-  geom_errorbar(aes(ymin=log2_error_down, ymax=log2_error_up), width=.2, position=position_dodge(.9))+
+  geom_errorbar(aes(ymin=error_down, ymax=error_up), width=.2, position=position_dodge(.9))+
   scale_color_manual(values=cols) +
-  ylab("log2 Mean intensity (log2(18O/16O)) \n") +
-  xlab("\n Time of day on June 26 2019 (Daylight 05:17-20:30)") +
+  ylab("Mean protein abundance ratio (log2(16O/18O)) \n") +
+  xlab("\n Time of day on June 26-27 2019 (Daylight 05:17-20:30)") +
   scale_x_continuous(breaks=df_time$elapsed_hours,labels =c(df_time$date_time))+
-  ggtitle("Time series intensity of peptide_id \n")+
+  ggtitle("Time series abundance_ratio of peptide_id \n")+
   ## adjust positions
   theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
   theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
@@ -270,15 +347,15 @@ ggplot(df_filt78, aes(x=elapsed_hours,y=log2_ave_intensity, color=Depth, group=i
 without error bars
 ```{r}
 theme_set(theme_bw())
-ggplot(df_filt78, aes(x=elapsed_hours,y=log2_ave_intensity, color=Depth, group=interaction(Peptide_id,Depth))) +
+ggplot(df_filt78, aes(x=elapsed_hours,y=Ave_abundance_ratio, color=Depth, group=interaction(Peptide_id,Depth))) +
   geom_point(size=2, shape=21) +
   geom_line()+
-  # geom_errorbar(aes(ymin=log2_error_down, ymax=log2_error_up), width=.2, position=position_dodge(.9))+
+  # geom_errorbar(aes(ymin=error_down, ymax=error_up), width=.2, position=position_dodge(.9))+
   scale_color_manual(values=cols) +
-  ylab("log2 Mean intensity (log2(18O/16O)) \n") +
-  xlab("\n Time of day on June 26 2019 (Daylight 05:17-20:30)") +
+  ylab("Mean protein abundance ratio (log2(16O/18O)) \n") +
+  xlab("\n Time of day on June 26-27 2019 (Daylight 05:17-20:30)") +
   scale_x_continuous(breaks=df_time$elapsed_hours,labels =c(df_time$date_time))+
-  ggtitle("Time series intensity of peptide_id \n")+
+  ggtitle("Time series abundance_ratio of peptide_id \n")+
   ## adjust positions
   theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
   theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
@@ -289,7 +366,7 @@ ggplot(df_filt78, aes(x=elapsed_hours,y=log2_ave_intensity, color=Depth, group=i
 ```
 
 
-4.1. Surface(SRF)
+### 4.1. Surface(SRF)
 
 ```{r}
 # color code
@@ -303,13 +380,13 @@ time_series_1depth_woError <- function(df_filt78, depth){
   theme_set(theme_bw())
   # filter depth
   df_filt78_s <- df_filt78 %>% filter(Depth == depth_vec[depth])
-  ggplot(df_filt78_s, aes(x=elapsed_hours,y=log2_ave_intensity, group=Peptide_id)) +
+  ggplot(df_filt78_s, aes(x=elapsed_hours,y=Ave_abundance_ratio, group=Peptide_id)) +
     geom_point(size=2, shape=21, color=color_vec[depth]) +
     geom_line(color= color_vec[depth])+
-    ylab("Log2 mean intensity (log2(18O/16O)) \n") +
-    xlab("\n Time of day on June 26 2019 (Daylight 05:17-20:30)") +
+    ylab("Mean protein abundance ratio (log2(16O/18O)) \n") +
+    xlab("\n Time of day on June 26-27 2019 (Daylight 05:17-20:30)") +
     scale_x_continuous(breaks=df_time$elapsed_hours,labels =c(df_time$date_time))+
-    ggtitle(paste0("Time series intensity of peptide_id"," (",depth_vec[depth],")","\n"))+
+    ggtitle(paste0("Time series abundance_ratio of peptide_id"," (",depth_vec[depth],")","\n"))+
     ## adjust positions
     theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
     theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
@@ -325,14 +402,14 @@ time_series_1depth_wError <- function(df_filt78, depth){
   theme_set(theme_bw())
   # filter depth
   df_filt78_s <- df_filt78 %>% filter(Depth == depth_vec[depth])
-  ggplot(df_filt78_s, aes(x=elapsed_hours,y=log2_ave_intensity, group=Peptide_id)) +
+  ggplot(df_filt78_s, aes(x=elapsed_hours,y=Ave_abundance_ratio, group=Peptide_id)) +
     geom_point(size=2, shape=21, color=color_vec[depth]) +
     geom_line(color= color_vec[depth])+
-    geom_errorbar(aes(ymin=log2_error_down, ymax=log2_error_up), width=.05, position=position_dodge(.2),color='red')+
-    ylab("Log2 mean intensity (log2(18O/16O)) \n") +
-    xlab("\n Time of day on June 26 2019 (Daylight 05:17-20:30)") +
+    geom_errorbar(aes(ymin=error_down, ymax=error_up), width=.05, position=position_dodge(.2),color='red')+
+    ylab("Mean protein abundance ratio (log2(16O/18O)) \n") +
+    xlab("\n Time of day on June 26-27 2019 (Daylight 05:17-20:30)") +
     scale_x_continuous(breaks=df_time$elapsed_hours,labels =c(df_time$date_time))+
-    ggtitle(paste0("Time series intensity of peptide_id"," (",depth_vec[depth],")","\n"))+
+    ggtitle(paste0("Time series abundance_ratio of peptide_id"," (",depth_vec[depth],")","\n"))+
     ## adjust positions
     theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
     theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
@@ -358,7 +435,7 @@ time_series_1depth_wError(df_filt7,1)
 
 ```
 
-4.2. Deep Chlorophyll layer (DCL)
+### 4.2. Deep Chlorophyll layer (DCL)
 
 ```{r}
 # when we use all 7, 8 appearance cases
@@ -375,7 +452,7 @@ time_series_1depth_wError(df_filt7,2)
 
 ```
 
-4.3. Below Deep Chlorophyll layer (BDCL)
+### 4.3. Below Deep Chlorophyll layer (BDCL)
 
 ```{r}
 # when we use all 7, 8 appearance cases
@@ -397,7 +474,7 @@ time_series_1depth_wError(df_filt7,3)
 For time series clustering with R, the first step is to work out an appropriate distance/similarity metric, and then, at the second step, use existing clustering techniques, such as k-means, hierarchical clustering, density-based clustering or subspace clustering, to find clustering structures.
 (http://www.rdatamining.com/examples/time-series-clustering-classification)
 
-5.1. Approach 1: Hierarchical clustering using Dynamic time warping distance
+### 5.1. Hierarchical clustering using Dynamic time warping distance
 Dynamic Time Warping (DTW) finds optimal alignment between two time series, and DTW distance is used as a distance metric in the example below.
 (http://www.rdatamining.com/examples/time-series-clustering-classification)
 
@@ -405,13 +482,13 @@ Dynamic Time Warping (DTW) finds optimal alignment between two time series, and 
 
 # let's try cluster our time series data
 colnames(df_filt8)
-df_8 <- df_filt8 %>% filter(Depth=='SRF') %>% select(Peptide_id,Time,log2_ave_intensity)
+df_8 <- df_filt8 %>% filter(Depth=='SRF') %>% select(Peptide_id,Time,Ave_abundance_ratio)
 
 # reshape the dataframe with timepoints
 library(maditr)
 v_names <- c("T1","T2","T3","T4","T5","T6","T7","T8")
 df_8$Time <- factor(df_8$Time, levels=v_names)
-dc_8 <- dcast(df_8, Peptide_id ~ Time, value.var = "log2_ave_intensity")
+dc_8 <- dcast(df_8, Peptide_id ~ Time, value.var = "Ave_abundance_ratio")
 # make Peptide_id more simpler (Pep_1 -> 1)
 dc_8$Peptide_id <- str_replace(dc_8$Peptide_id,"Pep_","P.")
 # make first column into row name
@@ -426,6 +503,7 @@ plot(hc, cex=0.7, xlab='Hierarchical clustering of Distance(DTW) Matrix')
 
 ```
 
+
 Draw the particular small cluster in the time series plot
 
 ```{r}
@@ -434,14 +512,14 @@ time_series_clust_wError <- function(df_filt78, depth, clust1){
   theme_set(theme_bw())
   # filter depth
   df_filt78_s <- df_filt78 %>% filter(Depth == depth_vec[depth]) %>% filter(Peptide_id %in% clust1)
-  ggplot(df_filt78_s, aes(x=elapsed_hours,y=log2_ave_intensity, group=Peptide_id)) +
+  ggplot(df_filt78_s, aes(x=elapsed_hours,y=Ave_abundance_ratio, group=Peptide_id)) +
     geom_point(size=2, shape=21, color=color_vec[depth]) +
     geom_line(color= color_vec[depth])+
-    geom_errorbar(aes(ymin=log2_error_down, ymax=log2_error_up), width=.05, position=position_dodge(.2),color='red')+
-    ylab("Log2 mean intensity (log2(18O/16O)) \n") +
-    xlab("\n Time of day on June 26 2019 (Daylight 05:17-20:30)") +
+    geom_errorbar(aes(ymin=error_down, ymax=error_up), width=.05, position=position_dodge(.2),color='red')+
+    ylab("Mean protein abundance ratio (log2(16O/18O)) \n") +
+    xlab("\n Time of day on June 26-27 2019 (Daylight 05:17-20:30)") +
     scale_x_continuous(breaks=df_time$elapsed_hours,labels =c(df_time$date_time))+
-    ggtitle(paste0("Time series intensity of peptide_id"," (",depth_vec[depth],")","\n"))+
+    ggtitle(paste0("Time series abundance_ratio of peptide_id"," (",depth_vec[depth],")","\n"))+
     ## adjust positions
     theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
     theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
@@ -453,41 +531,311 @@ time_series_clust_wError <- function(df_filt78, depth, clust1){
     # theme(panel.grid.minor = element_blank())
 }
 
-# cluster1
-clust1 <- c('149')
-clust1 <- str_replace(clust1,"P.","Pep_") # make Peptide_id
+# cluster1 (outgroup-like)
+clust1 <- c('632',"596","443","453","522","153","851","493","50","574","584","402","813")
+clust1 <- str_replace(clust1,"^","Pep_") # make Peptide_id
 time_series_clust_wError(df_filt8, 1, clust1)
 
 # cluster2
-clust2 <- c("167","216","351","352","96","502","242", "77","110","133", "81","33","539","46","51", "137","264","94","535","18","4", "898", "314", "8")
-clust2 <- str_replace(clust2,"P.","Pep_") # make Peptide_id
+clust2 <- c("197","78","562","112","87","310","207", "47","319","91","289","82","697","441","142","191", "34","105","426","882","8","18","5","132","327")
+clust2 <- str_replace(clust2,"^","Pep_") # make Peptide_id
 time_series_clust_wError(df_filt8, 1, clust2)
-
-# cluster
-clust3 <- c("374","479","758","905","52","435","461","111","196","482","691","597","739","657","740")
-clust3 <- str_replace(clust3,"P.","Pep_") # make Peptide_id
-time_series_clust_wError(df_filt8, 1, clust3)
 
 ```
 
-5.2. Unsupervised clustering with various distances (SBD, DTW, ...) / prototyping methods / clustering methods \
+
+### 5.2. Principal coordinate analysis (ordination plot, PCoA) with DTW distance
+Use the DTW distance matrix to plot PCoA
+
+```{r}
+# Use the 
+# Transform distMatrix into matrix A
+distmat <- as(distMatrix, "matrix")
+dim(distmat)
+A <- -1/2*distmat^2
+dim(A)
+# Scaling/centering of Matrix A
+RowM <- rowMeans(A)
+ColM <- colMeans(A)
+M <- mean(A)
+Delta <- A
+for (i in 1:dim(A)[1]){
+        for (j in 1:dim(A)[2]) {
+                Delta[i,j] <- Delta[i,j] - RowM[i] - ColM[j] + M
+        }
+}
+
+# Compute the eigenvalues and eigenvectors of Delta
+Eigen <- eigen(Delta)
+# SEE YOU GET 5 EIGENVALUES (nrow = ncol of sqare distance matrix)
+# Scale the eigenvectors
+FirstEigenvector <- Eigen$vectors[,1]
+FirstEigenvalue <- Eigen$values[1]
+SecondEigenvector <- Eigen$vectors[,2]
+SecondEigenvalue <- Eigen$values[2]
+
+PrincipalCoords <- data.frame(First = FirstEigenvector*sqrt(FirstEigenvalue),
+                              Sedond = SecondEigenvector * sqrt(SecondEigenvalue))
+
+# we can take a shortcut instead: cmdScale or pco is now equal your PrincipalCoords (https://rstudio-pubs-static.s3.amazonaws.com/68544_06343669257d4f35aaca449f9ff1e6f7.html, https://genomicsclass.github.io/book/pages/mds.html)
+require(labdsv)
+pco_pep <- pco(distmat, k =2)
+# pco_pep2 <- cmdscale(distmat, k =2)
+# cmdscale(distmat, 2, eig=TRUE)$GOF
+
+# plot PCoA without peptide_id labels
+ggplot(as.data.frame(pco_pep$points), aes(x = V1, y = V2, label = row.names(as.data.frame(pco_pep$points)))) + 
+  theme(plot.title = element_text(size = 20,hjust = 0.5, face="bold")) +
+  geom_point(size = 4, color='pink',alpha=0.7)+
+  xlab(paste0('\n PCoA1', " (explained variance: ",round(pco_pep$GOF[1],3)*100,"%)"))+
+  ylab(paste0("PCoA2"," (explained variance: ",round(pco_pep$GOF[2]-pco_pep$GOF[1],3)*100,"%) \n")) +
+  ggtitle("Peptide ordination PCoA plot (DTW distance) \n") +
+  ## adjust positions
+  guides(fill = guide_legend(ncol = 4,reverse = T))+
+  theme(legend.position="bottom") +
+  theme(plot.title = element_text(size = 20,hjust = 0.5, face='bold')) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, face='bold')) + 
+  theme(axis.title.y = element_text(size = 13,hjust = 0.5, face='bold')) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.95,face='bold', vjust=0.4,size=15))+
+  theme(axis.text.y = element_text(size=15, face='bold'))
+
+# plot PCoA with peptide_id labels
+library(ggrepel)
+PCoA_1 <- ggplot(as.data.frame(pco_pep$points), aes(x = V1, y = V2, label = row.names(as.data.frame(pco_pep$points)))) + 
+  theme(plot.title = element_text(size = 20,hjust = 0.5, face="bold")) +
+  geom_point(size = 4, color='pink',alpha=0.7)+
+  xlab(paste0('\n PCoA1', " (explained variance: ",round(pco_pep$GOF[1],3)*100,"%)"))+
+  ylab(paste0("PCoA2"," (explained variance: ",round(pco_pep$GOF[2]-pco_pep$GOF[1],3)*100,"%) \n")) +
+  ggtitle("Peptide ordination PCoA plot (DTW distance) \n") +
+  ## adjust positions
+  guides(fill = guide_legend(ncol = 4,reverse = T))+
+  theme(legend.position="bottom") +
+  theme(plot.title = element_text(size = 20,hjust = 0.5, face='bold')) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, face='bold')) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, face='bold')) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.95,face='bold', vjust=0.4,size=15))+
+  theme(axis.text.y = element_text(size=15, face='bold')) +
+  ggrepel::geom_label_repel()
+  # theme(panel.grid.major = element_blank()) +
+  # theme(panel.grid.minor = element_blank(), panel.background=element_blank(), plot.background=element_blank())
+
+PCoA_1
+
+```
+
+### 5.2.2. Ordination analysis by samples (PCA, Principal component analysis)
+
+```{r}
+# make the matrix by reshaping dataframe
+library(maditr)
+dc_ave <- dcast(df_ave, SampleID ~ Peptide_id, value.var = "Mean_abundance_ratio")
+dim(dc_ave)
+# names(dc_ave)
+rownames(dc_ave)
+# make Peptide_id more simpler (Pep_1 -> P.1)
+names(dc_ave) <- str_replace(names(dc_ave),"Pep_","P.")
+# make first column into row name
+dc_ave <- tibble::column_to_rownames(dc_ave, var="SampleID")
+
+dim(dc_ave) # 67 samples (row) x 3366 peptides (columns)
+
+# First, the typical principal component analysis on the samples would be to transpose the data such that the samples are rows of the data matrix. The prcomp function can be used to return the principal components and other variables.(https://genomicsclass.github.io/book/pages/pca_svd.html)
+
+# pc <- prcomp(dc_ave) # due to NA this is not working
+
+# how should we change NA in the matrix?
+any(is.na(dc_ave))
+sum(is.na(dc_ave)) 
+
+# let's replace na into minimum value for each sample
+dc_namin <- dc_ave
+for (i in 1:dim(dc_ave)[1]){
+  rowMin <- (min(dc_ave[i,] ,na.rm=T))
+  for (j in 1:dim(dc_ave)[2]) {
+    if (is.na(dc_namin[i,j])){
+      dc_namin[i,j] <- rowMin
+      # print(dc_namin[i,j])
+    }
+  }
+}
+
+sum(is.na(dc_namin)) # 0 mean success
+
+# PCA with prcomp
+pc <- prcomp(dc_namin)
+eigs <- pc$sdev^2
+# variance explained
+eigs[1] / sum(eigs) # pc1
+eigs[2] / sum(eigs) # pc2
+
+# First, a new dataframe should be created, with the information of sample-group. (http://huboqiang.cn/2016/03/03/RscatterPlotPCA)
+df_out <- as.data.frame(pc$x)
+df_out$depth <- sapply( strsplit(as.character(row.names(df_out)), "_"), "[[", 1 )
+df_out$time <- sapply( strsplit(as.character(row.names(df_out)), "_"), "[[", 2 )
+df_out$time <- as.numeric(str_replace(df_out$time, "T",""))
+df_out$time <- factor(df_out$time,levels=1L:8L)
+df_out$rep <- sapply( strsplit(as.character(row.names(df_out)), "_"), "[[", 3 )
+df_out$depth <- factor(df_out$depth, levels=depth_vec)
+
+head(df_out)
+
+# plot PCA with timepoint labels
+ggplot(df_out,aes(x=PC1,y=PC2,label = time))+
+  theme(plot.title = element_text(size = 20,hjust = 0.5, face="bold")) +
+  geom_point(size = 5, alpha=0.9, aes(col= depth))+
+  scale_fill_manual(values=cols) +
+  xlab(paste0('\n PC1', " (explained variance: ",round(eigs[1] / sum(eigs),3)*100,"%)"))+
+  ylab(paste0("PC2"," (explained variance: ",round(eigs[2] / sum(eigs),3)*100,"%) \n")) +
+  ggtitle("Principle component analysis plot for samples \n") +
+  ## adjust positions
+  guides(fill = guide_legend(ncol = 4,reverse = T))+
+  theme(legend.position="bottom") +
+  theme(plot.title = element_text(size = 20,hjust = 0.5, face='bold')) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, face='bold')) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, face='bold')) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.95,face='bold', vjust=0.4,size=15))+
+  theme(axis.text.y = element_text(size=15, face='bold'))
+
+
+# plot PCA with timepoint labels
+ggplot(df_out,aes(x=PC1,y=PC2,label = time))+
+  theme(plot.title = element_text(size = 20,hjust = 0.5, face="bold")) +
+  geom_point(size = 4.5, alpha=0.9, aes(col= depth))+
+  scale_fill_manual(values=cols) +
+  xlab(paste0('\n PC1', " (explained variance: ",round(eigs[1] / sum(eigs),3)*100,"%)"))+
+  ylab(paste0("PC2"," (explained variance: ",round(eigs[2] / sum(eigs),3)*100,"%) \n")) +
+  ggtitle("Principle component analysis plot for samples \n") +
+  ## adjust positions
+  guides(fill = guide_legend(ncol = 4,reverse = T))+
+  theme(legend.position="bottom") +
+  theme(plot.title = element_text(size = 20,hjust = 0.5, face='bold')) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, face='bold')) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, face='bold')) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.95,face='bold', vjust=0.4,size=15))+
+  theme(axis.text.y = element_text(size=15, face='bold'))+
+  ggrepel::geom_label_repel()
+
+# plot PCA with timepoint gradient
+
+ggplot(df_out,aes(x=PC1,y=PC2,alpha = time))+
+  theme(plot.title = element_text(size = 20,hjust = 0.5, face="bold")) +
+  geom_point(size = 5, stroke=1.2, aes(col=depth))+
+  # geom_point(size = 5,stroke = 1.3, shape=21, aes(fill=depth))+
+  scale_fill_manual(values=cols) +
+  scale_alpha_manual(values=seq(0.3,1,length.out = 8)) +
+  xlab(paste0('\n PC1', " (explained variance: ",round(eigs[1] / sum(eigs),3)*100,"%)"))+
+  ylab(paste0("PC2"," (explained variance: ",round(eigs[2] / sum(eigs),3)*100,"%) \n")) +
+  ggtitle("Principle component analysis plot for samples \n") +
+  ## adjust positions
+  guides(fill = guide_legend(ncol = 4,reverse = T))+
+  theme(legend.position="bottom") +
+  theme(plot.title = element_text(size = 20,hjust = 0.5, face='bold')) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, face='bold')) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, face='bold')) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.95,face='bold', vjust=0.4,size=15))+
+  theme(axis.text.y = element_text(size=15, face='bold'))
+  # ggrepel::geom_label_repel()
+
+
+PCoA_1 <- ggplot(as.data.frame(pco_pep$points), aes(x = V1, y = V2, label = row.names(as.data.frame(pco_pep$points)))) + 
+  theme(plot.title = element_text(size = 20,hjust = 0.5, face="bold")) +
+  geom_point(size = 4, color='pink',alpha=0.7)+
+  xlab(paste0('\n PCoA1', " (explained variance: ",round(pco_pep$GOF[1],3)*100,"%)"))+
+  ylab(paste0("PCoA2"," (explained variance: ",round(pco_pep$GOF[2]-pco_pep$GOF[1],3)*100,"%) \n")) +
+  ggtitle("Peptide ordination PCoA plot (DTW distance) \n") +
+  ## adjust positions
+  guides(fill = guide_legend(ncol = 4,reverse = T))+
+  theme(legend.position="bottom") +
+  theme(plot.title = element_text(size = 20,hjust = 0.5, face='bold')) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, face='bold')) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, face='bold')) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.95,face='bold', vjust=0.4,size=15))+
+  theme(axis.text.y = element_text(size=15, face='bold')) +
+  ggrepel::geom_label_repel()
+  # theme(panel.grid.major = element_blank()) +
+  # theme(panel.grid.minor = element_blank(), panel.background=element_blank(), plot.background=element_blank())
+
+PCoA_1
+
+
+
+
+# PCA with sparse pca methods
+
+library(sparsepca)
+# Sparse Principal Component Analysis (spca).
+spc <- spca(dc_namin, k = 2, alpha = 1e-04, beta = 1e-04, center = TRUE,
+            scale = FALSE, max_iter = 1000, tol = 1e-05, verbose = 0)
+summary(spc)
+# Randomized Sparse Principal Component Analysis (rspca).
+rspc <- rspca(dc_namin, k = 2, alpha = 1e-04, beta = 1e-04, center = TRUE,
+              scale = FALSE, max_iter = 1000, tol = 1e-05, verbose = 0)
+summary(rspc)
+# Robust Sparse Principal Component Analysis (robspca)
+robspc <- robspca(dc_namin, k = 2, alpha = 1e-04, beta = 1e-04, gamma = 100,
+                  center = TRUE, scale = FALSE, max_iter = 1000, tol = 1e-05, verbose = 0)
+summary(robspc)
+
+
+sparse_pca_plot <- function(spc,type="Sparse"){
+  df_spc <- data.frame(summary(spc))
+  # variance explained
+  df_spc[3,1] # pc1
+  df_spc[3,2] # pc2
+
+  df_out <- as.data.frame(spc$scores)
+  colnames(df_out) <- c("PC1","PC2")
+  df_out$depth <- sapply( strsplit(as.character(row.names(df_out)), "_"), "[[", 1 )
+  df_out$time <- sapply( strsplit(as.character(row.names(df_out)), "_"), "[[", 2 )
+  df_out$rep <- sapply( strsplit(as.character(row.names(df_out)), "_"), "[[", 3 )
+  df_out$depth <- factor(df_out$depth, levels=depth_vec)
+  
+  head(df_out)
+  
+  ggplot(df_out,aes(x=PC1,y=PC2,color=depth))+
+    theme(plot.title = element_text(size = 20,hjust = 0.5, face="bold")) +
+    geom_point(size = 4,alpha=0.7)+
+    scale_fill_manual(values=cols) +
+    xlab(paste0('\n PC1', " (explained variance: ",round(df_spc[3,1],3)*100,"%)"))+
+    ylab(paste0("PC2"," (explained variance: ",round(df_spc[3,2],3)*100,"%) \n")) +
+    ggtitle(paste0(type," principle component analysis plot for samples \n")) +
+    ## adjust positions
+    guides(fill = guide_legend(ncol = 4,reverse = T))+
+    theme(legend.position="bottom") +
+    theme(plot.title = element_text(size = 20,hjust = 0.5, face='bold')) + 
+    theme(axis.title.x = element_text(size = 15,hjust = 0.5, face='bold')) + 
+    theme(axis.title.y = element_text(size = 15,hjust = 0.5, face='bold')) + 
+    theme(axis.text.x = element_text(angle = 90, hjust = 0.95,face='bold', vjust=0.4,size=15))+
+    theme(axis.text.y = element_text(size=15, face='bold'))
+    # theme(panel.grid.major = element_blank()) +
+    # theme(panel.grid.minor = element_blank(), panel.background=element_blank(), plot.background=element_blank())
+}
+
+sparse_pca_plot(spc,type="Sparse")
+sparse_pca_plot(rspc,type="Randomized Sparse")
+sparse_pca_plot(robspc,type="Robust Sparse")
+
+```
+
+
+### 5.3. Unsupervised clustering with various distances (SBD, DTW, ...) / prototyping methods / clustering methods \
 - Using dtwclust package
 - How many clusters should we use? Evaluate by CVI (Cluster validity index, the bigger the better for internal CVI) \
 - Please normalize before clustering
 
-(0) Data formating for tsclust input 
+#### (0) Data formating for tsclust input 
 
 ```{r}
 # (1) Change our data into list format for input into tsclust
 colnames(df_filt8)
 
 make_list <- function(df_filt8,depth){
-  df_SRF8 <- df_filt8 %>% filter(Depth==depth) %>% select(Peptide_id,Time,log2_ave_intensity)
+  df_SRF8 <- df_filt8 %>% filter(Depth==depth) %>% select(Peptide_id,Time,Ave_abundance_ratio)
   # reshape the dataframe with timepoints
   library(maditr)
   v_names <- c("T1","T2","T3","T4","T5","T6","T7","T8")
   df_SRF8$Time <- factor(df_SRF8$Time, levels=v_names)
-  dc_SRF8 <- dcast(df_SRF8, Peptide_id ~ Time, value.var = "log2_ave_intensity")
+  dc_SRF8 <- dcast(df_SRF8, Peptide_id ~ Time, value.var = "Ave_abundance_ratio")
   # make Peptide_id more simpler (Pep_1 -> P.1)
   dc_SRF8$Peptide_id <- str_replace(dc_SRF8$Peptide_id,"Pep_","P.")
   # make first column into row name
@@ -685,16 +1033,116 @@ plot(pc_tp8)
 
 ### 6. RAIN analysis (Rhythmicity Analysis Incorporating Non-parametric methods)
 
+### 6.1. Checking the abundance_ratio distribution of peptides in each sample
+
+(1) Peptide level histograms
+
+```{r}
+# function to plot histogram
+hist_abundance_ratio <- function(depth="SRF",time="T1"){
+  df_ave_SRF_T1 <- df_ave %>% filter(Time==time & Depth ==depth)
+  theme_set(theme_bw())
+  h1 <- ggplot(df_ave_SRF_T1, aes(x=Mean_abundance_ratio)) +
+    geom_freqpoly(binwidth = 0.05, aes(color=Replicate)) +
+    scale_fill_brewer(palette=' Set2') +
+    ylab("Mean protein abundance ratio (log2(16O/18O)) \n") +
+    xlab("\n Frequency of ratio") +
+    ggtitle(paste0("Histogram of sample (",depth,"-",time,") \n"))+
+    ## adjust positions
+    theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
+    theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
+    theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
+    theme(axis.text.x = element_text(angle = 90, hjust = 0.5, vjust=0.3,size=13, family="serif"))+
+    theme(axis.text.y = element_text(size=10))
+    # theme(panel.grid.major = element_blank())
+    # theme(panel.grid.minor = element_blank()) 
+  return(h1)
+}
+
+hist_abundance_ratio(depth="SRF",time="T1")
+hist_abundance_ratio(depth="SRF",time="T2")
+hist_abundance_ratio(depth="SRF",time="T3")
+hist_abundance_ratio(depth="SRF",time="T4")
+hist_abundance_ratio(depth="SRF",time="T5")
+hist_abundance_ratio(depth="SRF",time="T6")
+hist_abundance_ratio(depth="SRF",time="T7")
+hist_abundance_ratio(depth="SRF",time="T8")
+
+# draw histogram in multigrids
+library(gridExtra)
+paste0("T",1L:8L)
+
+l <- list()
+for (i in paste0("T",1L:8L)){
+  print(i)
+  l[[i]] <- hist_abundance_ratio(depth="SRF",time=i)
+}
+length(l)
+
+grid.arrange(grobs = l, ncol=3)
+
+```
+
+(2) Spectra level histograms
+
+```{r}
+# function to plot histogram
+hist_abundance_ratio_spec <- function(depth="SRF",time="T1"){
+  df_int_SRF_T1 <- df_int %>% filter(Time==time & Depth ==depth) %>% select(-Peptide_id)
+  theme_set(theme_bw())
+  h1 <- ggplot(df_int_SRF_T1, aes(x=cent.log2.16O.18O.Ratio)) +
+    geom_freqpoly(binwidth = 0.05, aes(color=Replicate)) +
+    scale_fill_brewer(palette='Set2') +
+    ylab("Centered log2(16O/18O) ratio \n") +
+    xlab("\n Frequency of ratio (Spec-level)") +
+    ggtitle(paste0("Histogram of sample (",depth,"-",time,") \n"))+
+    ## adjust positions
+    theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
+    theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
+    theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
+    theme(axis.text.x = element_text(angle = 90, hjust = 0.5, vjust=0.3,size=13, family="serif"))+
+    theme(axis.text.y = element_text(size=10))
+    # theme(panel.grid.major = element_blank())
+    # theme(panel.grid.minor = element_blank()) 
+  return(h1)
+}
+
+hist_abundance_ratio_spec(depth="SRF",time="T1")
+hist_abundance_ratio_spec(depth="SRF",time="T2")
+hist_abundance_ratio_spec(depth="SRF",time="T3")
+hist_abundance_ratio_spec(depth="SRF",time="T4")
+hist_abundance_ratio_spec(depth="SRF",time="T5")
+hist_abundance_ratio_spec(depth="SRF",time="T6")
+hist_abundance_ratio_spec(depth="SRF",time="T7")
+hist_abundance_ratio_spec(depth="SRF",time="T8")
+
+# draw histogram in multigrids
+library(gridExtra)
+paste0("T",1L:8L)
+
+l <- list()
+for (i in paste0("T",1L:8L)){
+  print(i)
+  l[[i]] <- hist_abundance_ratio_spec(depth="SRF",time=i)
+}
+length(l)
+
+grid.arrange(grobs = l, ncol=3)
+
+```
+
+
+### 6.2. Applying rain analysis
 
 ```{r}
 # setting our data into input format
-df_8 <- df_filt8 %>% filter(Depth=='SRF') %>% select(Peptide_id,Time,log2_ave_intensity)
+df_8_S <- df_filt8 %>% filter(Depth=='SRF') %>% select(Peptide_id,Time,Ave_abundance_ratio)
 
 # reshape the dataframe with timepoints
 library(maditr)
 v_names <- c("T1","T2","T3","T4","T5","T6","T7","T8")
 df_8$Time <- factor(df_8$Time, levels=v_names)
-dc_8 <- dcast(df_8, Peptide_id ~ Time, value.var = "log2_ave_intensity")
+dc_8 <- dcast(df_8, Peptide_id ~ Time, value.var = "Ave_abundance_ratio")
 # make Peptide_id more simpler (Pep_1 -> 1)
 dc_8$Peptide_id <- str_replace(dc_8$Peptide_id,"Pep_","P.")
 # make first column into row name
@@ -717,118 +1165,197 @@ t <- c(1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,1,0,0,1) # adjusted for irreg
 
 # RAIN analysis
 library(rain)
-rainresult <- rain(t(dc_8), period=8, measure.sequence=t, deltat=1)
-##add new column with corrected pvals
-p.adjust(as.numeric(rainresult$pVal), method="bonferroni")
-p.adjust(as.numeric(rainresult$pVal), method="fdr")
+rainresult <- rain(t(dc_8), period=8, measure.sequence=t, deltat=1, method='independent')
 
-rainresult$fdr <- p.adjust(as.numeric(rainresult$pVal), method="fdr") # correct p-values for multiple testing
+plot(-log(rainresult$pVal) ~ rainresult$phase)
 
-# pVal cut off 0.05
-rainresult %>% filter(pVal < 0.05)
-# pVal cut off 0.01
-rainresult %>% filter(pVal < 0.01)
+# According to the original paper, adjusting p-values for multiple testing is not necessary (already done in the output): https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4266694/
+# rainresult$fdr <- p.adjust(as.numeric(rainresult$pVal), method="fdr") 
+
+# pVal cut off 0.25
+dim(rainresult)
+rainresult %>% filter(pVal < 0.25)
+rainresult %>% filter(pVal < 0.25) %>% dim() # 69 peptides
+
+# pVal cut off 0.15
+rainresult %>% filter(pVal < 0.15)
+rainresult %>% filter(pVal < 0.15) %>% dim() # 37 peptides
+
+
+# rain analysis function
+rain_analysis <- function(df_filt8,depth="SRF"){
+  # setting our data into input format
+  df_8 <- df_filt8 %>% filter(Depth==depth) %>% select(Peptide_id,Time,Ave_abundance_ratio)
+  # reshape the dataframe with timepoints
+  library(maditr)
+  v_names <- c("T1","T2","T3","T4","T5","T6","T7","T8")
+  df_8$Time <- factor(df_8$Time, levels=v_names)
+  dc_8 <- dcast(df_8, Peptide_id ~ Time, value.var = "Ave_abundance_ratio")
+  # make Peptide_id more simpler (Pep_1 -> 1)
+  dc_8$Peptide_id <- str_replace(dc_8$Peptide_id,"Pep_","P.")
+  # make first column into row name
+  dc_8 <- tibble::column_to_rownames(dc_8, var="Peptide_id")
+  t <- c(1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,1,0,0,1) # adjusted for irregular repeats
+  # RAIN analysis
+  library(rain)
+  rainresult <- rain(t(dc_8), period=8, measure.sequence=t, deltat=1, method='independent')
+  return(rainresult)
+}
 
 
 ```
 
-### 6.2. Checking the intensity distribution of peptides in each sample
+### 6.3. RAIN - p_value and peak timepoint: Surface / DCL / BDCL
 
-(1) Peptide level histograms
 
 ```{r}
-# function to plot histogram
-hist_intensity <- function(depth="SRF",time="T1"){
-  df_ave_SRF_T1 <- df_ave %>% filter(Time==time & Depth ==depth)
-  theme_set(theme_bw())
-  h1 <- ggplot(df_ave_SRF_T1, aes(x=log2_Mean_intensity)) +
-    geom_freqpoly(binwidth = 0.05, aes(color=Replicate)) +
-    scale_fill_brewer(palette='Set2') +
-    ylab("Intensity \n") +
-    xlab("\n Frequency of intensity") +
-    ggtitle(paste0("Histogram of sample (",depth,"-",time,") \n"))+
-    ## adjust positions
-    theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
-    theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
-    theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
-    theme(axis.text.x = element_text(angle = 90, hjust = 0.5, vjust=0.3,size=13, family="serif"))+
-    theme(axis.text.y = element_text(size=10))
-    # theme(panel.grid.major = element_blank())
-    # theme(panel.grid.minor = element_blank()) 
-  return(h1)
+# function to plot p-value
+time_series_pvalue <- function(df_filt8,depth="SRF",threshold=0.25){
+  rain_SRF8 <-rain_analysis(df_filt8,depth=depth)
+  print(sum(rain_SRF8$pVal<=threshold))
+  plot((rain_SRF8$pVal) ~ rain_SRF8$phase, xlab="Peak timepoint (Sampling order #)", ylab="p-value",main=paste0("Rhythmic peptides (",depth,")"),cex=2,cex.lab=2, cex.main=2,cex.axis=1.6)
+  points(rain_SRF8$pVal[rain_SRF8$pVal<=threshold] ~ rain_SRF8$phase[rain_SRF8$pVal<=threshold], col="red",cex=2)
+  abline(h=threshold, col="red")
 }
 
-hist_intensity(depth="SRF",time="T1")
-hist_intensity(depth="SRF",time="T2")
-hist_intensity(depth="SRF",time="T3")
-hist_intensity(depth="SRF",time="T4")
-hist_intensity(depth="SRF",time="T5")
-hist_intensity(depth="SRF",time="T6")
-hist_intensity(depth="SRF",time="T7")
-hist_intensity(depth="SRF",time="T8")
+time_series_pvalue(df_filt8,depth="SRF",threshold=0.25)
+time_series_pvalue(df_filt8,depth="DCL",threshold=0.25)
+time_series_pvalue(df_filt8,depth="BDCL",threshold=0.25)
+
+# draw plots in multigrids
+par(mfrow = c(1, 3))
+# filtered for 8 timepoint appearing peptides
+for (i in 1:length(depth_vec)){
+  time_series_pvalue(df_filt8,depth=depth_vec[i],threshold=0.25)
+}
+
+# filtered for 7, 8 timepoint appearing peptides
+for (i in 1:length(depth_vec)){
+  time_series_pvalue(df_filt78,depth=depth_vec[i],threshold=0.25)
+}
+
+# change the threshold to 0.15
+for (i in 1:length(depth_vec)){
+  time_series_pvalue(df_filt8,depth=depth_vec[i],threshold=0.15)
+}
+
+for (i in 1:length(depth_vec)){
+  time_series_pvalue(df_filt78,depth=depth_vec[i],threshold=0.15)
+}
+
+dev.off()
+
+
+```
+
+### 6.4. Rhythmic peptide's peak time distribution
+
+```{r}
+rain_SRF8 <- rain_analysis(df_filt8,depth="SRF") %>% mutate(Depth="SRF") %>% tibble::rownames_to_column(var = "Peptide_id")
+rain_DCL8 <- rain_analysis(df_filt8,depth="DCL") %>% mutate(Depth="DCL") %>% tibble::rownames_to_column(var = "Peptide_id")
+rain_BDCL8 <- rain_analysis(df_filt8,depth="BDCL") %>% mutate(Depth="BDCL") %>% tibble::rownames_to_column(var = "Peptide_id")
+dim(rain_SRF8)
+dim(rain_DCL8)
+dim(rain_BDCL8)
+rain_8 <- rbind(rain_SRF8, rain_DCL8) %>% rbind(rain_BDCL8)
+dim(rain_8)
+tail(rain_8)
+
+rain_sig <- rain_8 %>% filter(pVal <= 0.25)
+rain_sig$Depth <- factor(rain_sig$Depth, levels=depth_vec)
+
+ggplot(rain_sig, aes(x=phase)) +
+  geom_freqpoly(binwidth = 1, aes(color=Depth), size=1.5) +
+  # geom_histogram(binwidth = 1, position="dodge", aes(fill=Depth)) +
+  scale_color_manual(values=cols) +
+  ylab("Rhythmic peptide frequency \n") +
+  # xlab("\n Peak timepoint (Sampling order #)") +
+  xlab("\n Time of day on June 26-27 2019 (Daylight 05:17-20:30)") +
+  scale_x_continuous(breaks=seq(1,8,1),labels =c(df_time$date_time))+
+  ggtitle(paste0("Histogram of peak time \n"))+
+  # scale_x_continuous(breaks=seq(1,8,1)) +
+  ## adjust positions
+  theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.text.x = element_text(hjust = 0.9, vjust=0.9,angle=40,size=13, family="serif"))+
+  theme(axis.text.y = element_text(size=10)) +
+  annotate("rect", xmin = 3.6, xmax = 5.35, ymin = -Inf, ymax = Inf, alpha = .2) +
+  theme(panel.grid.minor = element_blank())
+  # theme(panel.grid.major = element_blank())
+
+```
+
+
+### 6.5. Amplitude
+
+```{r}
+# Shaping data
+rain_sig1 <- rain_8 %>% filter(pVal <= 0.25)
+rain_sig1$Peptide_id <- str_replace(rain_sig1$Peptide_id,"P.","Pep_")
+rain_sig1$phase <- str_replace(rain_sig1$phase,"^","T")
+rain_sig2 <- rain_sig1 %>% rename(Time = phase) %>% select(-period)
+
+# rain_sig2 %>% arrange(Peptide_id)
+           
+# plot
+time_series_1depth_1peak <- function(df_filt8,n=1,time="T1"){
+  peak_T1 <- rain_sig2 %>% filter(Time==time) %>% select(Peptide_id)
+  print(length(peak_T1$Peptide_id))
+  time_series_clust_wError(df_filt8, n, peak_T1$Peptide_id) +
+    ggtitle(paste0("Peptides with peak time ",time))+
+    theme(axis.title.x = element_text(size = 10,hjust = 0.5, family="serif")) + 
+    theme(axis.title.y = element_text(size = 10,hjust = 0.5, family="serif"))
+}
+
 
 # draw histogram in multigrids
 library(gridExtra)
-paste0("T",1L:8L)
 
+# (1) Surface
 l <- list()
 for (i in paste0("T",1L:8L)){
   print(i)
-  l[[i]] <- hist_intensity(depth="SRF",time=i)
+  l[[i]] <- time_series_1depth_1peak(df_filt8,n=1,time=i)
 }
 length(l)
 
-grid.arrange(grobs = l, ncol=3)
+grid.arrange(grobs = l, ncol=4)
 
-```
-
-(2) Spectra level histograms
-
-```{r}
-# function to plot histogram
-hist_intensity_spec <- function(depth="SRF",time="T1"){
-  df_int_SRF_T1 <- df_int %>% filter(Time==time & Depth ==depth) %>% select(-Peptide_id)
-  theme_set(theme_bw())
-  h1 <- ggplot(df_int_SRF_T1, aes(x=log2.18O.16O.Ratio)) +
-    geom_freqpoly(binwidth = 0.05, aes(color=Replicate)) +
-    scale_fill_brewer(palette='Set2') +
-    ylab("Intensity \n") +
-    xlab("\n Frequency of intensity (Spec-level)") +
-    ggtitle(paste0("Histogram of sample (",depth,"-",time,") \n"))+
-    ## adjust positions
-    theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
-    theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
-    theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
-    theme(axis.text.x = element_text(angle = 90, hjust = 0.5, vjust=0.3,size=13, family="serif"))+
-    theme(axis.text.y = element_text(size=10))
-    # theme(panel.grid.major = element_blank())
-    # theme(panel.grid.minor = element_blank()) 
-  return(h1)
-}
-
-hist_intensity_spec(depth="SRF",time="T1")
-hist_intensity_spec(depth="SRF",time="T2")
-hist_intensity_spec(depth="SRF",time="T3")
-hist_intensity_spec(depth="SRF",time="T4")
-hist_intensity_spec(depth="SRF",time="T5")
-hist_intensity_spec(depth="SRF",time="T6")
-hist_intensity_spec(depth="SRF",time="T7")
-hist_intensity_spec(depth="SRF",time="T8")
-
-# draw histogram in multigrids
-library(gridExtra)
-paste0("T",1L:8L)
-
+# (2) DCL
 l <- list()
 for (i in paste0("T",1L:8L)){
   print(i)
-  l[[i]] <- hist_intensity_spec(depth="SRF",time=i)
+  l[[i]] <- time_series_1depth_1peak(df_filt8,n=2,time=i)
 }
 length(l)
 
-grid.arrange(grobs = l, ncol=3)
+grid.arrange(grobs = l, ncol=4)
+
+# (3) BDCL
+l <- list()
+for (i in paste0("T",1L:8L)){
+  print(i)
+  l[[i]] <- time_series_1depth_1peak(df_filt8,n=3,time=i)
+}
+length(l)
+
+grid.arrange(grobs = l, ncol=4)
+
+
+
+# Getting amplitude
+inner_join(rain_sig2, df_ave_rep, by=c("Peptide_id"="Peptide_id","Depth"="Depth","Time"="Time")) %>% dim()
+
+
 
 ```
+
+
+
+
+
+
 
 
 
