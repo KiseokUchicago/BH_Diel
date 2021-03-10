@@ -84,7 +84,7 @@ time1 <- ggplot(df_uniq1, aes(x=Time, fill=Depth, y=uniq_pep)) +  ## I put fill=
   geom_bar(stat="identity",position="dodge") +
   scale_fill_manual(values=cols) +
   ylab("Number of unique peptide sequence \n") +
-  xlab("\n SampleID") +
+  xlab("\n Sampling Timepoint") +
   ggtitle("Number of unique peptide sequences per timepoint (including all replicates)")+
   ## adjust positions
   theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
@@ -916,9 +916,7 @@ dc_8$Peptide_id <- str_replace(dc_8$Peptide_id,"Pep_","P.")
 # make first column into row name
 dc_8 <- tibble::column_to_rownames(dc_8, var="Peptide_id")
 
-t(dc_8) %>% head
-
-
+# t(dc_8) %>% head
 # setup time vector for RAIN (source: Maria's code provided to me 3/3/21)
 # The following code gives a vector where the times given in "t" are represented by a 1 in the vector "ft".
 # The time series in question lasted 84 hours and sampling times were every 4 hours, so the 
@@ -934,8 +932,6 @@ t <- c(1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,1,0,0,1) # adjusted for irreg
 # RAIN analysis
 library(rain)
 rainresult <- rain(t(dc_8), period=8, measure.sequence=t, deltat=1, method='independent')
-
-plot(-log(rainresult$pVal) ~ rainresult$phase)
 
 # According to the original paper, adjusting p-values for multiple testing is not necessary (already done in the output): https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4266694/
 # rainresult$fdr <- p.adjust(as.numeric(rainresult$pVal), method="fdr") 
@@ -1316,7 +1312,7 @@ sapply(pc_k, cvi, type = "internal")
 
 
 6.1. Given code: https://rdrr.io/bioc/rain/f/inst/doc/rain.pdf
-```{r}
+```{r eval=F}
 # BiocManager::install('rain')
 
 set.seed(123)
