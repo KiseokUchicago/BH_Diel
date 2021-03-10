@@ -258,6 +258,7 @@ df_ave <- df_int %>% group_by(SampleID, Time, Depth, Replicate, Peptide_id) %>%
   summarize(Mean_abundance_ratio=mean(cent.log2.16O.18O.Ratio),
             SD_pep=sd(cent.log2.16O.18O.Ratio)) %>% ungroup()
 head(df_ave)
+dim(df_ave)
 df_ave %>% filter(Peptide_id=='Pep_1' & Time =='T1',Depth=="BDCL") # check
 
 # Now, average and error by replicate
@@ -469,7 +470,7 @@ time_series_1depth_wError(df_filt7,3)
 
 ```
 
-### 5. Time series clustering
+### 5. Ordination analysis
 
 For time series clustering with R, the first step is to work out an appropriate distance/similarity metric, and then, at the second step, use existing clustering techniques, such as k-means, hierarchical clustering, density-based clustering or subspace clustering, to find clustering structures.
 (http://www.rdatamining.com/examples/time-series-clustering-classification)
@@ -628,6 +629,7 @@ PCoA_1
 ```{r}
 # make the matrix by reshaping dataframe
 library(maditr)
+dim(df_ave)
 dc_ave <- dcast(df_ave, SampleID ~ Peptide_id, value.var = "Mean_abundance_ratio")
 dim(dc_ave)
 # names(dc_ave)
@@ -647,10 +649,12 @@ dim(dc_ave) # 67 samples (row) x 3366 peptides (columns)
 any(is.na(dc_ave))
 sum(is.na(dc_ave)) 
 
+dim(dc_ave)
 # let's replace na into minimum value for each sample
 dc_namin <- dc_ave
 for (i in 1:dim(dc_ave)[1]){
   rowMin <- (min(dc_ave[i,] ,na.rm=T))
+  # print(rowMin)
   for (j in 1:dim(dc_ave)[2]) {
     if (is.na(dc_namin[i,j])){
       dc_namin[i,j] <- rowMin
@@ -660,7 +664,7 @@ for (i in 1:dim(dc_ave)[1]){
 }
 
 sum(is.na(dc_namin)) # 0 mean success
-
+dim(dc_namin)
 # PCA with prcomp
 pc <- prcomp(dc_namin)
 eigs <- pc$sdev^2
@@ -737,29 +741,6 @@ ggplot(df_out,aes(x=PC1,y=PC2,alpha = time))+
   # ggrepel::geom_label_repel()
 
 
-PCoA_1 <- ggplot(as.data.frame(pco_pep$points), aes(x = V1, y = V2, label = row.names(as.data.frame(pco_pep$points)))) + 
-  theme(plot.title = element_text(size = 20,hjust = 0.5, face="bold")) +
-  geom_point(size = 4, color='pink',alpha=0.7)+
-  xlab(paste0('\n PCoA1', " (explained variance: ",round(pco_pep$GOF[1],3)*100,"%)"))+
-  ylab(paste0("PCoA2"," (explained variance: ",round(pco_pep$GOF[2]-pco_pep$GOF[1],3)*100,"%) \n")) +
-  ggtitle("Peptide ordination PCoA plot (DTW distance) \n") +
-  ## adjust positions
-  guides(fill = guide_legend(ncol = 4,reverse = T))+
-  theme(legend.position="bottom") +
-  theme(plot.title = element_text(size = 20,hjust = 0.5, face='bold')) + 
-  theme(axis.title.x = element_text(size = 15,hjust = 0.5, face='bold')) + 
-  theme(axis.title.y = element_text(size = 15,hjust = 0.5, face='bold')) + 
-  theme(axis.text.x = element_text(angle = 90, hjust = 0.95,face='bold', vjust=0.4,size=15))+
-  theme(axis.text.y = element_text(size=15, face='bold')) +
-  ggrepel::geom_label_repel()
-  # theme(panel.grid.major = element_blank()) +
-  # theme(panel.grid.minor = element_blank(), panel.background=element_blank(), plot.background=element_blank())
-
-PCoA_1
-
-
-
-
 # PCA with sparse pca methods
 
 library(sparsepca)
@@ -817,219 +798,6 @@ sparse_pca_plot(robspc,type="Robust Sparse")
 
 ```
 
-
-### 5.3. Unsupervised clustering with various distances (SBD, DTW, ...) / prototyping methods / clustering methods \
-- Using dtwclust package
-- How many clusters should we use? Evaluate by CVI (Cluster validity index, the bigger the better for internal CVI) \
-- Please normalize before clustering
-
-#### (0) Data formating for tsclust input 
-
-```{r}
-# (1) Change our data into list format for input into tsclust
-colnames(df_filt8)
-
-make_list <- function(df_filt8,depth){
-  df_SRF8 <- df_filt8 %>% filter(Depth==depth) %>% select(Peptide_id,Time,Ave_abundance_ratio)
-  # reshape the dataframe with timepoints
-  library(maditr)
-  v_names <- c("T1","T2","T3","T4","T5","T6","T7","T8")
-  df_SRF8$Time <- factor(df_SRF8$Time, levels=v_names)
-  dc_SRF8 <- dcast(df_SRF8, Peptide_id ~ Time, value.var = "Ave_abundance_ratio")
-  # make Peptide_id more simpler (Pep_1 -> P.1)
-  dc_SRF8$Peptide_id <- str_replace(dc_SRF8$Peptide_id,"Pep_","P.")
-  # make first column into row name
-  dc_SRF8 <- tibble::column_to_rownames(dc_SRF8, var="Peptide_id")
-  # make it into list format
-  # l_SRF8 <- setNames(split(dc_SRF8, seq(nrow(dc_SRF8))), rownames(dc_SRF8))
-  l_SRF8 <- as.list(as.data.frame(t(dc_SRF8)))
-  return(l_SRF8)
-}
-
-l_SRF8 <- make_list(df_filt8,'SRF')
-l_DCL8 <- make_list(df_filt8,'DCL')
-l_BDCL8 <- make_list(df_filt8,'BDCL')
-
-```
-
-#### (1) Hierarchical clustering w/ shape based distance
-
-```{r}
-# input into tsclust
-library(dtwclust)
-require("TSclust")
-
-### Hierarchical clustering w/ shape based distance
-hc_sbd <- tsclust(l_SRF8, type = "h", k = 2L:10L,
-  preproc = zscore, seed = 899,
-  distance = "sbd", centroid = shape_extraction,
-  control = hierarchical_control(method = "average"))
-
-internal_CVI <- function(hc_sbd,main){
-  names(hc_sbd) <- 2L:10L
-  (eval <- sapply(hc_sbd, cvi, type = "internal"))
-  # divide CH value with 100 just to plot with other internal CVIs 
-  eval['CH',] <- eval['CH',]/100
-  t(eval)
-  matplot(x=seq(2,10,by=1),y=t(eval), type = c("b"),pch=1,col = 1:7,
-          xlab="Number of clusters",ylab="Internal CVI (cluster validity index)",main=main,axes=F) #plot
-  axis(2)
-  axis(side=1,at=2:10)
-  legend("bottomright", legend = c("Sil","SF","CH/100","DB","DBstar","D","COP"), col=1:7, pch=1,cex=0.8) # optional legend
-}
-
-internal_CVI(hc_sbd,"Hierarchical clustering w/ shape based distance")
-
-# use 3 or 4 clusters
-hc_sbd3 <- tsclust(l_SRF8, type = "h", k = 3L,
-  distance = "sbd", centroid = shape_extraction,
-  control = hierarchical_control(method = "average"))
-
-hc_sbd4 <- tsclust(l_SRF8, type = "h", k = 4L,
-  distance = "sbd", centroid = shape_extraction,
-  control = hierarchical_control(method = "average"))
-
-# cluster dendrogram
-plot(hc_sbd3)
-# The series and the obtained prototypes can be plotted too
-plot(hc_sbd3, type = "sc")
-# Focusing on the first cluster
-plot(hc_sbd3, type = "series", clus = 1L)
-plot(hc_sbd3, type = "centroids", clus = 1L)
-
-# cluster dendrogram
-plot(hc_sbd4)
-# The series and the obtained prototypes can be plotted too
-plot(hc_sbd4, type = "sc")
-```
-
-#### (2-1) partial clustering methods - DTW
-
-```{r}
-### partial clustering methods
-# z-normalization
-l_SRF8_z <- zscore(l_SRF8)
-
-# DTW distance
-pc_dtw <- tsclust(l_SRF8_z, k = 2L:10L,
-  distance = "dtw_basic", centroid = "dba",
-  trace = TRUE, seed = 8,
-  norm = "L2", window.size = 8L,
-  args = tsclust_args(cent = list(trace = TRUE)))
-
-internal_CVI(pc_dtw, "Partial clustering with DTW distance")
-
-# use 4, 5, 7 clusters
-pc_dtw4 <- tsclust(l_SRF8_z, k = 4L,
-  distance = "dtw_basic", centroid = "dba",
-  trace = TRUE, seed = 8,
-  norm = "L2", window.size = 8L,
-  args = tsclust_args(cent = list(trace = TRUE)))
-pc_dtw5 <- tsclust(l_SRF8_z, k = 5L,
-  distance = "dtw_basic", centroid = "dba",
-  trace = TRUE, seed = 8,
-  norm = "L2", window.size = 8L,
-  args = tsclust_args(cent = list(trace = TRUE)))
-pc_dtw7 <- tsclust(l_SRF8_z, k = 7L,
-  distance = "dtw_basic", centroid = "dba",
-  trace = TRUE, seed = 8,
-  norm = "L2", window.size = 8L,
-  args = tsclust_args(cent = list(trace = TRUE)))
-
-# Prototypes for 4 clusters
-plot(pc_dtw4)
-
-# Prototypes for 5 clusters
-plot(pc_dtw5)
-
-# Prototypes for 7 clusters
-plot(pc_dtw7)
-
-```
-
-#### (2-2) partial clustering methods - DTW_lb
-cross-distance matrix is NOT symmetric, which can be problematic for
-
-```{r}
-# DTW_lb distance method
-pc_dtwlb <- tsclust(l_SRF8_z, k = 2L:10L,
-  distance = "dtw_lb", centroid = "dba",
-  trace = TRUE, seed = 8,
-  norm = "L2", window.size = 4L,
-  control = partitional_control(pam.precompute = FALSE),
-  args = tsclust_args(cent = list(trace = TRUE)))
-
-internal_CVI(pc_dtwlb, "Partial clustering with DTW_lb distance")
-
-# use 8 clusters
-pc_dtwlb8 <- tsclust(l_SRF8_z, k = 8L,
-  distance = "dtw_lb", centroid = "dba",
-  trace = TRUE, seed = 8,
-  norm = "L2", window.size = 4L,
-  control = partitional_control(pam.precompute = FALSE),
-  args = tsclust_args(cent = list(trace = TRUE)))
-
-# Prototypes for 8 clusters
-plot(pc_dtwlb8)
-
-```
-
-#### (2-3) partial clustering methods - k-shape
-
-```{r}
-# k-shape method
-pc_ks <- tsclust(l_SRF8_z, k = 2L:10L,
-  distance = "sbd", centroid = "shape",
-  seed = 8, trace = TRUE)
-
-internal_CVI(pc_ks, "Partial clustering with k-shape method")
-
-# use 3 or 4 clusters
-pc_ks3 <- tsclust(l_SRF8_z, k = 3L,
-  distance = "sbd", centroid = "shape",
-  seed = 8, trace = TRUE)
-
-pc_ks4 <- tsclust(l_SRF8_z, k = 4L,
-  distance = "sbd", centroid = "shape",
-  seed = 8, trace = TRUE)
-
-pc_ks5 <- tsclust(l_SRF8_z, k = 5L,
-  distance = "sbd", centroid = "shape",
-  seed = 8, trace = TRUE)
-
-# Prototypes for 3 clusters
-plot(pc_ks3)
-
-# Prototypes for 4 clusters
-plot(pc_ks4)
-
-# Prototypes for 5 clusters
-plot(pc_ks5)
-```
-
-
-#### (2-4) partial clustering methods - Tadpole 
-problematic for our dataset (series' cross-distance matrix is NOT symmetric)
-
-```{r}
-# Tadpole method
-pc_tp <- tsclust(l_SRF8_z, k = 2L:10L, type = "t",
-  seed = 8, trace = TRUE,
-  control = tadpole_control(dc = 1.5,
-  window.size = 4L))
-
-internal_CVI(pc_tp, "Partial clustering with Tadpole method")
-
-# use 8 clusters
-pc_tp8 <- tsclust(l_SRF8_z, k = 8L, type = "t",
-  seed = 8, trace = TRUE,
-  control = tadpole_control(dc = 1.5,
-  window.size = 4L))
-
-# Prototypes for 8 clusters
-plot(pc_tp8)
-
-```
 
 ### 6. RAIN analysis (Rhythmicity Analysis Incorporating Non-parametric methods)
 

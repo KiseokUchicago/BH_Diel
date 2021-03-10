@@ -1,0 +1,431 @@
+---
+title: "clustering_time_series"
+author: "KiseokUchicago"
+date: "2021-03-10"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=11, fig.height=9,
+                      error=TRUE, echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE)
+```
+
+### Time series clustering
+
+### Unsupervised clustering with various distances (SBD, DTW, ...) / prototyping methods / clustering methods \
+- Using dtwclust package
+- How many clusters should we use? Evaluate by CVI (Cluster validity index, the bigger the better for internal CVI) \
+- Please normalize before clustering
+
+### 1. Data formating for tsclust input 
+
+```{r}
+# libraries
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(ggplot2)
+library(formattable)
+```
+
+Input data formating
+
+```{r}
+# read in combined table of 24 samples (Replicate B)
+df_pep <- read.table("Replicate_ABC67_combined.tsv",sep='\t',header = T)
+
+# Let's try to plot all of them at once
+df_all <- df_pep %>% select(Peptide_id, SampleID, Time, Depth) %>% unique() %>% arrange(Peptide_id)
+# How many time points did it appear
+(df_all2 <- df_all %>% group_by(Peptide_id, Depth) %>% summarize(Timepoints = n_distinct(Time)) %>% ungroup())
+df_all2$Depth <- factor(df_all2$Depth, levels = c('SRF','DCL','BDCL'))
+
+# (1) Get list of peptides that are present in 7 or 8 timepoints
+df_all2_filt <- df_all2 %>% filter(Timepoints > 6) %>% unique() 
+
+# (2) Let's average the abundance_ratio for each unique peptide
+df_int <- df_pep %>% select(Peptide_id, Spec_id, cent.log2.16O.18O.Ratio, SampleID, Time, Depth, Replicate) %>%
+  unique() %>% arrange(Peptide_id)
+# first average the spectrum_id per sample 
+# important to make sure to take the mean of the log raio (instead of taking log2 after averaging the original value(2^x))
+df_ave <- df_int %>% group_by(SampleID, Time, Depth, Replicate, Peptide_id) %>%
+  summarize(Mean_abundance_ratio=mean(cent.log2.16O.18O.Ratio),
+            SD_pep=sd(cent.log2.16O.18O.Ratio)) %>% ungroup()
+head(df_ave)
+dim(df_ave)
+# Now, average and error by replicate
+# see here for calculating error bar in log scale (https://faculty.washington.edu/stuve/log_error.pdf)
+# but here we will not use the method in the link above
+# calculate average and error bar for abundance_ratio
+# SE calculated with Jake Waldbauer's method: sqrt(se(Mean_abundance_ratio)^2 +(mean(SD_pep))^2))
+# standard error
+se <- function(x) sd(x)/sqrt(length(x))
+df_ave_rep <- df_ave %>% group_by(Time, Depth, Peptide_id) %>%
+  summarize(Ave_abundance_ratio=mean(Mean_abundance_ratio),
+            SE_abundance_ratio=sqrt((se(Mean_abundance_ratio))^2 +(mean(SD_pep))^2)) %>% ungroup()
+head(df_ave_rep,10)
+# why is there no sd for Pep_1004?
+df_ave %>% group_by(SampleID) %>% filter(Peptide_id=='Pep_1003') # there is only 1 sample for T1 BDCL 
+
+df_ave_rep2 <- df_ave_rep %>% mutate(error_up=Ave_abundance_ratio+SE_abundance_ratio) %>%
+  mutate(error_down=Ave_abundance_ratio-SE_abundance_ratio)
+
+head(df_ave_rep2)
+
+# (3) import time metadata and merge
+(df_time <- read.table('data/Time_metadata.txt', header=T, sep='\t'))
+df_time$date_time <- str_replace(df_time$date_time, "/2019"," ")
+df_time$date_time <- str_replace(df_time$date_time, ":00$","")
+
+# left_join with average data
+df_ave2 <- df_ave_rep2 %>% left_join(df_time, by=c('Time'='timepoint'))
+head(df_ave2)
+# only use peptides that appear 7 or 8 times
+df_ave2 %>% select(Peptide_id) %>% unique() %>% dim() # 3233 peptides before
+df_filt78 <- inner_join(df_ave2, df_all2_filt, by=c('Peptide_id'='Peptide_id','Depth'='Depth'))
+
+# inspecting if the inner join was successful
+head(df_filt78)
+colnames(df_ave2)
+colnames(df_time)
+colnames(df_filt78)
+
+df_filt78 %>% select(Peptide_id) %>% unique() %>% dim() # 841 peptides for peptides in 7 or 8 timepoints
+df_filt78$Depth <- factor(df_filt78$Depth, levels = c('SRF','DCL','BDCL'))
+
+# get only 8 ones
+df_filt8 <- df_filt78 %>% filter(Timepoints > 7)
+df_filt8 %>% select(Peptide_id) %>% unique() %>% dim() # 661 peptides for peptides in all 8 timepoints
+df_filt8$Depth <- factor(df_filt8$Depth, levels = c('SRF','DCL','BDCL'))
+
+# get only 7 ones
+df_filt7 <- df_filt78 %>% filter(Timepoints == 7)
+df_filt7 %>% select(Peptide_id) %>% unique() %>% dim() # 356 peptides for peptides in 7 timepoints
+df_filt7$Depth <- factor(df_filt7$Depth, levels = c('SRF','DCL','BDCL'))
+
+```
+
+
+```{r}
+# (1) Change our data into list format for input into tsclust
+colnames(df_filt8)
+
+make_list <- function(df_filt8,depth){
+  df_SRF8 <- df_filt8 %>% filter(Depth==depth) %>% select(Peptide_id,Time,Ave_abundance_ratio)
+  # reshape the dataframe with timepoints
+  library(maditr)
+  v_names <- c("T1","T2","T3","T4","T5","T6","T7","T8")
+  df_SRF8$Time <- factor(df_SRF8$Time, levels=v_names)
+  dc_SRF8 <- dcast(df_SRF8, Peptide_id ~ Time, value.var = "Ave_abundance_ratio")
+  # make Peptide_id more simpler (Pep_1 -> P.1)
+  dc_SRF8$Peptide_id <- str_replace(dc_SRF8$Peptide_id,"Pep_","P.")
+  # make first column into row name
+  dc_SRF8 <- tibble::column_to_rownames(dc_SRF8, var="Peptide_id")
+  # make it into list format
+  # l_SRF8 <- setNames(split(dc_SRF8, seq(nrow(dc_SRF8))), rownames(dc_SRF8))
+  l_SRF8 <- as.list(as.data.frame(t(dc_SRF8)))
+  return(l_SRF8)
+}
+
+l_SRF8 <- make_list(df_filt8,'SRF')
+l_DCL8 <- make_list(df_filt8,'DCL')
+l_BDCL8 <- make_list(df_filt8,'BDCL')
+
+l_SRF8_z <- zscore(l_SRF8)
+l_DCL8_z <- zscore(l_DCL8)
+l_BDCL8_z <- zscore(l_BDCL8)
+
+
+```
+
+### 2. Hierarchical clustering w/ shape based distance
+
+```{r}
+# input into tsclust
+library(dtwclust)
+require("TSclust")
+
+### Hierarchical clustering w/ shape based distance
+hc_sbd <- tsclust(l_SRF8, type = "h", k = 2L:10L,
+  preproc = zscore, seed = 899,
+  distance = "sbd", centroid = shape_extraction,
+  control = hierarchical_control(method = "average"))
+
+internal_CVI <- function(hc_sbd,main){
+  names(hc_sbd) <- 2L:10L
+  (eval <- sapply(hc_sbd, cvi, type = "internal"))
+  # divide CH value with 100 just to plot with other internal CVIs 
+  eval['CH',] <- eval['CH',]/100
+  t(eval)
+  matplot(x=seq(2,10,by=1),y=t(eval), type = c("b"),pch=1,col = 1:7,
+          xlab="Number of clusters",ylab="Internal CVI (cluster validity index)",main=main,axes=F) #plot
+  axis(2)
+  axis(side=1,at=2:10)
+  legend("bottomright", legend = c("Sil","SF","CH/100","DB","DBstar","D","COP"), col=1:7, pch=1,cex=0.8) # optional legend
+}
+
+internal_CVI(hc_sbd,"Hierarchical clustering w/ shape based distance")
+
+# use 4 or 5 or 6 clusters
+hc_sbd4 <- tsclust(l_SRF8, type = "h", k = 4L,
+  distance = "sbd", centroid = shape_extraction,
+  control = hierarchical_control(method = "average"))
+
+hc_sbd5 <- tsclust(l_SRF8, type = "h", k = 5L,
+  distance = "sbd", centroid = shape_extraction,
+  control = hierarchical_control(method = "average"))
+
+hc_sbd6 <- tsclust(l_SRF8, type = "h", k = 6L,
+  distance = "sbd", centroid = shape_extraction,
+  control = hierarchical_control(method = "average"))
+
+# cluster dendrogram
+plot(hc_sbd4)
+# The series and the obtained prototypes can be plotted too
+plot(hc_sbd4, type = "sc")
+# Focusing on the first cluster
+plot(hc_sbd4, type = "series", clus = 1L)
+plot(hc_sbd4, type = "centroids", clus = 1L)
+
+# cluster dendrogram
+plot(hc_sbd5)
+# The series and the obtained prototypes can be plotted too
+plot(hc_sbd5, type = "sc")
+
+# cluster dendrogram
+plot(hc_sbd6)
+# The series and the obtained prototypes can be plotted too
+plot(hc_sbd6, type = "sc")
+```
+
+### 3.1. partial clustering methods - DTW
+
+```{r}
+### partial clustering methods
+# z-normalization
+l_SRF8_z <- zscore(l_SRF8)
+
+# DTW distance
+pc_dtw <- tsclust(l_SRF8_z, k = 2L:10L,
+  distance = "dtw_basic", centroid = "dba",
+  trace = TRUE, seed = 8,
+  norm = "L2", window.size = 8L,
+  args = tsclust_args(cent = list(trace = TRUE)))
+
+internal_CVI(pc_dtw, "Partial clustering with DTW distance")
+
+# use 2, 3, 4 clusters
+
+pc_dtw2 <- tsclust(l_SRF8_z, k = 2L,
+  distance = "dtw_basic", centroid = "dba",
+  trace = TRUE, seed = 8,
+  norm = "L2", window.size = 8L,
+  args = tsclust_args(cent = list(trace = TRUE)))
+pc_dtw3 <- tsclust(l_SRF8_z, k = 3L,
+  distance = "dtw_basic", centroid = "dba",
+  trace = TRUE, seed = 8,
+  norm = "L2", window.size = 8L,
+  args = tsclust_args(cent = list(trace = TRUE)))
+pc_dtw4 <- tsclust(l_SRF8_z, k = 4L,
+  distance = "dtw_basic", centroid = "dba",
+  trace = TRUE, seed = 8,
+  norm = "L2", window.size = 8L,
+  args = tsclust_args(cent = list(trace = TRUE)))
+
+
+
+# Prototypes for 2 clusters
+plot(pc_dtw2)
+plot(pc_dtw2, type = "centroids")
+
+# Prototypes for 3 clusters
+plot(pc_dtw3)
+plot(pc_dtw3, type = "centroids")
+
+# Prototypes for 4 clusters
+plot(pc_dtw4)
+plot(pc_dtw4, type = "centroids")
+
+```
+
+### 3.2. partial clustering methods - DTW_lb
+cross-distance matrix is NOT symmetric, which can be problematic for
+
+```{r}
+# DTW_lb distance method
+pc_dtwlb <- tsclust(l_SRF8_z, k = 2L:10L,
+  distance = "dtw_lb", centroid = "dba",
+  trace = TRUE, seed = 8,
+  norm = "L2", window.size = 4L,
+  control = partitional_control(pam.precompute = FALSE),
+  args = tsclust_args(cent = list(trace = TRUE)))
+
+internal_CVI(pc_dtwlb, "Partial clustering with DTW_lb distance")
+
+# use 8 clusters
+pc_dtwlb8 <- tsclust(l_SRF8_z, k = 8L,
+  distance = "dtw_lb", centroid = "dba",
+  trace = TRUE, seed = 8,
+  norm = "L2", window.size = 4L,
+  control = partitional_control(pam.precompute = FALSE),
+  args = tsclust_args(cent = list(trace = TRUE)))
+
+# Prototypes for 8 clusters
+plot(pc_dtwlb8)
+plot(pc_dtwlb8, type = "centroids")
+
+# use 4 clusters
+pc_dtwlb4 <- tsclust(l_SRF8_z, k = 4L,
+  distance = "dtw_lb", centroid = "dba",
+  trace = TRUE, seed = 8,
+  norm = "L2", window.size = 4L,
+  control = partitional_control(pam.precompute = FALSE),
+  args = tsclust_args(cent = list(trace = TRUE)))
+
+# Prototypes for 8 clusters
+plot(pc_dtwlb4)
+plot(pc_dtwlb4, type = "centroids")
+
+
+```
+
+### 3.3. partial clustering methods - k-shape
+
+```{r}
+# k-shape method
+pc_ks <- tsclust(l_SRF8_z, k = 2L:10L,
+  distance = "sbd", centroid = "shape",
+  seed = 8, trace = TRUE)
+
+internal_CVI(pc_ks, "Partial clustering with k-shape method")
+
+# use 2, 3, or 4 clusters
+pc_ks2 <- tsclust(l_SRF8_z, k = 2L,
+  distance = "sbd", centroid = "shape",
+  seed = 8, trace = TRUE)
+
+pc_ks3 <- tsclust(l_SRF8_z, k = 3L,
+  distance = "sbd", centroid = "shape",
+  seed = 8, trace = TRUE)
+
+pc_ks4 <- tsclust(l_SRF8_z, k = 4L,
+  distance = "sbd", centroid = "shape",
+  seed = 8, trace = TRUE)
+
+pc_ks5 <- tsclust(l_SRF8_z, k = 5L,
+  distance = "sbd", centroid = "shape",
+  seed = 8, trace = TRUE)
+
+# Prototypes for 2 clusters
+plot(pc_ks2)
+plot(pc_ks2, type='centroid')
+
+# Prototypes for 3 clusters
+plot(pc_ks3)
+plot(pc_ks3, type='centroid')
+
+# Prototypes for 4 clusters
+plot(pc_ks4)
+plot(pc_ks4, type='centroid')
+
+# Prototypes for 5 clusters
+plot(pc_ks5)
+plot(pc_ks5, type='centroid')
+
+```
+
+
+### 3.4. partial clustering methods - Tadpole 
+problematic for our dataset (series' cross-distance matrix is NOT symmetric)
+
+```{r}
+# Tadpole method
+pc_tp <- tsclust(l_SRF8_z, k = 2L:10L, type = "t",
+  seed = 8, trace = TRUE,
+  control = tadpole_control(dc = 1.5,
+  window.size = 4L))
+
+internal_CVI(pc_tp, "Partial clustering with Tadpole method")
+
+# use 4 or 5 clusters
+pc_tp4 <- tsclust(l_SRF8_z, k = 4L, type = "t",
+  seed = 8, trace = TRUE,
+  control = tadpole_control(dc = 1.5,
+  window.size = 4L))
+
+pc_tp5 <- tsclust(l_SRF8_z, k = 5L, type = "t",
+  seed = 8, trace = TRUE,
+  control = tadpole_control(dc = 1.5,
+  window.size = 4L))
+
+# Prototypes for 4,5 clusters
+plot(pc_tp4)
+plot(pc_tp4, type="centroid")
+
+plot(pc_tp5)
+plot(pc_tp5, type="centroid")
+
+
+```
+
+### Other Depths with Tadpole
+
+(2) DCL
+
+```{r}
+# DCL
+pc_tp <- tsclust(l_DCL8_z, k = 2L:10L, type = "t",
+  seed = 8, trace = TRUE,
+  control = tadpole_control(dc = 1.5,
+  window.size = 4L))
+
+internal_CVI(pc_tp, "Partial clustering with Tadpole method")
+
+# use 4 or 5 clusters
+partial_tadpole <- function(df_filt8, depth="DCL",k=4){
+  l_DCL8 <- make_list(df_filt8,'DCL')
+  l_DCL8_z <- zscore(l_DCL8)
+  pc_tp_k <- tsclust(l_DCL8_z, k = k, type = "t",
+    seed = 8, trace = TRUE,
+    control = tadpole_control(dc = 1.5,
+    window.size = 4L))
+  plot(pc_tp_k)
+  plot(pc_tp_k, type="centroid")
+}
+
+# Prototypes for DCL
+partial_tadpole(df_filt8, depth="DCL",k=3)
+partial_tadpole(df_filt8, depth="DCL",k=4)
+partial_tadpole(df_filt8, depth="DCL",k=5)
+partial_tadpole(df_filt8, depth="DCL",k=6)
+
+```
+
+(3) BDCL
+
+```{r}
+# BDCL
+pc_tp <- tsclust(l_BDCL8_z, k = 2L:10L, type = "t",
+  seed = 8, trace = TRUE,
+  control = tadpole_control(dc = 1.5,
+  window.size = 4L))
+
+internal_CVI(pc_tp, "Partial clustering with Tadpole method")
+
+# Prototypes for BDCL
+partial_tadpole(df_filt8, depth="BDCL",k=2)
+partial_tadpole(df_filt8, depth="BDCL",k=3)
+partial_tadpole(df_filt8, depth="BDCL",k=4)
+partial_tadpole(df_filt8, depth="BDCL",k=5)
+partial_tadpole(df_filt8, depth="BDCL",k=6)
+
+```
+
+
+
+
+
+
