@@ -473,16 +473,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree3b32cf64c2bdcc63a2a6109fa1b697f4b95f59b8targetblank3b32cf6a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/3b32cf64c2bdcc63a2a6109fa1b697f4b95f59b8" target="_blank">3b32cf6</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree71155f848db04d045425be78875e661717977684targetblank71155f8a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/71155f848db04d045425be78875e661717977684" target="_blank">71155f8</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree3b32cf64c2bdcc63a2a6109fa1b697f4b95f59b8targetblank3b32cf6a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree71155f848db04d045425be78875e661717977684targetblank71155f8a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/3b32cf64c2bdcc63a2a6109fa1b697f4b95f59b8" target="_blank">3b32cf6</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/71155f848db04d045425be78875e661717977684" target="_blank">71155f8</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -694,6 +694,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KiseokUchicago/BH_Diel/blob/71155f848db04d045425be78875e661717977684/analysis/peptide_level_visualization.Rmd" target="_blank">71155f8</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-10
+</td>
+<td>
+splitting rmd
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KiseokUchicago/BH_Diel/3ca3689575a1ce177980d5e27a35bbdfd6c7457e/docs/peptide_level_visualization.html" target="_blank">3ca3689</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-10
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1735,6 +1769,8 @@ head(df_ave)</code></pre>
 4 BDCL_T1_A T1    BDCL  A         Pep_101                  0.0175  0.0496
 5 BDCL_T1_A T1    BDCL  A         Pep_1014                 0.863  NA     
 6 BDCL_T1_A T1    BDCL  A         Pep_1015                 0.158   0.0991</code></pre>
+<pre class="r"><code>dim(df_ave)</code></pre>
+<pre><code>[1] 38075     7</code></pre>
 <pre class="r"><code>df_ave %&gt;% filter(Peptide_id==&#39;Pep_1&#39; &amp; Time ==&#39;T1&#39;,Depth==&quot;BDCL&quot;) # check</code></pre>
 <pre><code># A tibble: 3 x 7
   SampleID  Time  Depth Replicate Peptide_id Mean_abundance_ratio SD_pep
@@ -2017,8 +2053,8 @@ time_series_1depth_woError(df_filt7,3)</code></pre>
 <pre class="r"><code>time_series_1depth_wError(df_filt7,3)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-12-6.png" width="1056" style="display: block; margin: auto;" /></p>
 </div>
-<div id="time-series-clustering" class="section level3">
-<h3>5. Time series clustering</h3>
+<div id="ordination-analysis" class="section level3">
+<h3>5. Ordination analysis</h3>
 <p>For time series clustering with R, the first step is to work out an appropriate distance/similarity metric, and then, at the second step, use existing clustering techniques, such as k-means, hierarchical clustering, density-based clustering or subspace clustering, to find clustering structures. (<a href="http://www.rdatamining.com/examples/time-series-clustering-classification" class="uri">http://www.rdatamining.com/examples/time-series-clustering-classification</a>)</p>
 </div>
 <div id="hierarchical-clustering-using-dynamic-time-warping-distance" class="section level3">
@@ -2169,7 +2205,9 @@ PCoA_1</code></pre>
 <h3>5.2.2. Ordination analysis by samples (PCA, Principal component analysis)</h3>
 <pre class="r"><code># make the matrix by reshaping dataframe
 library(maditr)
-dc_ave &lt;- dcast(df_ave, SampleID ~ Peptide_id, value.var = &quot;Mean_abundance_ratio&quot;)
+dim(df_ave)</code></pre>
+<pre><code>[1] 38075     7</code></pre>
+<pre class="r"><code>dc_ave &lt;- dcast(df_ave, SampleID ~ Peptide_id, value.var = &quot;Mean_abundance_ratio&quot;)
 dim(dc_ave)</code></pre>
 <pre><code>[1]   67 3367</code></pre>
 <pre class="r"><code># names(dc_ave)
@@ -2195,10 +2233,13 @@ any(is.na(dc_ave))</code></pre>
 <pre><code>[1] TRUE</code></pre>
 <pre class="r"><code>sum(is.na(dc_ave)) </code></pre>
 <pre><code>[1] 187447</code></pre>
+<pre class="r"><code>dim(dc_ave)</code></pre>
+<pre><code>[1]   67 3366</code></pre>
 <pre class="r"><code># let&#39;s replace na into minimum value for each sample
 dc_namin &lt;- dc_ave
 for (i in 1:dim(dc_ave)[1]){
   rowMin &lt;- (min(dc_ave[i,] ,na.rm=T))
+  # print(rowMin)
   for (j in 1:dim(dc_ave)[2]) {
     if (is.na(dc_namin[i,j])){
       dc_namin[i,j] &lt;- rowMin
@@ -2209,6 +2250,8 @@ for (i in 1:dim(dc_ave)[1]){
 
 sum(is.na(dc_namin)) # 0 mean success</code></pre>
 <pre><code>[1] 0</code></pre>
+<pre class="r"><code>dim(dc_namin)</code></pre>
+<pre><code>[1]   67 3366</code></pre>
 <pre class="r"><code># PCA with prcomp
 pc &lt;- prcomp(dc_namin)
 eigs &lt;- pc$sdev^2
@@ -2369,27 +2412,7 @@ ggplot(df_out,aes(x=PC1,y=PC2,alpha = time))+
 <pre class="r"><code>  # ggrepel::geom_label_repel()
 
 
-PCoA_1 &lt;- ggplot(as.data.frame(pco_pep$points), aes(x = V1, y = V2, label = row.names(as.data.frame(pco_pep$points)))) + 
-  theme(plot.title = element_text(size = 20,hjust = 0.5, face=&quot;bold&quot;)) +
-  geom_point(size = 4, color=&#39;pink&#39;,alpha=0.7)+
-  xlab(paste0(&#39;\n PCoA1&#39;, &quot; (explained variance: &quot;,round(pco_pep$GOF[1],3)*100,&quot;%)&quot;))+
-  ylab(paste0(&quot;PCoA2&quot;,&quot; (explained variance: &quot;,round(pco_pep$GOF[2]-pco_pep$GOF[1],3)*100,&quot;%) \n&quot;)) +
-  ggtitle(&quot;Peptide ordination PCoA plot (DTW distance) \n&quot;) +
-  ## adjust positions
-  guides(fill = guide_legend(ncol = 4,reverse = T))+
-  theme(legend.position=&quot;bottom&quot;) +
-  theme(plot.title = element_text(size = 20,hjust = 0.5, face=&#39;bold&#39;)) + 
-  theme(axis.title.x = element_text(size = 15,hjust = 0.5, face=&#39;bold&#39;)) + 
-  theme(axis.title.y = element_text(size = 15,hjust = 0.5, face=&#39;bold&#39;)) + 
-  theme(axis.text.x = element_text(angle = 90, hjust = 0.95,face=&#39;bold&#39;, vjust=0.4,size=15))+
-  theme(axis.text.y = element_text(size=15, face=&#39;bold&#39;)) +
-  ggrepel::geom_label_repel()
-  # theme(panel.grid.major = element_blank()) +
-  # theme(panel.grid.minor = element_blank(), panel.background=element_blank(), plot.background=element_blank())
-
-PCoA_1</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-16-4.png" width="1056" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># PCA with sparse pca methods
+# PCA with sparse pca methods
 
 library(sparsepca)
 # Sparse Principal Component Analysis (spca).
@@ -2406,8 +2429,8 @@ rspc &lt;- rspca(dc_namin, k = 2, alpha = 1e-04, beta = 1e-04, center = TRUE,
               scale = FALSE, max_iter = 1000, tol = 1e-05, verbose = 0)
 summary(rspc)</code></pre>
 <pre><code>                            PC1     PC2
-Explained variance     5364.921 687.630
-Standard deviations      73.246  26.223
+Explained variance     5364.853 687.739
+Standard deviations      73.245  26.225
 Proportion of variance    0.549   0.070
 Cumulative proportion     0.549   0.619</code></pre>
 <pre class="r"><code># Robust Sparse Principal Component Analysis (robspca)
@@ -2454,2883 +2477,11 @@ Cumulative proportion     0.549   0.619</code></pre>
 }
 
 sparse_pca_plot(spc,type=&quot;Sparse&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-16-5.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-16-4.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>sparse_pca_plot(rspc,type=&quot;Randomized Sparse&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-16-6.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-16-5.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>sparse_pca_plot(robspc,type=&quot;Robust Sparse&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-16-7.png" width="1056" style="display: block; margin: auto;" /></p>
-</div>
-<div id="unsupervised-clustering-with-various-distances-sbd-dtw-prototyping-methods-clustering-methods" class="section level3">
-<h3>5.3. Unsupervised clustering with various distances (SBD, DTW, …) / prototyping methods / clustering methods<br />
-</h3>
-<ul>
-<li>Using dtwclust package</li>
-<li>How many clusters should we use? Evaluate by CVI (Cluster validity index, the bigger the better for internal CVI)<br />
-</li>
-<li>Please normalize before clustering</li>
-</ul>
-<div id="data-formating-for-tsclust-input" class="section level4">
-<h4>(0) Data formating for tsclust input</h4>
-<pre class="r"><code># (1) Change our data into list format for input into tsclust
-colnames(df_filt8)</code></pre>
-<pre><code> [1] &quot;Time&quot;                &quot;Depth&quot;               &quot;Peptide_id&quot;         
- [4] &quot;Ave_abundance_ratio&quot; &quot;SE_abundance_ratio&quot;  &quot;error_up&quot;           
- [7] &quot;error_down&quot;          &quot;date_time&quot;           &quot;elapsed_hours&quot;      
-[10] &quot;Timepoints&quot;         </code></pre>
-<pre class="r"><code>make_list &lt;- function(df_filt8,depth){
-  df_SRF8 &lt;- df_filt8 %&gt;% filter(Depth==depth) %&gt;% select(Peptide_id,Time,Ave_abundance_ratio)
-  # reshape the dataframe with timepoints
-  library(maditr)
-  v_names &lt;- c(&quot;T1&quot;,&quot;T2&quot;,&quot;T3&quot;,&quot;T4&quot;,&quot;T5&quot;,&quot;T6&quot;,&quot;T7&quot;,&quot;T8&quot;)
-  df_SRF8$Time &lt;- factor(df_SRF8$Time, levels=v_names)
-  dc_SRF8 &lt;- dcast(df_SRF8, Peptide_id ~ Time, value.var = &quot;Ave_abundance_ratio&quot;)
-  # make Peptide_id more simpler (Pep_1 -&gt; P.1)
-  dc_SRF8$Peptide_id &lt;- str_replace(dc_SRF8$Peptide_id,&quot;Pep_&quot;,&quot;P.&quot;)
-  # make first column into row name
-  dc_SRF8 &lt;- tibble::column_to_rownames(dc_SRF8, var=&quot;Peptide_id&quot;)
-  # make it into list format
-  # l_SRF8 &lt;- setNames(split(dc_SRF8, seq(nrow(dc_SRF8))), rownames(dc_SRF8))
-  l_SRF8 &lt;- as.list(as.data.frame(t(dc_SRF8)))
-  return(l_SRF8)
-}
-
-l_SRF8 &lt;- make_list(df_filt8,&#39;SRF&#39;)
-l_DCL8 &lt;- make_list(df_filt8,&#39;DCL&#39;)
-l_BDCL8 &lt;- make_list(df_filt8,&#39;BDCL&#39;)</code></pre>
-</div>
-<div id="hierarchical-clustering-w-shape-based-distance" class="section level4">
-<h4>(1) Hierarchical clustering w/ shape based distance</h4>
-<pre class="r"><code># input into tsclust
-library(dtwclust)
-require(&quot;TSclust&quot;)
-
-### Hierarchical clustering w/ shape based distance
-hc_sbd &lt;- tsclust(l_SRF8, type = &quot;h&quot;, k = 2L:10L,
-  preproc = zscore, seed = 899,
-  distance = &quot;sbd&quot;, centroid = shape_extraction,
-  control = hierarchical_control(method = &quot;average&quot;))
-
-internal_CVI &lt;- function(hc_sbd,main){
-  names(hc_sbd) &lt;- 2L:10L
-  (eval &lt;- sapply(hc_sbd, cvi, type = &quot;internal&quot;))
-  # divide CH value with 100 just to plot with other internal CVIs 
-  eval[&#39;CH&#39;,] &lt;- eval[&#39;CH&#39;,]/100
-  t(eval)
-  matplot(x=seq(2,10,by=1),y=t(eval), type = c(&quot;b&quot;),pch=1,col = 1:7,
-          xlab=&quot;Number of clusters&quot;,ylab=&quot;Internal CVI (cluster validity index)&quot;,main=main,axes=F) #plot
-  axis(2)
-  axis(side=1,at=2:10)
-  legend(&quot;bottomright&quot;, legend = c(&quot;Sil&quot;,&quot;SF&quot;,&quot;CH/100&quot;,&quot;DB&quot;,&quot;DBstar&quot;,&quot;D&quot;,&quot;COP&quot;), col=1:7, pch=1,cex=0.8) # optional legend
-}
-
-internal_CVI(hc_sbd,&quot;Hierarchical clustering w/ shape based distance&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-1.png" width="1056" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># use 3 or 4 clusters
-hc_sbd3 &lt;- tsclust(l_SRF8, type = &quot;h&quot;, k = 3L,
-  distance = &quot;sbd&quot;, centroid = shape_extraction,
-  control = hierarchical_control(method = &quot;average&quot;))
-
-hc_sbd4 &lt;- tsclust(l_SRF8, type = &quot;h&quot;, k = 4L,
-  distance = &quot;sbd&quot;, centroid = shape_extraction,
-  control = hierarchical_control(method = &quot;average&quot;))
-
-# cluster dendrogram
-plot(hc_sbd3)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-2.png" width="1056" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># The series and the obtained prototypes can be plotted too
-plot(hc_sbd3, type = &quot;sc&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-3.png" width="1056" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># Focusing on the first cluster
-plot(hc_sbd3, type = &quot;series&quot;, clus = 1L)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-4.png" width="1056" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>plot(hc_sbd3, type = &quot;centroids&quot;, clus = 1L)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-5.png" width="1056" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># cluster dendrogram
-plot(hc_sbd4)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-6.png" width="1056" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># The series and the obtained prototypes can be plotted too
-plot(hc_sbd4, type = &quot;sc&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-7.png" width="1056" style="display: block; margin: auto;" /></p>
-</div>
-<div id="partial-clustering-methods---dtw" class="section level4">
-<h4>(2-1) partial clustering methods - DTW</h4>
-<pre class="r"><code>### partial clustering methods
-# z-normalization
-l_SRF8_z &lt;- zscore(l_SRF8)
-
-# DTW distance
-pc_dtw &lt;- tsclust(l_SRF8_z, k = 2L:10L,
-  distance = &quot;dtw_basic&quot;, centroid = &quot;dba&quot;,
-  trace = TRUE, seed = 8,
-  norm = &quot;L2&quot;, window.size = 8L,
-  args = tsclust_args(cent = list(trace = TRUE)))</code></pre>
-<pre><code>Iteration 1: Changes / Distsum = 532 / 1214.679
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-Iteration 2: Changes / Distsum = 48 / 1085.806
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 3: Changes / Distsum = 15 / 1083.017
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 4: Changes / Distsum = 2 / 1082.445
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 5: Changes / Distsum = 0 / 1082.494
-
-Iteration 1: Changes / Distsum = 532 / 1235.579
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-Iteration 2: Changes / Distsum = 97 / 1061.215
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-Iteration 3: Changes / Distsum = 44 / 1043.463
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-Iteration 4: Changes / Distsum = 9 / 1041.652
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-Iteration 5: Changes / Distsum = 5 / 1041.612
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 6: Changes / Distsum = 8 / 1041.314
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-Iteration 7: Changes / Distsum = 5 / 1041.763
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 8: Changes / Distsum = 6 / 1041.858
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 9: Changes / Distsum = 7 / 1041.404
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 10: Changes / Distsum = 3 / 1041.383
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 11: Changes / Distsum = 0 / 1041.228
-
-Iteration 1: Changes / Distsum = 532 / 1232.396
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15 - Converged!
-Iteration 2: Changes / Distsum = 170 / 1034.028
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-Iteration 3: Changes / Distsum = 81 / 999.1841
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-Iteration 4: Changes / Distsum = 41 / 985.0683
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 5: Changes / Distsum = 25 / 980.7371
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-Iteration 6: Changes / Distsum = 21 / 979.7708
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-Iteration 7: Changes / Distsum = 19 / 979.2376
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-Iteration 8: Changes / Distsum = 14 / 977.6997
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 9: Changes / Distsum = 20 / 971.434
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 10: Changes / Distsum = 8 / 970.7558
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 11: Changes / Distsum = 7 / 970.5809
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 12: Changes / Distsum = 4 / 970.1304
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 13: Changes / Distsum = 2 / 969.9946
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 14: Changes / Distsum = 2 / 970.0759
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 15: Changes / Distsum = 3 / 969.9814
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 16: Changes / Distsum =  1 / 969.694
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 17: Changes / Distsum =  1 / 969.526
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 18: Changes / Distsum = 0 / 969.3254
-
-Iteration 1: Changes / Distsum = 532 / 1151.813
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19 - Converged!
-Iteration 2: Changes / Distsum = 144 / 1000.64
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-Iteration 3: Changes / Distsum = 94 / 969.0625
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 4: Changes / Distsum = 54 / 955.1176
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 5: Changes / Distsum = 31 / 946.9429
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-Iteration 6: Changes / Distsum = 16 / 944.7161
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 7: Changes / Distsum = 18 / 943.1374
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-Iteration 8: Changes / Distsum = 16 / 941.573
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 9: Changes / Distsum = 15 / 940.4903
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 10: Changes / Distsum = 9 / 939.6274
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 11: Changes / Distsum = 13 / 939.2089
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-Iteration 12: Changes / Distsum = 11 / 938.6039
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-Iteration 13: Changes / Distsum = 25 / 934.9694
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 14: Changes / Distsum = 14 / 934.0234
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 15: Changes / Distsum = 10 / 933.4718
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 16: Changes / Distsum = 5 / 933.3492
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 17: Changes / Distsum =  1 / 933.453
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 18: Changes / Distsum = 0 / 933.4545
-
-Iteration 1: Changes / Distsum = 532 / 1081.412
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-Iteration 2: Changes / Distsum = 150 / 966.9098
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-Iteration 3: Changes / Distsum = 60 / 946.3859
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 4: Changes / Distsum = 51 / 937.2223
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 5: Changes / Distsum = 37 / 931.8805
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 6: Changes / Distsum = 17 / 930.7812
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-Iteration 7: Changes / Distsum = 12 / 929.8785
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 8: Changes / Distsum = 5 / 929.6228
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 9: Changes / Distsum = 2 / 929.3797
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 10: Changes / Distsum = 3 / 929.1132
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 11: Changes / Distsum = 3 / 929.0612
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 12: Changes / Distsum =  4 / 928.816
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 13: Changes / Distsum = 5 / 928.4278
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 14: Changes / Distsum = 9 / 928.2142
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 15: Changes / Distsum = 11 / 927.7428
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 16: Changes / Distsum =  9 / 927.587
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 17: Changes / Distsum = 11 / 927.6354
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 18: Changes / Distsum = 7 / 927.2812
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 19: Changes / Distsum = 3 / 927.3717
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 20: Changes / Distsum = 8 / 927.1906
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 21: Changes / Distsum = 3 / 927.1205
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 22: Changes / Distsum =  0 / 926.934
-
-Iteration 1: Changes / Distsum = 532 / 1057.127
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 2: Changes / Distsum = 134 / 950.3135
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-Iteration 3: Changes / Distsum = 78 / 927.9988
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-Iteration 4: Changes / Distsum = 52 / 914.275
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-Iteration 5: Changes / Distsum = 35 / 908.6606
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 6: Changes / Distsum = 18 / 907.0194
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 7: Changes / Distsum = 13 / 906.379
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 8: Changes / Distsum = 9 / 906.4386
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 9: Changes / Distsum = 8 / 906.2982
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 10: Changes / Distsum = 6 / 905.8474
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 11: Changes / Distsum = 6 / 905.7696
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-Iteration 12: Changes / Distsum = 2 / 905.7997
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 13: Changes / Distsum = 1 / 905.8556
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 14: Changes / Distsum = 0 / 905.8105
-
-Iteration 1: Changes / Distsum = 532 / 1010.016
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-Iteration 2: Changes / Distsum = 105 / 907.3174
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20 - Converged!
-Iteration 3: Changes / Distsum = 54 / 892.6393
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-Iteration 4: Changes / Distsum = 42 / 884.6915
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-Iteration 5: Changes / Distsum = 19 / 879.2494
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-Iteration 6: Changes / Distsum = 15 / 878.033
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13 - Converged!
-Iteration 7: Changes / Distsum = 11 / 876.8902
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 8: Changes / Distsum = 8 / 876.5469
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-Iteration 9: Changes / Distsum = 9 / 876.1131
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 10: Changes / Distsum = 7 / 875.5836
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-Iteration 11: Changes / Distsum = 4 / 874.9549
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 12: Changes / Distsum = 4 / 875.0247
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 13: Changes / Distsum = 1 / 874.7495
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 14: Changes / Distsum = 2 / 874.8087
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 15: Changes / Distsum = 0 / 874.8049
-
-Iteration 1: Changes / Distsum = 532 / 1003.176
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-Iteration 2: Changes / Distsum = 95 / 893.7058
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 3: Changes / Distsum = 55 / 881.7159
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 4: Changes / Distsum = 37 / 875.3398
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-Iteration 5: Changes / Distsum = 26 / 872.1637
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 6: Changes / Distsum =  21 / 869.39
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 7: Changes / Distsum = 18 / 867.4931
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 8: Changes / Distsum = 10 / 866.918
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 9: Changes / Distsum = 8 / 866.2375
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 10: Changes / Distsum = 4 / 866.1905
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 11: Changes / Distsum = 2 / 866.0823
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 12: Changes / Distsum = 2 / 865.9632
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 13: Changes / Distsum = 3 / 865.8644
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 14: Changes / Distsum = 2 / 865.7537
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 15: Changes / Distsum = 3 / 865.6689
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-Iteration 16: Changes / Distsum = 4 / 865.3888
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 17: Changes / Distsum = 3 / 865.2711
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 18: Changes / Distsum = 1 / 865.3401
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 19: Changes / Distsum = 1 / 865.3802
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 20: Changes / Distsum = 1 / 865.3832
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-Iteration 21: Changes / Distsum = 0 / 865.3372
-
-Iteration 1: Changes / Distsum = 532 / 977.4373
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 2: Changes / Distsum = 116 / 883.6319
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 3: Changes / Distsum = 60 / 868.8152
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-Iteration 4: Changes / Distsum = 36 / 861.1171
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 5: Changes / Distsum = 23 / 856.8175
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 6: Changes / Distsum = 15 / 854.4633
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 7: Changes / Distsum = 6 / 853.0239
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 8: Changes / Distsum = 2 / 852.6894
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 9: Changes / Distsum = 3 / 852.4384
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 10: Changes / Distsum = 1 / 852.4908
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 11: Changes / Distsum = 0 / 852.5162
-
-    Elapsed time is 2.08 seconds.</code></pre>
-<pre class="r"><code>internal_CVI(pc_dtw, &quot;Partial clustering with DTW distance&quot;)</code></pre>
-<pre><code>    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-19-1.png" width="1056" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># use 4, 5, 7 clusters
-pc_dtw4 &lt;- tsclust(l_SRF8_z, k = 4L,
-  distance = &quot;dtw_basic&quot;, centroid = &quot;dba&quot;,
-  trace = TRUE, seed = 8,
-  norm = &quot;L2&quot;, window.size = 8L,
-  args = tsclust_args(cent = list(trace = TRUE)))</code></pre>
-<pre><code>Iteration 1: Changes / Distsum = 532 / 1116.358
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-Iteration 2: Changes / Distsum = 83 / 997.8015
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-Iteration 3: Changes / Distsum = 37 / 991.8741
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-Iteration 4: Changes / Distsum = 26 / 988.2049
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-Iteration 5: Changes / Distsum = 27 / 984.379
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 6: Changes / Distsum = 21 / 982.3666
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 7: Changes / Distsum = 19 / 980.3382
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 8: Changes / Distsum = 15 / 976.7316
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 9: Changes / Distsum = 11 / 975.2326
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 10: Changes / Distsum = 10 / 975.0064
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 11: Changes / Distsum = 3 / 975.0927
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 12: Changes / Distsum = 3 / 975.1718
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 13: Changes / Distsum = 1 / 975.1722
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 14: Changes / Distsum =  0 / 975.141
-
-    Elapsed time is 0.23 seconds.</code></pre>
-<pre class="r"><code>pc_dtw5 &lt;- tsclust(l_SRF8_z, k = 5L,
-  distance = &quot;dtw_basic&quot;, centroid = &quot;dba&quot;,
-  trace = TRUE, seed = 8,
-  norm = &quot;L2&quot;, window.size = 8L,
-  args = tsclust_args(cent = list(trace = TRUE)))</code></pre>
-<pre><code>Iteration 1: Changes / Distsum = 532 / 1101.229
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-Iteration 2: Changes / Distsum = 93 / 982.4648
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-Iteration 3: Changes / Distsum = 66 / 971.2997
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-Iteration 4: Changes / Distsum = 40 / 962.0298
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 5: Changes / Distsum = 19 / 959.7557
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 6: Changes / Distsum = 13 / 959.2243
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 7: Changes / Distsum = 14 / 957.2555
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 8: Changes / Distsum = 14 / 955.8551
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 9: Changes / Distsum = 7 / 954.5473
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 10: Changes / Distsum = 6 / 953.9141
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 11: Changes / Distsum =  3 / 953.588
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 12: Changes / Distsum = 1 / 953.5201
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 13: Changes / Distsum =  0 / 953.522
-
-    Elapsed time is 0.2 seconds.</code></pre>
-<pre class="r"><code>pc_dtw7 &lt;- tsclust(l_SRF8_z, k = 7L,
-  distance = &quot;dtw_basic&quot;, centroid = &quot;dba&quot;,
-  trace = TRUE, seed = 8,
-  norm = &quot;L2&quot;, window.size = 8L,
-  args = tsclust_args(cent = list(trace = TRUE)))</code></pre>
-<pre><code>Iteration 1: Changes / Distsum = 532 / 1066.633
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-Iteration 2: Changes / Distsum = 108 / 942.9268
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-Iteration 3: Changes / Distsum = 61 / 927.5122
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 4: Changes / Distsum =  44 / 920.27
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 5: Changes / Distsum = 39 / 914.4156
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14 - Converged!
-Iteration 6: Changes / Distsum = 37 / 908.0839
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 7: Changes / Distsum = 35 / 904.1942
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 8: Changes / Distsum = 15 / 901.047
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 9: Changes / Distsum = 9 / 900.6005
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 10: Changes / Distsum = 10 / 899.8713
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 11: Changes / Distsum = 8 / 899.2022
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-Iteration 12: Changes / Distsum = 12 / 898.3773
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 13: Changes / Distsum = 8 / 897.2316
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 14: Changes / Distsum = 4 / 896.4909
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 15: Changes / Distsum = 1 / 896.3093
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 16: Changes / Distsum = 0 / 896.2864
-
-    Elapsed time is 0.27 seconds.</code></pre>
-<pre class="r"><code># Prototypes for 4 clusters
-plot(pc_dtw4)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-19-2.png" width="1056" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># Prototypes for 5 clusters
-plot(pc_dtw5)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-19-3.png" width="1056" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># Prototypes for 7 clusters
-plot(pc_dtw7)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-19-4.png" width="1056" style="display: block; margin: auto;" /></p>
-</div>
-<div id="partial-clustering-methods---dtw_lb" class="section level4">
-<h4>(2-2) partial clustering methods - DTW_lb</h4>
-<p>cross-distance matrix is NOT symmetric, which can be problematic for</p>
-<pre class="r"><code># DTW_lb distance method
-pc_dtwlb &lt;- tsclust(l_SRF8_z, k = 2L:10L,
-  distance = &quot;dtw_lb&quot;, centroid = &quot;dba&quot;,
-  trace = TRUE, seed = 8,
-  norm = &quot;L2&quot;, window.size = 4L,
-  control = partitional_control(pam.precompute = FALSE),
-  args = tsclust_args(cent = list(trace = TRUE)))</code></pre>
-<pre><code>Iteration 1: Changes / Distsum = 532 / 1214.759
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17 - Converged!
-Iteration 2: Changes / Distsum =    49 / 1086
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-Iteration 3: Changes / Distsum = 14 / 1083.662
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 4: Changes / Distsum = 3 / 1082.905
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 5: Changes / Distsum =     3 / 1083
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 6: Changes / Distsum = 2 / 1083.219
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 7: Changes / Distsum = 0 / 1083.091
-
-Iteration 1: Changes / Distsum = 532 / 1235.879
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-Iteration 2: Changes / Distsum = 90 / 1061.286
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-Iteration 3: Changes / Distsum = 48 / 1041.185
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 4: Changes / Distsum = 10 / 1038.69
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 5: Changes / Distsum = 5 / 1038.282
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 6: Changes / Distsum = 4 / 1038.285
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 7: Changes / Distsum = 0 / 1038.501
-
-Iteration 1: Changes / Distsum = 532 / 1232.917
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13 - Converged!
-Iteration 2: Changes / Distsum = 159 / 1036.756
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-Iteration 3: Changes / Distsum = 87 / 1005.51
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-Iteration 4: Changes / Distsum = 54 / 990.5814
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-Iteration 5: Changes / Distsum = 32 / 982.7197
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-Iteration 6: Changes / Distsum = 18 / 983.3779
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 7: Changes / Distsum = 23 / 978.197
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 8: Changes / Distsum = 9 / 976.8768
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 9: Changes / Distsum = 5 / 976.9138
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 10: Changes / Distsum = 5 / 976.9903
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 11: Changes / Distsum = 10 / 977.067
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 12: Changes / Distsum = 13 / 976.5439
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 13: Changes / Distsum = 17 / 976.3333
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 14: Changes / Distsum = 14 / 975.8159
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 15: Changes / Distsum = 16 / 975.4872
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 16: Changes / Distsum = 14 / 975.5778
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 17: Changes / Distsum = 14 / 974.995
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 18: Changes / Distsum = 13 / 974.9792
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 19: Changes / Distsum = 15 / 974.4768
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 20: Changes / Distsum = 13 / 973.539
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 21: Changes / Distsum = 22 / 969.0719
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 22: Changes / Distsum = 16 / 967.0777
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 23: Changes / Distsum = 13 / 965.8193
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 24: Changes / Distsum = 7 / 964.6379
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 25: Changes / Distsum = 9 / 964.2667
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-Iteration 26: Changes / Distsum = 8 / 964.3926
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-Iteration 27: Changes / Distsum = 6 / 964.1947
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 28: Changes / Distsum = 4 / 964.2221
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 29: Changes / Distsum = 1 / 964.2858
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 30: Changes / Distsum = 0 / 964.3179
-
-Iteration 1: Changes / Distsum = 532 / 1151.851
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19 - Converged!
-Iteration 2: Changes / Distsum = 143 / 1001.098
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-Iteration 3: Changes / Distsum = 89 / 970.8782
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-Iteration 4: Changes / Distsum = 60 / 953.8755
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13 - Converged!
-Iteration 5: Changes / Distsum = 23 / 947.3524
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 6: Changes / Distsum = 16 / 945.5868
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-Iteration 7: Changes / Distsum = 17 / 943.9976
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 8: Changes / Distsum = 14 / 942.2577
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 9: Changes / Distsum = 6 / 942.3825
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 10: Changes / Distsum = 9 / 942.4787
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 11: Changes / Distsum = 12 / 942.7277
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-Iteration 12: Changes / Distsum =   12 / 942.9
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-Iteration 13: Changes / Distsum = 10 / 942.258
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 14: Changes / Distsum = 14 / 941.7284
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-Iteration 15: Changes / Distsum = 15 / 940.6101
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 16: Changes / Distsum = 21 / 939.4608
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 17: Changes / Distsum = 15 / 938.6738
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 18: Changes / Distsum =  5 / 937.948
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 19: Changes / Distsum = 3 / 937.6398
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 20: Changes / Distsum = 1 / 937.2233
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 21: Changes / Distsum = 0 / 937.1146
-
-Iteration 1: Changes / Distsum = 532 / 1081.475
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-Iteration 2: Changes / Distsum = 150 / 966.9228
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-Iteration 3: Changes / Distsum = 58 / 946.1319
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 4: Changes / Distsum = 50 / 936.8198
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 5: Changes / Distsum = 40 / 931.7741
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 6: Changes / Distsum = 16 / 930.8478
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 7: Changes / Distsum = 15 / 930.4147
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 8: Changes / Distsum = 11 / 929.5864
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 9: Changes / Distsum =  3 / 929.722
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 10: Changes / Distsum = 0 / 929.8999
-
-Iteration 1: Changes / Distsum = 532 / 1057.373
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 2: Changes / Distsum = 128 / 950.3321
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-Iteration 3: Changes / Distsum = 79 / 928.507
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-Iteration 4: Changes / Distsum = 51 / 915.8251
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-Iteration 5: Changes / Distsum = 26 / 910.9103
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 6: Changes / Distsum = 18 / 910.1965
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 7: Changes / Distsum = 20 / 909.528
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 8: Changes / Distsum = 16 / 908.7944
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 9: Changes / Distsum = 9 / 908.0541
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 10: Changes / Distsum = 9 / 907.7321
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 11: Changes / Distsum = 5 / 907.6193
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 12: Changes / Distsum = 8 / 907.5712
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 13: Changes / Distsum = 2 / 907.5884
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 14: Changes / Distsum = 1 / 907.6427
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 15: Changes / Distsum = 0 / 907.6374
-
-Iteration 1: Changes / Distsum = 532 / 1010.112
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-Iteration 2: Changes / Distsum = 107 / 908.7569
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-Iteration 3: Changes / Distsum = 59 / 893.1217
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 4: Changes / Distsum = 38 / 886.4944
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 5: Changes / Distsum = 30 / 880.2442
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 6: Changes / Distsum = 13 / 879.0363
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-Iteration 7: Changes / Distsum = 15 / 878.3966
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-Iteration 8: Changes / Distsum = 12 / 877.3024
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-Iteration 9: Changes / Distsum = 16 / 876.3601
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-Iteration 10: Changes / Distsum = 10 / 876.1527
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 11: Changes / Distsum = 11 / 875.3312
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 12: Changes / Distsum = 7 / 874.6221
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 13: Changes / Distsum = 1 / 874.4684
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 14: Changes / Distsum = 0 / 874.5118
-
-Iteration 1: Changes / Distsum = 532 / 1003.261
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-Iteration 2: Changes / Distsum = 95 / 893.7367
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 3: Changes / Distsum = 56 / 881.633
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 4: Changes / Distsum = 37 / 875.2796
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-Iteration 5: Changes / Distsum = 29 / 872.1203
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-Iteration 6: Changes / Distsum =  21 / 869.86
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 7: Changes / Distsum = 14 / 867.7827
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 8: Changes / Distsum = 6 / 867.1204
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 9: Changes / Distsum = 7 / 866.5261
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 10: Changes / Distsum = 5 / 866.4465
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 11: Changes / Distsum = 4 / 866.2174
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 12: Changes / Distsum = 4 / 866.0571
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 13: Changes / Distsum = 3 / 865.9587
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 14: Changes / Distsum = 3 / 865.8476
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 15: Changes / Distsum = 7 / 865.4354
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 16: Changes / Distsum = 6 / 864.8884
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 17: Changes / Distsum = 7 / 864.1353
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 18: Changes / Distsum = 4 / 863.5688
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 19: Changes / Distsum =  5 / 863.307
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 20: Changes / Distsum = 4 / 862.8939
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 21: Changes / Distsum = 4 / 862.5957
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 22: Changes / Distsum =  6 / 862.343
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 23: Changes / Distsum = 8 / 861.5483
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 24: Changes / Distsum = 6 / 860.9799
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 25: Changes / Distsum = 9 / 860.3182
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 26: Changes / Distsum = 5 / 859.6218
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 27: Changes / Distsum = 1 / 859.5693
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 28: Changes / Distsum =  1 / 859.529
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 29: Changes / Distsum = 4 / 859.2536
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 30: Changes / Distsum = 5 / 859.1027
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 31: Changes / Distsum = 7 / 858.2774
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 32: Changes / Distsum = 8 / 856.9206
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 33: Changes / Distsum = 5 / 856.3688
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 34: Changes / Distsum = 2 / 856.0819
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 35: Changes / Distsum = 5 / 855.8305
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 36: Changes / Distsum = 5 / 855.5911
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-Iteration 37: Changes / Distsum = 9 / 854.9278
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 38: Changes / Distsum = 10 / 854.5173
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-Iteration 39: Changes / Distsum = 6 / 853.7404
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 40: Changes / Distsum =  3 / 853.749
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 41: Changes / Distsum = 1 / 853.8307
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 42: Changes / Distsum = 1 / 853.8877
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 43: Changes / Distsum = 0 / 853.8072
-
-Iteration 1: Changes / Distsum = 532 / 977.9135
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 2: Changes / Distsum = 116 / 884.0352
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-Iteration 3: Changes / Distsum = 62 / 869.097
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 4: Changes / Distsum = 37 / 861.2205
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 5: Changes / Distsum = 25 / 856.3187
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 6: Changes / Distsum = 18 / 853.2315
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 7: Changes / Distsum = 9 / 851.5493
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 8: Changes / Distsum =   8 / 850.88
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 9: Changes / Distsum = 3 / 850.6951
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 10: Changes / Distsum = 2 / 850.4027
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 11: Changes / Distsum = 2 / 850.2196
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 12: Changes / Distsum = 0 / 850.3005
-
-    Elapsed time is 3.19 seconds.</code></pre>
-<pre class="r"><code>internal_CVI(pc_dtwlb, &quot;Partial clustering with DTW_lb distance&quot;)</code></pre>
-<pre><code>    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-20-1.png" width="1056" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># use 8 clusters
-pc_dtwlb8 &lt;- tsclust(l_SRF8_z, k = 8L,
-  distance = &quot;dtw_lb&quot;, centroid = &quot;dba&quot;,
-  trace = TRUE, seed = 8,
-  norm = &quot;L2&quot;, window.size = 4L,
-  control = partitional_control(pam.precompute = FALSE),
-  args = tsclust_args(cent = list(trace = TRUE)))</code></pre>
-<pre><code>Iteration 1: Changes / Distsum = 532 / 1031.335
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-         Did not &#39;converge&#39;
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-Iteration 2: Changes / Distsum = 117 / 922.8339
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13, 14, 15, 16, 17 - Converged!
-Iteration 3: Changes / Distsum = 59 / 908.1942
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-Iteration 4: Changes / Distsum = 42 / 902.1996
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-Iteration 5: Changes / Distsum = 35 / 897.5738
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12 - Converged!
-Iteration 6: Changes / Distsum = 28 / 893.7395
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 7: Changes / Distsum = 28 / 890.4848
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-         11, 12, 13 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-Iteration 8: Changes / Distsum = 29 / 884.9613
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 9: Changes / Distsum = 18 / 881.423
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 10: Changes / Distsum = 19 / 878.9053
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 11: Changes / Distsum = 11 / 877.1528
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-Iteration 12: Changes / Distsum = 21 / 875.3902
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 13: Changes / Distsum = 15 / 873.3985
-    DBA Iteration: 1, 2, 3, 4, 5 - Converged!
-    DBA Iteration: 1, 2, 3, 4 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3, 4, 5, 6 - Converged!
-Iteration 14: Changes / Distsum = 4 / 872.7913
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-    DBA Iteration: 1, 2 - Converged!
-Iteration 15: Changes / Distsum = 1 / 872.6045
-    DBA Iteration: 1, 2 - Converged!
-    DBA Iteration: 1, 2, 3 - Converged!
-Iteration 16: Changes / Distsum = 0 / 872.5455
-
-    Elapsed time is 0.33 seconds.</code></pre>
-<pre class="r"><code># Prototypes for 8 clusters
-plot(pc_dtwlb8)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-20-2.png" width="1056" style="display: block; margin: auto;" /></p>
-</div>
-<div id="partial-clustering-methods---k-shape" class="section level4">
-<h4>(2-3) partial clustering methods - k-shape</h4>
-<pre class="r"><code># k-shape method
-pc_ks &lt;- tsclust(l_SRF8_z, k = 2L:10L,
-  distance = &quot;sbd&quot;, centroid = &quot;shape&quot;,
-  seed = 8, trace = TRUE)</code></pre>
-<pre><code>Iteration 1: Changes / Distsum = 532 / 200.3958
-Iteration 2: Changes / Distsum = 60 / 191.2659
-Iteration 3: Changes / Distsum = 47 / 186.8754
-Iteration 4: Changes / Distsum = 37 / 183.3642
-Iteration 5: Changes / Distsum = 26 / 181.0874
-Iteration 6: Changes / Distsum = 23 / 179.4481
-Iteration 7: Changes / Distsum = 25 / 178.2472
-Iteration 8: Changes / Distsum = 21 / 176.9136
-Iteration 9: Changes / Distsum = 24 / 175.4498
-Iteration 10: Changes / Distsum = 19 / 174.5458
-Iteration 11: Changes / Distsum = 18 / 174.0191
-Iteration 12: Changes / Distsum = 20 / 173.4992
-Iteration 13: Changes / Distsum = 11 / 172.9733
-Iteration 14: Changes / Distsum =  8 / 172.748
-Iteration 15: Changes / Distsum = 4 / 172.6375
-Iteration 16: Changes / Distsum = 3 / 172.6044
-Iteration 17: Changes / Distsum = 1 / 172.5919
-Iteration 18: Changes / Distsum = 2 / 172.5772
-Iteration 19: Changes / Distsum = 4 / 172.5742
-Iteration 20: Changes / Distsum = 3 / 172.5574
-Iteration 21: Changes / Distsum = 3 / 172.5346
-Iteration 22: Changes / Distsum = 3 / 172.4919
-Iteration 23: Changes / Distsum = 3 / 172.4528
-Iteration 24: Changes / Distsum = 5 / 172.3744
-Iteration 25: Changes / Distsum = 0 / 172.3513
-
-Iteration 1: Changes / Distsum = 532 / 195.2288
-Iteration 2: Changes / Distsum = 106 / 169.2473
-Iteration 3: Changes / Distsum = 69 / 159.5856
-Iteration 4: Changes / Distsum = 31 / 156.3785
-Iteration 5: Changes / Distsum = 25 / 155.1618
-Iteration 6: Changes / Distsum = 25 / 154.421
-Iteration 7: Changes / Distsum = 16 / 153.9445
-Iteration 8: Changes / Distsum = 10 / 153.7679
-Iteration 9: Changes / Distsum = 14 / 153.642
-Iteration 10: Changes / Distsum = 9 / 153.4987
-Iteration 11: Changes / Distsum = 2 / 153.3306
-Iteration 12: Changes / Distsum = 3 / 153.2626
-Iteration 13: Changes / Distsum = 5 / 153.2312
-Iteration 14: Changes / Distsum = 2 / 153.2283
-Iteration 15: Changes / Distsum = 0 / 153.1973
-
-Iteration 1: Changes / Distsum = 532 / 163.2131
-Iteration 2: Changes / Distsum = 92 / 146.197
-Iteration 3: Changes / Distsum = 49 / 142.3416
-Iteration 4: Changes / Distsum = 26 / 140.9477
-Iteration 5: Changes / Distsum = 18 / 140.1709
-Iteration 6: Changes / Distsum = 11 / 139.7486
-Iteration 7: Changes / Distsum = 10 / 139.514
-Iteration 8: Changes / Distsum = 9 / 139.3023
-Iteration 9: Changes / Distsum = 9 / 139.1652
-Iteration 10: Changes / Distsum = 14 / 138.9545
-Iteration 11: Changes / Distsum = 8 / 138.7627
-Iteration 12: Changes / Distsum = 5 / 138.6935
-Iteration 13: Changes / Distsum = 7 / 138.6314
-Iteration 14: Changes / Distsum = 11 / 138.4481
-Iteration 15: Changes / Distsum = 8 / 138.2228
-Iteration 16: Changes / Distsum = 9 / 138.0754
-Iteration 17: Changes / Distsum = 6 / 137.9138
-Iteration 18: Changes / Distsum = 10 / 137.804
-Iteration 19: Changes / Distsum = 13 / 137.5738
-Iteration 20: Changes / Distsum = 10 / 137.3561
-Iteration 21: Changes / Distsum = 14 / 137.1937
-Iteration 22: Changes / Distsum = 5 / 136.9419
-Iteration 23: Changes / Distsum = 4 / 136.8824
-Iteration 24: Changes / Distsum = 3 / 136.8185
-Iteration 25: Changes / Distsum = 2 / 136.8116
-Iteration 26: Changes / Distsum = 0 / 136.7898
-
-Iteration 1: Changes / Distsum = 532 / 161.8126
-Iteration 2: Changes / Distsum = 80 / 145.7379
-Iteration 3: Changes / Distsum = 75 / 139.3602
-Iteration 4: Changes / Distsum = 54 / 135.1924
-Iteration 5: Changes / Distsum = 47 / 133.0846
-Iteration 6: Changes / Distsum = 28 / 131.7007
-Iteration 7: Changes / Distsum = 22 / 130.9028
-Iteration 8: Changes / Distsum = 22 / 130.4237
-Iteration 9: Changes / Distsum = 20 / 129.8521
-Iteration 10: Changes / Distsum = 14 / 129.4297
-Iteration 11: Changes / Distsum = 12 / 129.1787
-Iteration 12: Changes / Distsum = 7 / 129.0634
-Iteration 13: Changes / Distsum = 4 / 128.9815
-Iteration 14: Changes / Distsum = 1 / 128.9449
-Iteration 15: Changes / Distsum = 5 / 128.9324
-Iteration 16: Changes / Distsum = 5 / 128.8996
-Iteration 17: Changes / Distsum = 5 / 128.8585
-Iteration 18: Changes / Distsum = 7 / 128.8335
-Iteration 19: Changes / Distsum = 11 / 128.6776
-Iteration 20: Changes / Distsum = 12 / 128.4849
-Iteration 21: Changes / Distsum = 10 / 128.2216
-Iteration 22: Changes / Distsum = 10 / 127.9911
-Iteration 23: Changes / Distsum =   6 / 127.85
-Iteration 24: Changes / Distsum = 2 / 127.8393
-Iteration 25: Changes / Distsum = 0 / 127.8528
-
-Iteration 1: Changes / Distsum = 532 / 164.5055
-Iteration 2: Changes / Distsum = 131 / 142.9439
-Iteration 3: Changes / Distsum = 73 / 135.6312
-Iteration 4: Changes / Distsum = 35 / 132.8678
-Iteration 5: Changes / Distsum = 24 / 131.6971
-Iteration 6: Changes / Distsum = 24 / 130.6279
-Iteration 7: Changes / Distsum = 25 / 129.5029
-Iteration 8: Changes / Distsum =  29 / 128.57
-Iteration 9: Changes / Distsum = 30 / 127.3249
-Iteration 10: Changes / Distsum = 27 / 126.1351
-Iteration 11: Changes / Distsum = 20 / 125.3845
-Iteration 12: Changes / Distsum = 13 / 125.1321
-Iteration 13: Changes / Distsum = 11 / 124.9473
-Iteration 14: Changes / Distsum = 12 / 124.662
-Iteration 15: Changes / Distsum = 16 / 124.3704
-Iteration 16: Changes / Distsum = 24 / 123.7256
-Iteration 17: Changes / Distsum = 21 / 122.7829
-Iteration 18: Changes / Distsum = 21 / 122.183
-Iteration 19: Changes / Distsum = 14 / 121.7339
-Iteration 20: Changes / Distsum = 8 / 121.4302
-Iteration 21: Changes / Distsum = 9 / 121.2604
-Iteration 22: Changes / Distsum = 11 / 121.0055
-Iteration 23: Changes / Distsum = 9 / 120.7443
-Iteration 24: Changes / Distsum = 4 / 120.6106
-Iteration 25: Changes / Distsum = 1 / 120.5538
-Iteration 26: Changes / Distsum = 0 / 120.5451
-
-Iteration 1: Changes / Distsum = 532 / 153.8151
-Iteration 2: Changes / Distsum = 122 / 128.459
-Iteration 3: Changes / Distsum = 56 / 123.0718
-Iteration 4: Changes / Distsum = 35 / 121.2718
-Iteration 5: Changes / Distsum = 18 / 120.3717
-Iteration 6: Changes / Distsum = 13 / 119.9752
-Iteration 7: Changes / Distsum = 11 / 119.7874
-Iteration 8: Changes / Distsum = 6 / 119.6583
-Iteration 9: Changes / Distsum = 5 / 119.6055
-Iteration 10: Changes / Distsum = 3 / 119.5617
-Iteration 11: Changes / Distsum = 3 / 119.5283
-Iteration 12: Changes / Distsum = 8 / 119.4848
-Iteration 13: Changes / Distsum = 6 / 119.3921
-Iteration 14: Changes / Distsum =  2 / 119.348
-Iteration 15: Changes / Distsum = 2 / 119.3458
-Iteration 16: Changes / Distsum = 1 / 119.3316
-Iteration 17: Changes / Distsum = 3 / 119.3357
-Iteration 18: Changes / Distsum = 2 / 119.3226
-Iteration 19: Changes / Distsum = 4 / 119.2924
-Iteration 20: Changes / Distsum = 4 / 119.2359
-Iteration 21: Changes / Distsum = 7 / 119.1573
-Iteration 22: Changes / Distsum = 13 / 118.7887
-Iteration 23: Changes / Distsum = 16 / 118.2722
-Iteration 24: Changes / Distsum = 18 / 117.8188
-Iteration 25: Changes / Distsum = 22 / 117.2769
-Iteration 26: Changes / Distsum = 19 / 116.7408
-Iteration 27: Changes / Distsum = 12 / 116.403
-Iteration 28: Changes / Distsum = 8 / 116.2711
-Iteration 29: Changes / Distsum = 6 / 116.1716
-Iteration 30: Changes / Distsum = 6 / 116.0869
-Iteration 31: Changes / Distsum = 1 / 116.0484
-Iteration 32: Changes / Distsum = 1 / 116.0417
-Iteration 33: Changes / Distsum =  6 / 116.003
-Iteration 34: Changes / Distsum = 7 / 115.8831
-Iteration 35: Changes / Distsum = 6 / 115.7699
-Iteration 36: Changes / Distsum = 7 / 115.6887
-Iteration 37: Changes / Distsum = 3 / 115.6174
-Iteration 38: Changes / Distsum = 1 / 115.6089
-Iteration 39: Changes / Distsum = 2 / 115.6073
-Iteration 40: Changes / Distsum = 1 / 115.5808
-Iteration 41: Changes / Distsum = 0 / 115.5552
-
-Iteration 1: Changes / Distsum = 532 / 144.6013
-Iteration 2: Changes / Distsum = 112 / 125.3734
-Iteration 3: Changes / Distsum = 59 / 120.6981
-Iteration 4: Changes / Distsum = 41 / 118.6724
-Iteration 5: Changes / Distsum = 36 / 117.2343
-Iteration 6: Changes / Distsum = 30 / 115.9871
-Iteration 7: Changes / Distsum =  23 / 115.15
-Iteration 8: Changes / Distsum = 23 / 114.5317
-Iteration 9: Changes / Distsum = 18 / 114.0379
-Iteration 10: Changes / Distsum = 8 / 113.7137
-Iteration 11: Changes / Distsum = 6 / 113.6242
-Iteration 12: Changes / Distsum = 5 / 113.5597
-Iteration 13: Changes / Distsum = 7 / 113.4534
-Iteration 14: Changes / Distsum = 2 / 113.3933
-Iteration 15: Changes / Distsum = 3 / 113.3608
-Iteration 16: Changes / Distsum =  2 / 113.327
-Iteration 17: Changes / Distsum = 2 / 113.3139
-Iteration 18: Changes / Distsum =  2 / 113.287
-Iteration 19: Changes / Distsum = 2 / 113.2578
-Iteration 20: Changes / Distsum = 1 / 113.2422
-Iteration 21: Changes / Distsum = 0 / 113.2261
-
-Iteration 1: Changes / Distsum = 532 / 138.4382
-Iteration 2: Changes / Distsum = 127 / 121.6014
-Iteration 3: Changes / Distsum = 63 / 116.3618
-Iteration 4: Changes / Distsum = 46 / 114.0432
-Iteration 5: Changes / Distsum = 37 / 112.3038
-Iteration 6: Changes / Distsum = 23 / 111.3467
-Iteration 7: Changes / Distsum = 18 / 110.7779
-Iteration 8: Changes / Distsum = 11 / 110.5307
-Iteration 9: Changes / Distsum =  8 / 110.363
-Iteration 10: Changes / Distsum = 8 / 110.2585
-Iteration 11: Changes / Distsum = 5 / 110.1537
-Iteration 12: Changes / Distsum = 3 / 110.0985
-Iteration 13: Changes / Distsum = 1 / 110.0649
-Iteration 14: Changes / Distsum = 0 / 110.0535
-
-Iteration 1: Changes / Distsum = 532 / 132.1546
-Iteration 2: Changes / Distsum = 108 / 120.0351
-Iteration 3: Changes / Distsum = 74 / 114.3476
-Iteration 4: Changes / Distsum = 41 / 111.5655
-Iteration 5: Changes / Distsum = 35 / 109.941
-Iteration 6: Changes / Distsum = 22 / 109.0309
-Iteration 7: Changes / Distsum = 24 / 108.3271
-Iteration 8: Changes / Distsum = 17 / 107.8601
-Iteration 9: Changes / Distsum = 10 / 107.5842
-Iteration 10: Changes / Distsum = 9 / 107.4497
-Iteration 11: Changes / Distsum = 10 / 107.3616
-Iteration 12: Changes / Distsum = 6 / 107.3051
-Iteration 13: Changes / Distsum =  5 / 107.268
-Iteration 14: Changes / Distsum = 6 / 107.2178
-Iteration 15: Changes / Distsum = 7 / 107.1181
-Iteration 16: Changes / Distsum = 4 / 107.0108
-Iteration 17: Changes / Distsum = 7 / 106.9543
-Iteration 18: Changes / Distsum = 2 / 106.8461
-Iteration 19: Changes / Distsum = 2 / 106.8266
-Iteration 20: Changes / Distsum =  2 / 106.808
-Iteration 21: Changes / Distsum = 1 / 106.7852
-Iteration 22: Changes / Distsum = 1 / 106.7672
-Iteration 23: Changes / Distsum = 0 / 106.7618
-
-    Elapsed time is 10.68 seconds.</code></pre>
-<pre class="r"><code>internal_CVI(pc_ks, &quot;Partial clustering with k-shape method&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-21-1.png" width="1056" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># use 3 or 4 clusters
-pc_ks3 &lt;- tsclust(l_SRF8_z, k = 3L,
-  distance = &quot;sbd&quot;, centroid = &quot;shape&quot;,
-  seed = 8, trace = TRUE)</code></pre>
-<pre><code>Iteration 1: Changes / Distsum = 532 / 187.9674
-Iteration 2: Changes / Distsum = 89 / 173.4365
-Iteration 3: Changes / Distsum = 59 / 166.4354
-Iteration 4: Changes / Distsum = 45 / 162.5429
-Iteration 5: Changes / Distsum = 44 / 160.2387
-Iteration 6: Changes / Distsum = 24 / 158.8933
-Iteration 7: Changes / Distsum = 29 / 158.196
-Iteration 8: Changes / Distsum = 20 / 157.4393
-Iteration 9: Changes / Distsum = 21 / 156.6075
-Iteration 10: Changes / Distsum = 11 / 156.2094
-Iteration 11: Changes / Distsum = 6 / 156.0933
-Iteration 12: Changes / Distsum = 7 / 156.0493
-Iteration 13: Changes / Distsum = 6 / 155.9435
-Iteration 14: Changes / Distsum = 9 / 155.8207
-Iteration 15: Changes / Distsum = 10 / 155.644
-Iteration 16: Changes / Distsum = 10 / 155.4027
-Iteration 17: Changes / Distsum = 11 / 155.224
-Iteration 18: Changes / Distsum = 19 / 154.9539
-Iteration 19: Changes / Distsum = 18 / 154.3203
-Iteration 20: Changes / Distsum = 20 / 153.7558
-Iteration 21: Changes / Distsum = 23 / 153.1354
-Iteration 22: Changes / Distsum = 19 / 152.4885
-Iteration 23: Changes / Distsum = 15 / 152.1055
-Iteration 24: Changes / Distsum = 13 / 151.8892
-Iteration 25: Changes / Distsum = 9 / 151.7227
-Iteration 26: Changes / Distsum = 9 / 151.6133
-Iteration 27: Changes / Distsum = 1 / 151.5749
-Iteration 28: Changes / Distsum = 0 / 151.5667
-
-    Elapsed time is 1.53 seconds.</code></pre>
-<pre class="r"><code>pc_ks4 &lt;- tsclust(l_SRF8_z, k = 4L,
-  distance = &quot;sbd&quot;, centroid = &quot;shape&quot;,
-  seed = 8, trace = TRUE)</code></pre>
-<pre><code>Iteration 1: Changes / Distsum = 532 / 168.52
-Iteration 2: Changes / Distsum = 97 / 153.8169
-Iteration 3: Changes / Distsum = 56 / 148.021
-Iteration 4: Changes / Distsum = 40 / 146.1238
-Iteration 5: Changes / Distsum = 29 / 145.2076
-Iteration 6: Changes / Distsum = 31 / 144.4671
-Iteration 7: Changes / Distsum = 22 / 143.9373
-Iteration 8: Changes / Distsum = 18 / 143.4564
-Iteration 9: Changes / Distsum = 17 / 142.9969
-Iteration 10: Changes / Distsum = 11 / 142.5233
-Iteration 11: Changes / Distsum = 11 / 142.2131
-Iteration 12: Changes / Distsum = 13 / 141.8213
-Iteration 13: Changes / Distsum = 11 / 141.5375
-Iteration 14: Changes / Distsum = 4 / 141.4405
-Iteration 15: Changes / Distsum =  4 / 141.421
-Iteration 16: Changes / Distsum = 3 / 141.4141
-Iteration 17: Changes / Distsum = 2 / 141.3894
-Iteration 18: Changes / Distsum = 3 / 141.3786
-Iteration 19: Changes / Distsum = 6 / 141.3522
-Iteration 20: Changes / Distsum = 4 / 141.2532
-Iteration 21: Changes / Distsum = 4 / 141.1904
-Iteration 22: Changes / Distsum = 4 / 141.1597
-Iteration 23: Changes / Distsum = 3 / 141.1359
-Iteration 24: Changes / Distsum = 5 / 141.1165
-Iteration 25: Changes / Distsum = 1 / 141.0633
-Iteration 26: Changes / Distsum = 2 / 141.0515
-Iteration 27: Changes / Distsum = 3 / 141.0409
-Iteration 28: Changes / Distsum =  1 / 141.007
-Iteration 29: Changes / Distsum =  1 / 140.992
-Iteration 30: Changes / Distsum = 0 / 140.9717
-
-    Elapsed time is 1.56 seconds.</code></pre>
-<pre class="r"><code>pc_ks5 &lt;- tsclust(l_SRF8_z, k = 5L,
-  distance = &quot;sbd&quot;, centroid = &quot;shape&quot;,
-  seed = 8, trace = TRUE)</code></pre>
-<pre><code>Iteration 1: Changes / Distsum = 532 / 161.8514
-Iteration 2: Changes / Distsum = 100 / 148.6935
-Iteration 3: Changes / Distsum = 69 / 142.4906
-Iteration 4: Changes / Distsum = 41 / 140.0478
-Iteration 5: Changes / Distsum = 34 / 138.8307
-Iteration 6: Changes / Distsum = 23 / 137.773
-Iteration 7: Changes / Distsum = 23 / 137.1449
-Iteration 8: Changes / Distsum = 24 / 136.3135
-Iteration 9: Changes / Distsum = 17 / 135.6154
-Iteration 10: Changes / Distsum = 14 / 135.3935
-Iteration 11: Changes / Distsum = 5 / 135.2865
-Iteration 12: Changes / Distsum = 3 / 135.2529
-Iteration 13: Changes / Distsum = 1 / 135.2219
-Iteration 14: Changes / Distsum = 0 / 135.2108
-
-    Elapsed time is 0.77 seconds.</code></pre>
-<pre class="r"><code># Prototypes for 3 clusters
-plot(pc_ks3)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-21-2.png" width="1056" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># Prototypes for 4 clusters
-plot(pc_ks4)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-21-3.png" width="1056" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># Prototypes for 5 clusters
-plot(pc_ks5)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-21-4.png" width="1056" style="display: block; margin: auto;" /></p>
-</div>
-<div id="partial-clustering-methods---tadpole" class="section level4">
-<h4>(2-4) partial clustering methods - Tadpole</h4>
-<p>problematic for our dataset (series’ cross-distance matrix is NOT symmetric)</p>
-<pre class="r"><code># Tadpole method
-pc_tp &lt;- tsclust(l_SRF8_z, k = 2L:10L, type = &quot;t&quot;,
-  seed = 8, trace = TRUE,
-  control = tadpole_control(dc = 1.5,
-  window.size = 4L))</code></pre>
-<pre><code>
-    Entering TADPole...
-
-Computing lower and upper bound matrices
-Pruning during local density calculation
-Pruning during nearest-neighbor distance calculation (phase 1)
-Pruning during nearest-neighbor distance calculation (phase 2)
-Pruning percentage = 5.12%
-Performing cluster assignment
-
-TADPole completed for k = 2 &amp; dc = 1.5
-TADPole completed for k = 3 &amp; dc = 1.5
-TADPole completed for k = 4 &amp; dc = 1.5
-TADPole completed for k = 5 &amp; dc = 1.5
-TADPole completed for k = 6 &amp; dc = 1.5
-TADPole completed for k = 7 &amp; dc = 1.5
-TADPole completed for k = 8 &amp; dc = 1.5
-TADPole completed for k = 9 &amp; dc = 1.5
-TADPole completed for k = 10 &amp; dc = 1.5
-
-    Elapsed time is 0.52 seconds.</code></pre>
-<pre class="r"><code>internal_CVI(pc_tp, &quot;Partial clustering with Tadpole method&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-22-1.png" width="1056" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># use 8 clusters
-pc_tp8 &lt;- tsclust(l_SRF8_z, k = 8L, type = &quot;t&quot;,
-  seed = 8, trace = TRUE,
-  control = tadpole_control(dc = 1.5,
-  window.size = 4L))</code></pre>
-<pre><code>
-    Entering TADPole...
-
-Computing lower and upper bound matrices
-Pruning during local density calculation
-Pruning during nearest-neighbor distance calculation (phase 1)
-Pruning during nearest-neighbor distance calculation (phase 2)
-Pruning percentage = 5.12%
-Performing cluster assignment
-
-TADPole completed for k = 8 &amp; dc = 1.5
-
-    Elapsed time is 0.44 seconds.</code></pre>
-<pre class="r"><code># Prototypes for 8 clusters
-plot(pc_tp8)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-22-2.png" width="1056" style="display: block; margin: auto;" /></p>
-</div>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-16-6.png" width="1056" style="display: block; margin: auto;" /></p>
 </div>
 <div id="rain-analysis-rhythmicity-analysis-incorporating-non-parametric-methods" class="section level3">
 <h3>6. RAIN analysis (Rhythmicity Analysis Incorporating Non-parametric methods)</h3>
@@ -5362,21 +2513,21 @@ hist_abundance_ratio &lt;- function(depth=&quot;SRF&quot;,time=&quot;T1&quot;){
 }
 
 hist_abundance_ratio(depth=&quot;SRF&quot;,time=&quot;T1&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-23-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-17-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>hist_abundance_ratio(depth=&quot;SRF&quot;,time=&quot;T2&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-23-2.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-17-2.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>hist_abundance_ratio(depth=&quot;SRF&quot;,time=&quot;T3&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-23-3.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-17-3.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>hist_abundance_ratio(depth=&quot;SRF&quot;,time=&quot;T4&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-23-4.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-17-4.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>hist_abundance_ratio(depth=&quot;SRF&quot;,time=&quot;T5&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-23-5.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-17-5.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>hist_abundance_ratio(depth=&quot;SRF&quot;,time=&quot;T6&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-23-6.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-17-6.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>hist_abundance_ratio(depth=&quot;SRF&quot;,time=&quot;T7&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-23-7.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-17-7.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>hist_abundance_ratio(depth=&quot;SRF&quot;,time=&quot;T8&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-23-8.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-17-8.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># draw histogram in multigrids
 library(gridExtra)
 paste0(&quot;T&quot;,1L:8L)</code></pre>
@@ -5397,7 +2548,7 @@ for (i in paste0(&quot;T&quot;,1L:8L)){
 <pre class="r"><code>length(l)</code></pre>
 <pre><code>[1] 8</code></pre>
 <pre class="r"><code>grid.arrange(grobs = l, ncol=3)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-23-9.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-17-9.png" width="1056" style="display: block; margin: auto;" /></p>
 <ol start="2" style="list-style-type: decimal">
 <li>Spectra level histograms</li>
 </ol>
@@ -5423,21 +2574,21 @@ hist_abundance_ratio_spec &lt;- function(depth=&quot;SRF&quot;,time=&quot;T1&quo
 }
 
 hist_abundance_ratio_spec(depth=&quot;SRF&quot;,time=&quot;T1&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-24-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>hist_abundance_ratio_spec(depth=&quot;SRF&quot;,time=&quot;T2&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-24-2.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-2.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>hist_abundance_ratio_spec(depth=&quot;SRF&quot;,time=&quot;T3&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-24-3.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-3.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>hist_abundance_ratio_spec(depth=&quot;SRF&quot;,time=&quot;T4&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-24-4.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-4.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>hist_abundance_ratio_spec(depth=&quot;SRF&quot;,time=&quot;T5&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-24-5.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-5.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>hist_abundance_ratio_spec(depth=&quot;SRF&quot;,time=&quot;T6&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-24-6.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-6.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>hist_abundance_ratio_spec(depth=&quot;SRF&quot;,time=&quot;T7&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-24-7.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-7.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>hist_abundance_ratio_spec(depth=&quot;SRF&quot;,time=&quot;T8&quot;)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-24-8.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-8.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># draw histogram in multigrids
 library(gridExtra)
 paste0(&quot;T&quot;,1L:8L)</code></pre>
@@ -5458,7 +2609,7 @@ for (i in paste0(&quot;T&quot;,1L:8L)){
 <pre class="r"><code>length(l)</code></pre>
 <pre><code>[1] 8</code></pre>
 <pre class="r"><code>grid.arrange(grobs = l, ncol=3)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-24-9.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-18-9.png" width="1056" style="display: block; margin: auto;" /></p>
 </div>
 <div id="applying-rain-analysis" class="section level3">
 <h3>6.2. Applying rain analysis</h3>
@@ -6096,7 +3247,7 @@ library(rain)
 rainresult &lt;- rain(t(dc_8), period=8, measure.sequence=t, deltat=1, method=&#39;independent&#39;)
 
 plot(-log(rainresult$pVal) ~ rainresult$phase)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-25-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-19-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># According to the original paper, adjusting p-values for multiple testing is not necessary (already done in the output): https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4266694/
 # rainresult$fdr &lt;- p.adjust(as.numeric(rainresult$pVal), method=&quot;fdr&quot;) 
 
@@ -6251,13 +3402,13 @@ time_series_pvalue &lt;- function(df_filt8,depth=&quot;SRF&quot;,threshold=0.25)
 
 time_series_pvalue(df_filt8,depth=&quot;SRF&quot;,threshold=0.25)</code></pre>
 <pre><code>[1] 69</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-26-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-20-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>time_series_pvalue(df_filt8,depth=&quot;DCL&quot;,threshold=0.25)</code></pre>
 <pre><code>[1] 52</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-26-2.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-20-2.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>time_series_pvalue(df_filt8,depth=&quot;BDCL&quot;,threshold=0.25)</code></pre>
 <pre><code>[1] 56</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-26-3.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-20-3.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># draw plots in multigrids
 par(mfrow = c(1, 3))
 # filtered for 8 timepoint appearing peptides
@@ -6267,7 +3418,7 @@ for (i in 1:length(depth_vec)){
 <pre><code>[1] 69</code></pre>
 <pre><code>[1] 52</code></pre>
 <pre><code>[1] 56</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-26-4.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-20-4.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># filtered for 7, 8 timepoint appearing peptides
 for (i in 1:length(depth_vec)){
   time_series_pvalue(df_filt78,depth=depth_vec[i],threshold=0.25)
@@ -6275,7 +3426,7 @@ for (i in 1:length(depth_vec)){
 <pre><code>[1] 70</code></pre>
 <pre><code>[1] 52</code></pre>
 <pre><code>[1] 56</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-26-5.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-20-5.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># change the threshold to 0.15
 for (i in 1:length(depth_vec)){
   time_series_pvalue(df_filt8,depth=depth_vec[i],threshold=0.15)
@@ -6283,14 +3434,14 @@ for (i in 1:length(depth_vec)){
 <pre><code>[1] 37</code></pre>
 <pre><code>[1] 32</code></pre>
 <pre><code>[1] 30</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-26-6.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-20-6.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>for (i in 1:length(depth_vec)){
   time_series_pvalue(df_filt78,depth=depth_vec[i],threshold=0.15)
 }</code></pre>
 <pre><code>[1] 38</code></pre>
 <pre><code>[1] 32</code></pre>
 <pre><code>[1] 30</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-26-7.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-20-7.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>dev.off()</code></pre>
 <pre><code>null device 
           1 </code></pre>
@@ -6338,7 +3489,7 @@ ggplot(rain_sig, aes(x=phase)) +
   theme(axis.text.y = element_text(size=10)) +
   annotate(&quot;rect&quot;, xmin = 3.6, xmax = 5.35, ymin = -Inf, ymax = Inf, alpha = .2) +
   theme(panel.grid.minor = element_blank())</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-27-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-21-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>  # theme(panel.grid.major = element_blank())</code></pre>
 </div>
 <div id="amplitude" class="section level3">
@@ -6390,7 +3541,7 @@ for (i in paste0(&quot;T&quot;,1L:8L)){
 <pre class="r"><code>length(l)</code></pre>
 <pre><code>[1] 8</code></pre>
 <pre class="r"><code>grid.arrange(grobs = l, ncol=4)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-28-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-22-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># (2) DCL
 l &lt;- list()
 for (i in paste0(&quot;T&quot;,1L:8L)){
@@ -6416,7 +3567,7 @@ for (i in paste0(&quot;T&quot;,1L:8L)){
 <pre class="r"><code>length(l)</code></pre>
 <pre><code>[1] 8</code></pre>
 <pre class="r"><code>grid.arrange(grobs = l, ncol=4)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-28-2.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-22-2.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># (3) BDCL
 l &lt;- list()
 for (i in paste0(&quot;T&quot;,1L:8L)){
@@ -6442,7 +3593,7 @@ for (i in paste0(&quot;T&quot;,1L:8L)){
 <pre class="r"><code>length(l)</code></pre>
 <pre><code>[1] 8</code></pre>
 <pre class="r"><code>grid.arrange(grobs = l, ncol=4)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-28-3.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-22-3.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># Getting amplitude
 inner_join(rain_sig2, df_ave_rep, by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;,&quot;Depth&quot;=&quot;Depth&quot;,&quot;Time&quot;=&quot;Time&quot;)) %&gt;% dim()</code></pre>
 <pre><code>[1] 177   7</code></pre>
@@ -6618,13 +3769,13 @@ saw &lt;- rep(13:24 / 18 , 2) + rnorm(24, 0, 0.3)
 measure &lt;- cbind(sin, saw)
 require(&#39;lattice&#39;)
 xyplot(t(measure)~rep(times, each=2) | c(&#39;sin&#39;, &#39;saw&#39;),layout = c(1, 2), type = &#39;o&#39;, xlab = &#39;time&#39;, ylab = &#39;value&#39;, cex.lab = 0.6)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-31-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-25-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>require(rain)
 rainresult &lt;- rain(measure, period=24, deltat=2, peak.border=c(0.1,0.9), verbose=FALSE)
 rainresult</code></pre>
 <pre><code>            pVal phase peak.shape period
-sin 5.176859e-06     6         12     24
-saw 1.162142e-02    24          2     24</code></pre>
+sin 4.062931e-07     8         10     24
+saw 9.617898e-03    24          2     24</code></pre>
 <pre class="r"><code>data(menetRNASeqMouseLiver)
 colnames(menetRNASeqMouseLiver)</code></pre>
 <pre><code> [1] &quot;ZT_2_1&quot;  &quot;ZT_2_2&quot;  &quot;ZT_6_1&quot;  &quot;ZT_6_2&quot;  &quot;ZT_10_1&quot; &quot;ZT_10_2&quot; &quot;ZT_14_1&quot;
@@ -6632,7 +3783,7 @@ colnames(menetRNASeqMouseLiver)</code></pre>
 <pre class="r"><code>results &lt;- rain(t(menetRNASeqMouseLiver), deltat=4, period=24, nr.series=2, peak.border=c(0.3, 0.7), verbose=FALSE)
 best &lt;- order(results$pVal)[1:10]
 xyplot(as.matrix(menetRNASeqMouseLiver[best, (0:5 * 2 + rep(c(1, 2), each = 6))]) ~rep(0:11 * 4 + 2, each = 10) |rownames(menetRNASeqMouseLiver)[best], scales = list(y = list(relation = &#39;free&#39;)), layout = c(2, 5), type = &#39;b&#39;, pch = 16, xlab = &#39;time&#39;, ylab = &#39;expression value&#39;, cex.lab = 1)</code></pre>
-<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-31-2.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-25-2.png" width="1056" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -6647,11 +3798,6 @@ Running under: Windows 10 x64 (build 19042)
 
 Matrix products: default
 
-Random number generation:
- RNG:     L&#39;Ecuyer-CMRG 
- Normal:  Inversion 
- Sample:  Rejection 
- 
 locale:
 [1] LC_COLLATE=English_United States.1252 
 [2] LC_CTYPE=English_United States.1252   
@@ -6666,50 +3812,30 @@ attached base packages:
 other attached packages:
  [1] lattice_0.20-41     rain_1.24.0         multtest_2.46.0    
  [4] Biobase_2.50.0      BiocGenerics_0.36.0 gmp_0.6-2          
- [7] gridExtra_2.3       TSclust_1.3.1       cluster_2.1.0      
-[10] pdc_1.0.3           dtwclust_5.5.6      sparsepca_0.1.2    
-[13] ggrepel_0.9.1       labdsv_2.0-1        mgcv_1.8-33        
-[16] nlme_3.1-149        dtw_1.22-3          proxy_0.4-24       
-[19] maditr_0.7.4        data.table_1.14.0   formattable_0.2.1  
-[22] ggplot2_3.3.3       stringr_1.4.0       tidyr_1.1.2        
-[25] dplyr_1.0.4         workflowr_1.6.2    
+ [7] gridExtra_2.3       sparsepca_0.1.2     ggrepel_0.9.1      
+[10] labdsv_2.0-1        mgcv_1.8-33         nlme_3.1-149       
+[13] dtw_1.22-3          proxy_0.4-24        maditr_0.7.4       
+[16] data.table_1.14.0   formattable_0.2.1   ggplot2_3.3.3      
+[19] stringr_1.4.0       tidyr_1.1.2         dplyr_1.0.4        
+[22] workflowr_1.6.2    
 
 loaded via a namespace (and not attached):
-  [1] bigmemory_4.5.36        bigmemory.sri_0.1.3     Rtsne_0.15             
-  [4] colorspace_2.0-0        ellipsis_0.3.1          class_7.3-17           
-  [7] modeltools_0.2-23       rprojroot_2.0.2         fs_1.5.0               
- [10] clue_0.3-58             rstudioapi_0.13         farver_2.1.0           
- [13] RSpectra_0.16-0         fansi_0.4.2             codetools_0.2-16       
- [16] splines_4.0.3           knitr_1.31              longitudinalData_2.4.1 
- [19] jsonlite_1.7.2          nloptr_1.2.2.2          shiny_1.6.0            
- [22] compiler_4.0.3          assertthat_0.2.1        Matrix_1.2-18          
- [25] fastmap_1.1.0           cli_2.3.1               later_1.1.0.1          
- [28] htmltools_0.5.1.1       tools_4.0.3             rsvd_1.0.3             
- [31] misc3d_0.9-0            gtable_0.3.0            glue_1.4.2             
- [34] reshape2_1.4.4          Rcpp_1.0.5              jquerylib_0.1.3        
- [37] fracdiff_1.5-1          vctrs_0.3.6             urca_1.3-0             
- [40] clv_0.3-2.2             iterators_1.0.13        crosstalk_1.1.1        
- [43] lmtest_0.9-38           timeDate_3043.102       xfun_0.20              
- [46] ps_1.6.0                mime_0.10               miniUI_0.1.1.1         
- [49] lifecycle_1.0.0         MASS_7.3-53             zoo_1.8-8              
- [52] scales_1.1.1            promises_1.1.1          curl_4.3               
- [55] yaml_2.2.1              quantmod_0.4.18         sass_0.3.1             
- [58] stringi_1.5.3           highr_0.8               tseries_0.10-48        
- [61] foreach_1.5.1           TTR_0.24.2              manipulateWidget_0.10.1
- [64] rlang_0.4.10            pkgconfig_2.0.3         rgl_0.105.22           
- [67] locpol_0.7-0            evaluate_0.14           purrr_0.3.4            
- [70] htmlwidgets_1.5.3       labeling_0.4.2          tidyselect_1.1.0       
- [73] plyr_1.8.6              magrittr_2.0.1          R6_2.5.0               
- [76] generics_0.1.0          DBI_1.1.1               pillar_1.5.1           
- [79] whisker_0.4             withr_2.4.1             xts_0.12.1             
- [82] survival_3.2-7          nnet_7.3-14             tibble_3.0.4           
- [85] crayon_1.4.1            KernSmooth_2.23-17      utf8_1.1.4             
- [88] rmarkdown_2.7           grid_4.0.3              flexclust_1.4-0        
- [91] git2r_0.28.0            forecast_8.13           digest_0.6.27          
- [94] webshot_0.5.2           xtable_1.8-4            httpuv_1.5.4           
- [97] RcppParallel_5.0.3      stats4_4.0.3            munsell_0.5.0          
-[100] bslib_0.2.4             tcltk_4.0.3             quadprog_1.5-8         
-[103] shinyjs_2.0.0          </code></pre>
+ [1] sass_0.3.1        jsonlite_1.7.2    splines_4.0.3     bslib_0.2.4      
+ [5] assertthat_0.2.1  highr_0.8         stats4_4.0.3      yaml_2.2.1       
+ [9] pillar_1.5.1      glue_1.4.2        digest_0.6.27     promises_1.1.1   
+[13] colorspace_2.0-0  htmltools_0.5.1.1 httpuv_1.5.4      Matrix_1.2-18    
+[17] pkgconfig_2.0.3   purrr_0.3.4       scales_1.1.1      whisker_0.4      
+[21] later_1.1.0.1     Rtsne_0.15        git2r_0.28.0      tibble_3.0.4     
+[25] generics_0.1.0    farver_2.1.0      ellipsis_0.3.1    withr_2.4.1      
+[29] cli_2.3.1         survival_3.2-7    magrittr_2.0.1    crayon_1.4.1     
+[33] evaluate_0.14     ps_1.6.0          fs_1.5.0          fansi_0.4.2      
+[37] MASS_7.3-53       tools_4.0.3       lifecycle_1.0.0   munsell_0.5.0    
+[41] cluster_2.1.0     compiler_4.0.3    jquerylib_0.1.3   rsvd_1.0.3       
+[45] rlang_0.4.10      grid_4.0.3        rstudioapi_0.13   htmlwidgets_1.5.3
+[49] labeling_0.4.2    rmarkdown_2.7     gtable_0.3.0      DBI_1.1.1        
+[53] R6_2.5.0          knitr_1.31        utf8_1.1.4        rprojroot_2.0.2  
+[57] stringi_1.5.3     Rcpp_1.0.5        vctrs_0.3.6       tidyselect_1.1.0 
+[61] xfun_0.20        </code></pre>
 </div>
 </div>
 
