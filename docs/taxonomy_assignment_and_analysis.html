@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="KiseokUchicago" />
+
+<meta name="date" content="2021-03-16" />
+
+<title>taxonomy_assignment_and_analysis</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">BH_Diel</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/KiseokUchicago/BH_Diel">
+    <span class="fas fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">taxonomy_assignment_and_analysis</h1>
+<h4 class="author">KiseokUchicago</h4>
+<h4 class="date">2021-03-16</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-03-16
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>BH_Diel/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20210222code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20210222)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20210222code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20210222)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree8ec4285935d79c1fe9e7e12cc4350ec174480e6ctargetblank8ec4285a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/8ec4285935d79c1fe9e7e12cc4350ec174480e6c" target="_blank">8ec4285</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree8ec4285935d79c1fe9e7e12cc4350ec174480e6ctargetblank8ec4285a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/8ec4285935d79c1fe9e7e12cc4350ec174480e6c" target="_blank">8ec4285</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  01_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T1-BDCL_filtered_PSMs.tsv
+    Untracked:  01_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T1-BDCL_filtered_PSMs.xlsx
+    Untracked:  02_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T1-DCL_filtered_PSMs.tsv
+    Untracked:  02_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T1-DCL_filtered_PSMs.xlsx
+    Untracked:  03_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T1-SRF_filtered_PSMs.tsv
+    Untracked:  03_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T1-SRF_filtered_PSMs.xlsx
+    Untracked:  04_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T2-BDCL_filtered_PSMs.tsv
+    Untracked:  04_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T2-BDCL_filtered_PSMs.xlsx
+    Untracked:  05_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T2-DCL_filtered_PSMs.tsv
+    Untracked:  05_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T2-DCL_filtered_PSMs.xlsx
+    Untracked:  06_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T2-SRF_filtered_PSMs.tsv
+    Untracked:  06_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T2-SRF_filtered_PSMs.xlsx
+    Untracked:  07_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T3-BDCL_filtered_PSMs.tsv
+    Untracked:  07_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T3-BDCL_filtered_PSMs.xlsx
+    Untracked:  08_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T3-DCL_filtered_PSMs.tsv
+    Untracked:  08_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T3-DCL_filtered_PSMs.xlsx
+    Untracked:  09_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T3-SRF_filtered_PSMs.tsv
+    Untracked:  09_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T3-SRF_filtered_PSMs.xlsx
+    Untracked:  10_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T4-BDCL_filtered_PSMs.tsv
+    Untracked:  10_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T4-BDCL_filtered_PSMs.xlsx
+    Untracked:  11_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T4-DCL_filtered_PSMs.tsv
+    Untracked:  11_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T4-DCL_filtered_PSMs.xlsx
+    Untracked:  12_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T4-SRF_filtered_PSMs.tsv
+    Untracked:  12_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T4-SRF_filtered_PSMs.xlsx
+    Untracked:  13_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T5-BDCL_filtered_PSMs.tsv
+    Untracked:  13_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T5-BDCL_filtered_PSMs.xlsx
+    Untracked:  14_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T5-DCL_filtered_PSMs.tsv
+    Untracked:  14_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T5-DCL_filtered_PSMs.xlsx
+    Untracked:  15_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T5-SRF_filtered_PSMs.tsv
+    Untracked:  15_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T5-SRF_filtered_PSMs.xlsx
+    Untracked:  16_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T6-BDCL_filtered_PSMs.tsv
+    Untracked:  16_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T6-BDCL_filtered_PSMs.xlsx
+    Untracked:  17_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T6-DCL_filtered_PSMs.tsv
+    Untracked:  17_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T6-DCL_filtered_PSMs.xlsx
+    Untracked:  18_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T6-SRF_filtered_PSMs.tsv
+    Untracked:  18_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T6-SRF_filtered_PSMs.xlsx
+    Untracked:  19_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T7-DCL_filtered_PSMs.tsv
+    Untracked:  19_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T7-DCL_filtered_PSMs.xlsx
+    Untracked:  20_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T7-SRF_filtered_PSMs.tsv
+    Untracked:  20_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T7-SRF_filtered_PSMs.xlsx
+    Untracked:  21_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T8-BDCL_filtered_PSMs.tsv
+    Untracked:  21_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T8-BDCL_filtered_PSMs.xlsx
+    Untracked:  22_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T8-DCL_filtered_PSMs.tsv
+    Untracked:  22_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T8-DCL_filtered_PSMs.xlsx
+    Untracked:  23_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T8-SRF_filtered_PSMs.tsv
+    Untracked:  23_IPTL-CyanoSUMI-MI41M-18OMix-16O-A-T8-SRF_filtered_PSMs.xlsx
+    Untracked:  24_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T1-BDCL_filtered_PSMs.tsv
+    Untracked:  24_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T1-BDCL_filtered_PSMs.xlsx
+    Untracked:  25_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T1-DCL_filtered_PSMs.tsv
+    Untracked:  25_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T1-DCL_filtered_PSMs.xlsx
+    Untracked:  26_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T1-SRF_filtered_PSMs.tsv
+    Untracked:  26_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T1-SRF_filtered_PSMs.xlsx
+    Untracked:  27_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T2-BDCL_filtered_PSMs.tsv
+    Untracked:  27_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T2-BDCL_filtered_PSMs.xlsx
+    Untracked:  28_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T2-DCL_filtered_PSMs.tsv
+    Untracked:  28_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T2-DCL_filtered_PSMs.xlsx
+    Untracked:  29_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T2-SRF_filtered_PSMs.tsv
+    Untracked:  29_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T2-SRF_filtered_PSMs.xlsx
+    Untracked:  30_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T3-BDCL_filtered_PSMs.tsv
+    Untracked:  30_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T3-BDCL_filtered_PSMs.xlsx
+    Untracked:  31_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T3-DCL_filtered_PSMs.tsv
+    Untracked:  31_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T3-DCL_filtered_PSMs.xlsx
+    Untracked:  32_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T3-SRF_filtered_PSMs.tsv
+    Untracked:  32_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T3-SRF_filtered_PSMs.xlsx
+    Untracked:  33_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T4-BDCL_filtered_PSMs.tsv
+    Untracked:  33_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T4-BDCL_filtered_PSMs.xlsx
+    Untracked:  34_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T4-DCL_filtered_PSMs.tsv
+    Untracked:  34_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T4-DCL_filtered_PSMs.xlsx
+    Untracked:  35_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T4-SRF_filtered_PSMs.tsv
+    Untracked:  35_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T4-SRF_filtered_PSMs.xlsx
+    Untracked:  36_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T5-BDCL_filtered_PSMs.tsv
+    Untracked:  36_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T5-BDCL_filtered_PSMs.xlsx
+    Untracked:  37_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T5-DCL_filtered_PSMs.tsv
+    Untracked:  37_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T5-DCL_filtered_PSMs.xlsx
+    Untracked:  38_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T5-SRF_filtered_PSMs.tsv
+    Untracked:  38_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T5-SRF_filtered_PSMs.xlsx
+    Untracked:  39_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T6-BDCL_filtered_PSMs.tsv
+    Untracked:  39_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T6-BDCL_filtered_PSMs.xlsx
+    Untracked:  40_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T6-DCL_filtered_PSMs.tsv
+    Untracked:  40_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T6-DCL_filtered_PSMs.xlsx
+    Untracked:  41_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T6-SRF_filtered_PSMs.tsv
+    Untracked:  41_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T6-SRF_filtered_PSMs.xlsx
+    Untracked:  42_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T7-BDCL_filtered_PSMs.tsv
+    Untracked:  42_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T7-BDCL_filtered_PSMs.xlsx
+    Untracked:  43_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T7-DCL_filtered_PSMs.tsv
+    Untracked:  43_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T7-DCL_filtered_PSMs.xlsx
+    Untracked:  44_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T7-SRF_filtered_PSMs.tsv
+    Untracked:  44_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T7-SRF_filtered_PSMs.xlsx
+    Untracked:  45_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T8-BDCL_filtered_PSMs.tsv
+    Untracked:  45_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T8-BDCL_filtered_PSMs.xlsx
+    Untracked:  46_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T8-DCL_filtered_PSMs.tsv
+    Untracked:  46_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T8-DCL_filtered_PSMs.xlsx
+    Untracked:  47_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T8-SRF_filtered_PSMs.tsv
+    Untracked:  47_IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T8-SRF_filtered_PSMs.xlsx
+    Untracked:  48_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T1-BDCL_filtered_PSMs.tsv
+    Untracked:  48_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T1-BDCL_filtered_PSMs.xlsx
+    Untracked:  49_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T1-DCL_filtered_PSMs.tsv
+    Untracked:  49_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T1-DCL_filtered_PSMs.xlsx
+    Untracked:  50_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T1-SRF_filtered_PSMs.tsv
+    Untracked:  50_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T1-SRF_filtered_PSMs.xlsx
+    Untracked:  51_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T3-BDCL_filtered_PSMs.tsv
+    Untracked:  51_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T3-BDCL_filtered_PSMs.xlsx
+    Untracked:  52_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T3-DCL_filtered_PSMs.tsv
+    Untracked:  52_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T3-DCL_filtered_PSMs.xlsx
+    Untracked:  53_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T3-SRF_filtered_PSMs.tsv
+    Untracked:  53_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T3-SRF_filtered_PSMs.xlsx
+    Untracked:  54_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T4-BDCL_filtered_PSMs.tsv
+    Untracked:  54_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T4-BDCL_filtered_PSMs.xlsx
+    Untracked:  55_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T4-DCL_filtered_PSMs.tsv
+    Untracked:  55_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T4-DCL_filtered_PSMs.xlsx
+    Untracked:  56_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T4-SRF_filtered_PSMs.tsv
+    Untracked:  56_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T4-SRF_filtered_PSMs.xlsx
+    Untracked:  57_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T5-BDCL_filtered_PSMs.tsv
+    Untracked:  57_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T5-BDCL_filtered_PSMs.xlsx
+    Untracked:  58_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T5-DCL_filtered_PSMs.tsv
+    Untracked:  58_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T5-DCL_filtered_PSMs.xlsx
+    Untracked:  59_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T5-SRF_filtered_PSMs.tsv
+    Untracked:  59_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T5-SRF_filtered_PSMs.xlsx
+    Untracked:  60_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T6-BDCL_filtered_PSMs.tsv
+    Untracked:  60_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T6-BDCL_filtered_PSMs.xlsx
+    Untracked:  61_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T6-DCL_filtered_PSMs.tsv
+    Untracked:  61_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T6-DCL_filtered_PSMs.xlsx
+    Untracked:  62_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T6-SRF_filtered_PSMs.tsv
+    Untracked:  62_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T6-SRF_filtered_PSMs.xlsx
+    Untracked:  63_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T7-BDCL_filtered_PSMs.tsv
+    Untracked:  63_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T7-BDCL_filtered_PSMs.xlsx
+    Untracked:  64_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T7-DCL_filtered_PSMs.tsv
+    Untracked:  64_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T7-DCL_filtered_PSMs.xlsx
+    Untracked:  65_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T8-BDCL_filtered_PSMs.tsv
+    Untracked:  65_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T8-BDCL_filtered_PSMs.xlsx
+    Untracked:  66_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T8-DCL_filtered_PSMs.tsv
+    Untracked:  66_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T8-DCL_filtered_PSMs.xlsx
+    Untracked:  67_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T8-SRF_filtered_PSMs.tsv
+    Untracked:  67_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T8-SRF_filtered_PSMs.xlsx
+    Untracked:  Hist_freq_of_peptide_id.pdf
+    Untracked:  Hist_intensity_replicate_centered.pdf
+    Untracked:  Hist_intensity_replicate_not_centered.pdf
+    Untracked:  Hist_intensity_spec_level_centered.pdf
+    Untracked:  Hist_intensity_spec_level_not_centered.pdf
+    Untracked:  Hist_number of timepoints_peptide_appears.pdf
+    Untracked:  P1_number_unique_peptide_per_sample.pdf
+    Untracked:  P2_number_of_cumulative_unique_peptides.pdf
+    Untracked:  Peptide_id.tsv
+    Untracked:  Replicate_ABC50_combined.tsv
+    Untracked:  Replicate_ABC50_combined.xlsx
+    Untracked:  Replicate_ABC63_combined.tsv
+    Untracked:  Replicate_ABC63_combined.xlsx
+    Untracked:  Replicate_ABC67_combined.tsv
+    Untracked:  Replicate_ABC67_combined.xlsx
+    Untracked:  Replicate_BC_combined.tsv
+    Untracked:  Replicate_BC_combined.xlsx
+    Untracked:  Replicate_B_combined.tsv
+    Untracked:  Replicate_B_combined.xlsx
+    Untracked:  Taxonomy_genus.pdf
+    Untracked:  Taxonomy_order.pdf
+    Untracked:  Taxonomy_phylum.pdf
+    Untracked:  Taxonomy_species.pdf
+    Untracked:  Taxonomy_strain.pdf
+    Untracked:  Taxonoy_family.pdf
+    Untracked:  Time_series_intesity_all.pdf
+    Untracked:  data/Final_pep_seq_ORF_rankedlineage.tsv
+    Untracked:  data/Time_metadata.txt
+    Untracked:  data/counts_example.csv
+    Untracked:  data/diel-Feb21/
+    Untracked:  data/diel-Feb25/
+    Untracked:  data/diel-Feb26/
+    Untracked:  data/diel-Mar2/
+    Untracked:  data/synthetic_control.data.txt
+    Untracked:  hclust_DTW_average_wide.pdf
+    Untracked:  hclust_DTW_average_wide_after_normalization.pdf
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/taxonomy_assignment_and_analysis.Rmd</code>) and HTML (<code>docs/taxonomy_assignment_and_analysis.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KiseokUchicago/BH_Diel/blob/8ec4285935d79c1fe9e7e12cc4350ec174480e6c/analysis/taxonomy_assignment_and_analysis.Rmd" target="_blank">8ec4285</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-16
+</td>
+<td>
+taxonomy
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="taxonomy-assignment-to-peptides-and-taxonomy-profiling-analysis" class="section level3">
+<h3>Taxonomy assignment to peptides and taxonomy profiling analysis</h3>
+<pre class="r"><code># libraries
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(ggplot2)
+library(formattable)</code></pre>
+</div>
+<div id="get-the-rhythmicperiodic-peptide_ids-from-the-rain-analysis-from-previous-script-of-peptide_level_visualization.rmd" class="section level3">
+<h3>0. Get the rhythmic(periodic) peptide_ids from the rain analysis (from previous script of “peptide_level_visualization.Rmd”)</h3>
+<pre class="r"><code># read in combined table of 24 samples (Replicate B)
+df_pep &lt;- read.table(&quot;Replicate_ABC67_combined.tsv&quot;,sep=&#39;\t&#39;,header = T)
+# Let&#39;s try to plot all of them at once
+df_all &lt;- df_pep %&gt;% select(Peptide_id, SampleID, Time, Depth) %&gt;% unique() %&gt;% arrange(Peptide_id)
+# How many time points did it appear
+(df_all2 &lt;- df_all %&gt;% group_by(Peptide_id, Depth) %&gt;% summarize(Timepoints = n_distinct(Time)) %&gt;% ungroup())</code></pre>
+<pre><code># A tibble: 6,104 x 3
+   Peptide_id Depth Timepoints
+   &lt;chr&gt;      &lt;chr&gt;      &lt;int&gt;
+ 1 Pep_1      BDCL           8
+ 2 Pep_1      DCL            8
+ 3 Pep_1      SRF            8
+ 4 Pep_10     BDCL           8
+ 5 Pep_10     DCL            8
+ 6 Pep_10     SRF            8
+ 7 Pep_100    BDCL           8
+ 8 Pep_100    DCL            8
+ 9 Pep_100    SRF            8
+10 Pep_1000   BDCL           1
+# ... with 6,094 more rows</code></pre>
+<pre class="r"><code>df_all2$Depth &lt;- factor(df_all2$Depth, levels = c(&#39;SRF&#39;,&#39;DCL&#39;,&#39;BDCL&#39;))
+# (1) Get list of peptides that are present in 7 or 8 timepoints
+df_all2_filt &lt;- df_all2 %&gt;% filter(Timepoints &gt; 6) %&gt;% unique() 
+# (2) Let&#39;s average the abundance_ratio for each unique peptide
+df_int &lt;- df_pep %&gt;% select(Peptide_id, Spec_id, cent.log2.16O.18O.Ratio, SampleID, Time, Depth, Replicate) %&gt;%
+  unique() %&gt;% arrange(Peptide_id)
+# first average the spectrum_id per sample 
+# important to make sure to take the mean of the log raio (instead of taking log2 after averaging the original value(2^x))
+df_ave &lt;- df_int %&gt;% group_by(SampleID, Time, Depth, Replicate, Peptide_id) %&gt;%
+  summarize(Mean_abundance_ratio=mean(cent.log2.16O.18O.Ratio),
+            SD_pep=sd(cent.log2.16O.18O.Ratio)) %&gt;% ungroup()
+# Now, average and error by replicate
+# SE calculated with Jake Waldbauer&#39;s method: sqrt(se(Mean_abundance_ratio)^2 +(mean(SD_pep))^2))
+# standard error
+se &lt;- function(x) sd(x)/sqrt(length(x))
+df_ave_rep &lt;- df_ave %&gt;% group_by(Time, Depth, Peptide_id) %&gt;%
+  summarize(Ave_abundance_ratio=mean(Mean_abundance_ratio),
+            SE_abundance_ratio=sqrt((se(Mean_abundance_ratio))^2 +(mean(SD_pep))^2)) %&gt;% ungroup()
+# why is there no sd for Pep_1004?
+df_ave %&gt;% group_by(SampleID) %&gt;% filter(Peptide_id==&#39;Pep_1003&#39;) # there is only 1 sample for T1 BDCL </code></pre>
+<pre><code># A tibble: 10 x 7
+# Groups:   SampleID [10]
+   SampleID  Time  Depth Replicate Peptide_id Mean_abundance_ratio   SD_pep
+   &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;                     &lt;dbl&gt;    &lt;dbl&gt;
+ 1 BDCL_T1_B T1    BDCL  B         Pep_1003                 0.0789 NA      
+ 2 BDCL_T7_B T7    BDCL  B         Pep_1003                -0.0795 NA      
+ 3 DCL_T3_A  T3    DCL   A         Pep_1003                 0.248  NA      
+ 4 SRF_T1_A  T1    SRF   A         Pep_1003                 0.293   0.125  
+ 5 SRF_T1_B  T1    SRF   B         Pep_1003                -0.102  NA      
+ 6 SRF_T2_A  T2    SRF   A         Pep_1003                 0.308  NA      
+ 7 SRF_T3_A  T3    SRF   A         Pep_1003                 0.288   0.00194
+ 8 SRF_T3_B  T3    SRF   B         Pep_1003                 0.0473  0.138  
+ 9 SRF_T4_A  T4    SRF   A         Pep_1003                 0.205   0.0673 
+10 SRF_T4_B  T4    SRF   B         Pep_1003                 0.0444  0.196  </code></pre>
+<pre class="r"><code>df_ave_rep2 &lt;- df_ave_rep %&gt;% mutate(error_up=Ave_abundance_ratio+SE_abundance_ratio) %&gt;%
+  mutate(error_down=Ave_abundance_ratio-SE_abundance_ratio)
+# (3) import time metadata and merge
+(df_time &lt;- read.table(&#39;data/Time_metadata.txt&#39;, header=T, sep=&#39;\t&#39;))</code></pre>
+<pre><code>  timepoint          date_time elapsed_hours
+1        T1 6/26/2019 12:45:00             0
+2        T2 6/26/2019 15:45:00             3
+3        T3 6/26/2019 18:45:00             6
+4        T4 6/26/2019 21:45:00             9
+5        T5  6/27/2019 4:40:00            15
+6        T6  6/27/2019 7:45:00            19
+7        T7 6/27/2019 10:45:00            22
+8        T8 6/27/2019 13:45:00            25</code></pre>
+<pre class="r"><code>df_time$date_time &lt;- str_replace(df_time$date_time, &quot;/2019&quot;,&quot; &quot;)
+df_time$date_time &lt;- str_replace(df_time$date_time, &quot;:00$&quot;,&quot;&quot;)
+# left_join with average data
+df_ave2 &lt;- df_ave_rep2 %&gt;% left_join(df_time, by=c(&#39;Time&#39;=&#39;timepoint&#39;))
+head(df_ave2)</code></pre>
+<pre><code># A tibble: 6 x 9
+  Time  Depth Peptide_id Ave_abundance_rat~ SE_abundance_ra~ error_up error_down
+  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;                   &lt;dbl&gt;            &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;
+1 T1    BDCL  Pep_1                  0.0796            0.330   0.410     -0.251 
+2 T1    BDCL  Pep_10                -0.185             0.270   0.0858    -0.455 
+3 T1    BDCL  Pep_100                0.214             0.149   0.363      0.0658
+4 T1    BDCL  Pep_1003               0.0789           NA      NA         NA     
+5 T1    BDCL  Pep_1007               0.244            NA      NA         NA     
+6 T1    BDCL  Pep_1008              -0.340            NA      NA         NA     
+# ... with 2 more variables: date_time &lt;chr&gt;, elapsed_hours &lt;int&gt;</code></pre>
+<pre class="r"><code># only use peptides that appear 7 or 8 times
+df_ave2 %&gt;% select(Peptide_id) %&gt;% unique() %&gt;% dim() # 3233 peptides before</code></pre>
+<pre><code>[1] 3366    1</code></pre>
+<pre class="r"><code>df_filt78 &lt;- inner_join(df_ave2, df_all2_filt, by=c(&#39;Peptide_id&#39;=&#39;Peptide_id&#39;,&#39;Depth&#39;=&#39;Depth&#39;))
+df_filt78$Depth &lt;- factor(df_filt78$Depth, levels = c(&#39;SRF&#39;,&#39;DCL&#39;,&#39;BDCL&#39;))
+
+# get only 8 ones
+df_filt8 &lt;- df_filt78 %&gt;% filter(Timepoints &gt; 7)
+df_filt8 %&gt;% select(Peptide_id) %&gt;% unique() %&gt;% dim() # 661 peptides for peptides in all 8 timepoints</code></pre>
+<pre><code>[1] 661   1</code></pre>
+<pre class="r"><code>df_filt8$Depth &lt;- factor(df_filt8$Depth, levels = c(&#39;SRF&#39;,&#39;DCL&#39;,&#39;BDCL&#39;))
+# rain analysis function
+rain_analysis &lt;- function(df_filt8,depth=&quot;SRF&quot;){
+  # setting our data into input format
+  df_8 &lt;- df_filt8 %&gt;% filter(Depth==depth) %&gt;% select(Peptide_id,Time,Ave_abundance_ratio)
+  # reshape the dataframe with timepoints
+  library(maditr)
+  v_names &lt;- c(&quot;T1&quot;,&quot;T2&quot;,&quot;T3&quot;,&quot;T4&quot;,&quot;T5&quot;,&quot;T6&quot;,&quot;T7&quot;,&quot;T8&quot;)
+  df_8$Time &lt;- factor(df_8$Time, levels=v_names)
+  dc_8 &lt;- dcast(df_8, Peptide_id ~ Time, value.var = &quot;Ave_abundance_ratio&quot;)
+  # make Peptide_id more simpler (Pep_1 -&gt; 1)
+  dc_8$Peptide_id &lt;- str_replace(dc_8$Peptide_id,&quot;Pep_&quot;,&quot;P.&quot;)
+  # make first column into row name
+  dc_8 &lt;- tibble::column_to_rownames(dc_8, var=&quot;Peptide_id&quot;)
+  t &lt;- c(1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,1,0,0,1) # adjusted for irregular repeats
+  # RAIN analysis
+  library(rain)
+  rainresult &lt;- rain(t(dc_8), period=8, measure.sequence=t, deltat=1, method=&#39;independent&#39;)
+  return(rainresult)
+}
+
+rain_SRF8 &lt;- rain_analysis(df_filt8,depth=&quot;SRF&quot;) %&gt;% mutate(Depth=&quot;SRF&quot;) %&gt;% tibble::rownames_to_column(var = &quot;Peptide_id&quot;)
+rain_DCL8 &lt;- rain_analysis(df_filt8,depth=&quot;DCL&quot;) %&gt;% mutate(Depth=&quot;DCL&quot;) %&gt;% tibble::rownames_to_column(var = &quot;Peptide_id&quot;)
+rain_BDCL8 &lt;- rain_analysis(df_filt8,depth=&quot;BDCL&quot;) %&gt;% mutate(Depth=&quot;BDCL&quot;) %&gt;% tibble::rownames_to_column(var = &quot;Peptide_id&quot;)
+dim(rain_SRF8)</code></pre>
+<pre><code>[1] 532   6</code></pre>
+<pre class="r"><code>dim(rain_DCL8)</code></pre>
+<pre><code>[1] 426   6</code></pre>
+<pre class="r"><code>dim(rain_BDCL8)</code></pre>
+<pre><code>[1] 392   6</code></pre>
+<pre class="r"><code>rain_8 &lt;- rbind(rain_SRF8, rain_DCL8) %&gt;% rbind(rain_BDCL8)
+dim(rain_8)</code></pre>
+<pre><code>[1] 1350    6</code></pre>
+<pre class="r"><code>tail(rain_8)</code></pre>
+<pre><code>     Peptide_id      pVal phase peak.shape period Depth
+1345       P.94 0.5550883     2          6      8  BDCL
+1346       P.95 0.3677419     8          3      8  BDCL
+1347       P.96 0.9813643     5          4      8  BDCL
+1348       P.97 0.8602151     3          5      8  BDCL
+1349       P.98 0.8762820     2          6      8  BDCL
+1350       P.99 0.6112296     7          3      8  BDCL</code></pre>
+<pre class="r"><code>rain_sig &lt;- rain_8 %&gt;% filter(pVal &lt;= 0.25)
+
+color_vec &lt;- c(&#39;#fc8d62&#39;,&#39;#66c2a5&#39;,&#39;#8da0cb&#39;)
+depth_vec &lt;- c(&#39;SRF&#39;,&#39;DCL&#39;,&#39;BDCL&#39;)
+
+rain_sig$Depth &lt;- factor(rain_sig$Depth, levels=depth_vec)
+rain_sig$Peptide_id &lt;- str_replace(rain_sig$Peptide_id,&quot;P.&quot;,&quot;Pep_&quot;)</code></pre>
+</div>
+<div id="input-the-taxonomy-data-created-from-linux" class="section level3">
+<h3>1. Input the taxonomy data (created from linux)</h3>
+<p>Get Final_pep_seq_ORF_rankedlineage.tsv from 05_taxonomy (at /project2/mlcoleman/project/diel_proteomics_kiseok/20210302_diel_proteomics_replicateABC_67samples)<br />
+This is a tab-delimited dataframe. Peptide_id Peptide_sequence Strain Species Genus Family Order Class Phylum Phylum Kingdom</p>
+<p>The blanks are denoted as “NULL”</p>
+<pre class="r"><code># read in the dataframe and change &quot;NULL&quot; to NA
+df_peptax &lt;- read.table(&quot;data/Final_pep_seq_ORF_rankedlineage.tsv&quot;,sep=&#39;\t&#39;,header = F,na.strings=c(&quot;NULL&quot;,&quot;NA&quot;))
+
+colnames(df_peptax) &lt;- c(&quot;Peptide_id&quot;,&quot;Peptide_sequence&quot;,&quot;ORF&quot;,&quot;Strain&quot;,&quot;Species&quot;,&quot;Genus&quot;,&quot;Family&quot;,&quot;Order&quot;,&quot;Class&quot;,&quot;Phylum&quot;,&quot;Kingdom&quot;,&quot;Domain&quot;)
+
+df_peptax %&gt;% select(Kingdom) %&gt;% unique()</code></pre>
+<pre><code>           Kingdom
+1             &lt;NA&gt;
+1088 Viridiplantae
+1090       Metazoa
+1104         Fungi
+2542  Bamfordvirae</code></pre>
+<pre class="r"><code>df_peptax %&gt;% select(Domain) %&gt;% unique()</code></pre>
+<pre><code>         Domain
+1          &lt;NA&gt;
+3      Bacteria
+1080  Eukaryota
+1727    Viruses
+10606   Archaea</code></pre>
+<pre class="r"><code># Are there NAs in the dataframe?
+head(df_peptax)</code></pre>
+<pre><code>  Peptide_id Peptide_sequence                         ORF
+1      Pep_1  AELIDAMAAGSGLSK                        &lt;NA&gt;
+2     Pep_10 TGLIDAAEFNNPSSDR                        &lt;NA&gt;
+3    Pep_100 LLDQGQAGDNVGVLLR c_000000000300_MC10_S8_M_23
+4    Pep_100 LLDQGQAGDNVGVLLR c_000000003617_MC13_S11_M_4
+5    Pep_100 LLDQGQAGDNVGVLLR   c_000000009874_MC5_S3_M_1
+6    Pep_100 LLDQGQAGDNVGVLLR c_000000015228_MC13_S11_M_2
+                                Strain Species                     Genus
+1                                 &lt;NA&gt;    &lt;NA&gt;                      &lt;NA&gt;
+2                                 &lt;NA&gt;    &lt;NA&gt;                      &lt;NA&gt;
+3 Candidatus Methylopumilus turicensis    &lt;NA&gt; Candidatus Methylopumilus
+4    Quisquiliibacterium sp. CC-CFT501    &lt;NA&gt;       Quisquiliibacterium
+5          Herbaspirillum sp. K2R10-39    &lt;NA&gt;            Herbaspirillum
+6          Herbaspirillum sp. K2R10-39    &lt;NA&gt;            Herbaspirillum
+            Family            Order              Class         Phylum Kingdom
+1             &lt;NA&gt;             &lt;NA&gt;               &lt;NA&gt;           &lt;NA&gt;    &lt;NA&gt;
+2             &lt;NA&gt;             &lt;NA&gt;               &lt;NA&gt;           &lt;NA&gt;    &lt;NA&gt;
+3 Methylophilaceae Nitrosomonadales Betaproteobacteria Proteobacteria    &lt;NA&gt;
+4 Burkholderiaceae  Burkholderiales Betaproteobacteria Proteobacteria    &lt;NA&gt;
+5 Oxalobacteraceae  Burkholderiales Betaproteobacteria Proteobacteria    &lt;NA&gt;
+6 Oxalobacteraceae  Burkholderiales Betaproteobacteria Proteobacteria    &lt;NA&gt;
+    Domain
+1     &lt;NA&gt;
+2     &lt;NA&gt;
+3 Bacteria
+4 Bacteria
+5 Bacteria
+6 Bacteria</code></pre>
+<pre class="r"><code>dim(df_peptax)</code></pre>
+<pre><code>[1] 33400    12</code></pre>
+<pre class="r"><code>any(is.na(df_peptax))</code></pre>
+<pre><code>[1] TRUE</code></pre>
+<pre class="r"><code># first test with the Surface periodic peptides
+rhythm_SRF &lt;- rain_sig %&gt;% filter(Depth==&quot;SRF&quot;) %&gt;% select(Peptide_id)
+rhy_tax_SRF &lt;- rhythm_SRF %&gt;% left_join(df_peptax, by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))
+
+rhy_tax_SRF %&gt;% select(Peptide_id) %&gt;% unique() %&gt;% dim() # 69 peptides</code></pre>
+<pre><code>[1] 69  1</code></pre>
+<pre class="r"><code># See the distribution of number of matched ORFs
+rhy_t &lt;- rhy_tax_SRF %&gt;% group_by(Peptide_id) %&gt;% summarize(freq = n())
+
+ggplot(rhy_t, aes(freq)) + geom_bar() +
+  ylab(&quot;Frequency \n&quot;) +
+  xlab(&quot;\n Number of matched ORFs per peptide&quot;) +
+  # scale_x_continuous(breaks=seq(1,8,1))+
+  ggtitle(&quot;Histogram of matched ORFs per peptide (Surface) \n&quot;)+
+  ## adjust positions
+  theme(plot.title = element_text(size = 20,hjust = 0.5, family=&quot;serif&quot;)) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
+  theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family=&quot;serif&quot;))+
+  theme(axis.text.y = element_text(size=10))</code></pre>
+<p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-3-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>rhy_tax_SRF %&gt;% left_join(rhy_t, by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;)) %&gt;% filter(freq==1)</code></pre>
+<pre><code>   Peptide_id     Peptide_sequence  ORF Strain Species Genus Family Order Class
+1     Pep_102       AYSTGPDVEALIGK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+2     Pep_113      DVVAVMDSLTQEIQK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+3     Pep_114         AVIALLDIFADK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+4     Pep_117         TAVAIDAIINQK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+5     Pep_123       IIETSVVPSGPQLK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+6     Pep_130   GQADIGLLGSTAGTQLNR &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+7     Pep_149            GVELAIDDK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+8     Pep_162         SYTIGDPFGPSK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+9     Pep_174       VNLLSQTTAEAIQK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+10    Pep_190         AVIALLNIFDDR &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+11    Pep_192    GAVLSGNMVVSPVIDGR &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+12    Pep_215          GEVVNISGFAK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+13    Pep_229           GNYDNILDAK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+14    Pep_256     TVVIPASESVVGTELK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+15    Pep_265   GQADIGLLGATAGTQLNR &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+16    Pep_271     GTIDAAEWVGPYDDQK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+17     Pep_28          GVVIVSVDGGR &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+18    Pep_284        TTLTAAITTILSK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+19     Pep_29    ITAAGVIQFSPANTSPK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+20    Pep_290          AVLEPILAAGK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+21    Pep_300         DILIEQVQTAPR &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+22    Pep_304     ITAAGVVQFSPANTSK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+23    Pep_316          EIANQTGLSQK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+24     Pep_33          AIDATLAAITK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+25    Pep_345         AIIALLDIFNDK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+26    Pep_364  IILNQNDGMVVALDAMTGK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+27    Pep_411   GGNAPDLAWIPQPGLLAK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+28    Pep_416 GNYTNQAYSQLTQINQGNVK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+29    Pep_444            LSGGVAVIR &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+30    Pep_446        DIVDTAVGAGNFR &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+31    Pep_464      FGAPTITNDGVTVAK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+32    Pep_482             GLFGDLIK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+33     Pep_49       AYSTGSDAEALIGK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+34    Pep_538           FEAGYIAGAK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+35    Pep_593        VGGPIEADLNNYR &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+36    Pep_596   LAVGYAGIGIHGTPVGNR &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+37    Pep_597    AIISNAVEAASADMSWK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+38    Pep_679        TTEIGIEGFDPTK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+39     Pep_68        AGGLVMISPSATR &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+40    Pep_725         LDLPAGVDVEIK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+41    Pep_848        VYEVLSAPGGIER &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+42    Pep_851     DSDGGYIQATYVLPTK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+43     Pep_87          SIVALIASINK &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;
+   Phylum Kingdom Domain freq
+1    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+2    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+3    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+4    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+5    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+6    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+7    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+8    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+9    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+10   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+11   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+12   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+13   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+14   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+15   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+16   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+17   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+18   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+19   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+20   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+21   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+22   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+23   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+24   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+25   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+26   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+27   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+28   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+29   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+30   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+31   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+32   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+33   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+34   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+35   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+36   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+37   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+38   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+39   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+40   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+41   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+42   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1
+43   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;    1</code></pre>
+<pre class="r"><code>rhy_tax_SRF %&gt;% left_join(rhy_t, by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;)) %&gt;% filter(freq==1) %&gt;% dim()</code></pre>
+<pre><code>[1] 43 13</code></pre>
+<pre class="r"><code>rhy_tax_SRF1 &lt;- rhy_tax_SRF %&gt;% left_join(rhy_t, by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
+<p>43 out of 69 peptides have no matches to the ORF.<br />
+Let’s work with only the peptides that have ORF matches</p>
+</div>
+<div id="lowest-common-ancester-method-assignment" class="section level3">
+<h3>1. Lowest common ancester method assignment</h3>
+<pre class="r"><code># Working only with the peptides that have ORF matches
+rhy_tax_SRF2 &lt;- rhy_tax_SRF1 %&gt;% filter(!is.na(ORF))
+rhy_tax_SRF2 %&gt;% select(freq) %&gt;% unique() %&gt;% arrange(freq)</code></pre>
+<pre><code>   freq
+1     2
+2     3
+3     5
+4     6
+5     7
+6     8
+7    11
+8    12
+9    15
+10   16
+11   17
+12   18
+13   20
+14   22
+15   23
+16   31
+17   38
+18   89</code></pre>
+<pre class="r"><code># NA in taxonomy?
+rhy_tax_SRF2 %&gt;% filter(is.na(Strain))</code></pre>
+<pre><code>  Peptide_id   Peptide_sequence                         ORF Strain Species
+1    Pep_275          TDLELSGFR   c_000000047553_ON33M_5M_1   &lt;NA&gt;    &lt;NA&gt;
+2    Pep_275          TDLELSGFR  c_000000142972_MC11_S9_M_1   &lt;NA&gt;    &lt;NA&gt;
+3    Pep_275          TDLELSGFR   c_000000770352_MC8_S6_M_1   &lt;NA&gt;    &lt;NA&gt;
+4    Pep_275          TDLELSGFR   c_000000818996_ER78M_2M_1   &lt;NA&gt;    &lt;NA&gt;
+5    Pep_275          TDLELSGFR   c_000001444205_MC6_S4_M_1   &lt;NA&gt;    &lt;NA&gt;
+6    Pep_275          TDLELSGFR   c_000001995163_MC6_S4_M_1   &lt;NA&gt;    &lt;NA&gt;
+7    Pep_317        DTVLLASAMAK c_000001768367_MC14_S12_M_1   &lt;NA&gt;    &lt;NA&gt;
+8    Pep_492 YLGPAGDNSAWGNVAGAK c_000001529362_MC12_S10_M_1   &lt;NA&gt;    &lt;NA&gt;
+  Genus Family Order Class Phylum Kingdom Domain freq
+1  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;   20
+2  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;   20
+3  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;   20
+4  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;   20
+5  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;   20
+6  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;   20
+7  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;   22
+8  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;   17</code></pre>
+<pre class="r"><code># plot the scientific name level histogram
+df.sci &lt;- rhy_tax_SRF2 %&gt;% count(Peptide_id, Strain)
+
+# we need to group by Peptides
+df.sci.rel &lt;- df.sci %&gt;%  
+  group_by(Peptide_id) %&gt;%                               
+  mutate(RelAbundance = n*100/sum(n))  # Transform to rel. abundance
+
+# df.sci.rel[df.sci.rel$RelAbundance &lt; 5,]$Phylum &lt;- &#39;Low abundance&#39;
+
+### let&#39;s test
+ord &lt;- df.sci.rel %&gt;% group_by(Strain) %&gt;% summarise(sumRel = sum(RelAbundance)) %&gt;% arrange(sumRel)
+vec &lt;- ord$Strain
+rev(tail(vec,10))</code></pre>
+<pre><code> [1] &quot;Candidatus Fonsibacter ubiquis&quot;        
+ [2] &quot;Desulfonatronum thiosulfatophilum&quot;     
+ [3] &quot;Limnohabitans sp. Hippo4&quot;              
+ [4] &quot;Candidatus Methylopumilus planktonicus&quot;
+ [5] &quot;Synechococcus sp. SYN20&quot;               
+ [6] &quot;Rhodoferax sp. IMCC26218&quot;              
+ [7] &quot;Candidatus Planktophila versatilis&quot;    
+ [8] &quot;Nakamurella sp. s14-144&quot;               
+ [9] &quot;Ramlibacter sp. WS9&quot;                   
+[10] &quot;Neptunomonas antarctica&quot;               </code></pre>
+<pre class="r"><code>head(vec)</code></pre>
+<pre><code>[1] &quot;Acetobacteraceae&quot;           &quot;Acidiphilium&quot;              
+[3] &quot;Acidiphilium sp. C61&quot;       &quot;Acidisphaera sp. S103&quot;     
+[5] &quot;Asticcacaulis benevestitus&quot; &quot;Blastochloris tepida&quot;      </code></pre>
+<pre class="r"><code>df.sci.rel$Strain &lt;- factor(df.sci.rel$Strain, levels = vec) 
+
+my_color &lt;- c(
+  &quot;black&quot;,&quot;#CBD588&quot;, &quot;#5F7FC7&quot;, &quot;orange&quot;,  
+  &quot;#AD6F3B&quot;, &quot;#673770&quot;,&quot;#D14285&quot;, &quot;#652926&quot;, &quot;#C84248&quot;, 
+  &quot;#8569D5&quot;, &quot;#5E738F&quot;,&quot;#D1A33D&quot;, &quot;#8A7C64&quot;, &quot;#599861&quot;,
+  &quot;#616163&quot;,  &quot;#FFCDB2&quot;, &quot;#242F40&quot;, &quot;#6D9F71&quot;, 
+   &quot;#CCA43B&quot;, &quot;#F92A82&quot;, &quot;#ED7B84&quot;, &quot;#7EB77F&quot;, 
+  &quot;#DEC4A1&quot;, &quot;#E5D1D0&quot;, &#39;#0E8482&#39;, &#39;#C9DAEA&#39;, &#39;#337357&#39;, 
+  &#39;#95C623&#39;, &#39;#E55812&#39;, &#39;#04471C&#39;, &#39;#F2D7EE&#39;, &#39;#D3BCC0&#39;, 
+  &#39;#A5668B&#39;, &#39;#69306D&#39;, &#39;#0E103D&#39;, &#39;#1A535C&#39;, &#39;#4ECDC4&#39;, 
+  &#39;#F7FFF7&#39;, &#39;#FF6B6B&#39;, &#39;#FFE66D&#39;, &#39;#6699CC&#39;, &#39;#FFF275&#39;, 
+  &#39;#FF8C42&#39;, &#39;#FF3C38&#39;, &#39;#A23E48&#39;, &#39;#000000&#39;, &#39;#CF5C36&#39;, 
+  &#39;#EEE5E9&#39;, &#39;#7C7C7C&#39;, &#39;#EFC88B&#39;, &#39;#2E5266&#39;, &#39;#6E8898&#39;, 
+  &#39;#9FB1BC&#39;, &#39;#D3D0CB&#39;, &#39;#E2C044&#39;, &#39;#5BC0EB&#39;, &#39;#FDE74C&#39;, 
+  &#39;#9BC53D&#39;, &#39;#E55934&#39;, &#39;#FA7921&#39;, &quot;#CD9BCD&quot;, &quot;#508578&quot;, &quot;#DA5724&quot;,
+  &quot;#CBD588&quot;, &quot;#5F7FC7&quot;, &quot;orange&quot;,  
+  &quot;#AD6F3B&quot;, &quot;#673770&quot;,&quot;#D14285&quot;, &quot;#652926&quot;, &quot;#C84248&quot;, 
+  &quot;#8569D5&quot;, &quot;#5E738F&quot;,&quot;#D1A33D&quot;, &quot;#8A7C64&quot;, &quot;#599861&quot;,
+  &quot;#616163&quot;,  &quot;#FFCDB2&quot;, &quot;#242F40&quot;, &quot;#6D9F71&quot;, 
+   &quot;#CCA43B&quot;, &quot;#F92A82&quot;, &quot;#ED7B84&quot;, &quot;#7EB77F&quot;, 
+  &quot;#DEC4A1&quot;, &quot;#E5D1D0&quot;, &#39;#0E8482&#39;, &#39;#C9DAEA&#39;, &#39;#337357&#39;, 
+  &#39;#95C623&#39;, &#39;#E55812&#39;, &#39;#04471C&#39;, &#39;#F2D7EE&#39;, &#39;#D3BCC0&#39;, 
+  &#39;#A5668B&#39;, &#39;#69306D&#39;, &#39;#0E103D&#39;, &#39;#1A535C&#39;, &#39;#4ECDC4&#39;, 
+  &#39;#F7FFF7&#39;, &#39;#FF6B6B&#39;, &#39;#FFE66D&#39;, &#39;#6699CC&#39;, &#39;#FFF275&#39;, 
+  &#39;#FF8C42&#39;, &#39;#FF3C38&#39;, &#39;#A23E48&#39;, &#39;#000000&#39;, &#39;#CF5C36&#39;, 
+  &#39;#EEE5E9&#39;, &#39;#7C7C7C&#39;, &#39;#EFC88B&#39;, &#39;#2E5266&#39;, &#39;#6E8898&#39;, 
+  &#39;#9FB1BC&#39;, &#39;#D3D0CB&#39;, &#39;#E2C044&#39;, &#39;#5BC0EB&#39;, &#39;#FDE74C&#39;, 
+  &#39;#9BC53D&#39;, &#39;#E55934&#39;, &#39;#FA7921&#39;, &quot;#CD9BCD&quot;, &quot;#508578&quot;, &quot;#DA5724&quot;,
+  &quot;#CBD588&quot;, &quot;#5F7FC7&quot;, &quot;orange&quot;,  
+  &quot;#AD6F3B&quot;, &quot;#673770&quot;,&quot;#D14285&quot;, &quot;#652926&quot;, &quot;#C84248&quot;, 
+  &quot;#8569D5&quot;, &quot;#5E738F&quot;,&quot;#D1A33D&quot;, &quot;#8A7C64&quot;, &quot;#599861&quot;,
+  &quot;#616163&quot;,  &quot;#FFCDB2&quot;, &quot;#242F40&quot;, &quot;#6D9F71&quot;, 
+   &quot;#CCA43B&quot;, &quot;#F92A82&quot;, &quot;#ED7B84&quot;, &quot;#7EB77F&quot;, 
+  &quot;#DEC4A1&quot;, &quot;#E5D1D0&quot;, &#39;#0E8482&#39;, &#39;#C9DAEA&#39;, &#39;#337357&#39;, 
+  &#39;#95C623&#39;, &#39;#E55812&#39;, &#39;#04471C&#39;, &#39;#F2D7EE&#39;, &#39;#D3BCC0&#39;, 
+  &#39;#A5668B&#39;, &#39;#69306D&#39;, &#39;#0E103D&#39;, &#39;#1A535C&#39;, &#39;#4ECDC4&#39;, 
+  &#39;#F7FFF7&#39;, &#39;#FF6B6B&#39;, &#39;#FFE66D&#39;, &#39;#6699CC&#39;, &#39;#FFF275&#39;, 
+  &#39;#FF8C42&#39;, &#39;#FF3C38&#39;, &#39;#A23E48&#39;, &#39;#000000&#39;, &#39;#CF5C36&#39;, 
+  &#39;#EEE5E9&#39;, &#39;#7C7C7C&#39;, &#39;#EFC88B&#39;, &#39;#2E5266&#39;, &#39;#6E8898&#39;, 
+  &#39;#9FB1BC&#39;, &#39;#D3D0CB&#39;, &#39;#E2C044&#39;, &#39;#5BC0EB&#39;, &#39;#FDE74C&#39;, 
+  &#39;#9BC53D&#39;, &#39;#E55934&#39;, &#39;#FA7921&#39;, &quot;#CD9BCD&quot;, &quot;#508578&quot;, &quot;#DA5724&quot;,
+  &quot;#CBD588&quot;, &quot;#5F7FC7&quot;, &quot;orange&quot;,  
+  &quot;#AD6F3B&quot;, &quot;#673770&quot;,&quot;#D14285&quot;, &quot;#652926&quot;, &quot;#C84248&quot;, 
+  &quot;#8569D5&quot;, &quot;#5E738F&quot;,&quot;#D1A33D&quot;, &quot;#8A7C64&quot;, &quot;#599861&quot;,
+  &quot;#616163&quot;,  &quot;#FFCDB2&quot;, &quot;#242F40&quot;, &quot;#6D9F71&quot;, 
+   &quot;#CCA43B&quot;, &quot;#F92A82&quot;, &quot;#ED7B84&quot;, &quot;#7EB77F&quot;, 
+  &quot;#DEC4A1&quot;, &quot;#E5D1D0&quot;, &#39;#0E8482&#39;, &#39;#C9DAEA&#39;, &#39;#337357&#39;, 
+  &#39;#95C623&#39;, &#39;#E55812&#39;, &#39;#04471C&#39;, &#39;#F2D7EE&#39;, &#39;#D3BCC0&#39;, 
+  &#39;#A5668B&#39;, &#39;#69306D&#39;, &#39;#0E103D&#39;, &#39;#1A535C&#39;, &#39;#4ECDC4&#39;, 
+  &#39;#F7FFF7&#39;, &#39;#FF6B6B&#39;, &#39;#FFE66D&#39;, &#39;#6699CC&#39;, &#39;#FFF275&#39;, 
+  &#39;#FF8C42&#39;, &#39;#FF3C38&#39;, &#39;#A23E48&#39;, &#39;#000000&#39;, &#39;#CF5C36&#39;, 
+  &#39;#EEE5E9&#39;, &#39;#7C7C7C&#39;, &#39;#EFC88B&#39;, &#39;#2E5266&#39;, &#39;#6E8898&#39;, 
+  &#39;#9FB1BC&#39;, &#39;#D3D0CB&#39;, &#39;#E2C044&#39;, &#39;#5BC0EB&#39;, &#39;#FDE74C&#39;, 
+  &#39;#9BC53D&#39;, &#39;#E55934&#39;, &#39;#FA7921&#39;, &quot;#CD9BCD&quot;, &quot;#508578&quot;, &quot;#DA5724&quot;,
+  &quot;#CBD588&quot;, &quot;#5F7FC7&quot;, &quot;orange&quot;,  
+  &quot;#AD6F3B&quot;, &quot;#673770&quot;,&quot;#D14285&quot;, &quot;#652926&quot;, &quot;#C84248&quot;, 
+  &quot;#8569D5&quot;, &quot;#5E738F&quot;,&quot;#D1A33D&quot;, &quot;#8A7C64&quot;, &quot;#599861&quot;,
+  &quot;#616163&quot;,  &quot;#FFCDB2&quot;, &quot;#242F40&quot;, &quot;#6D9F71&quot;, 
+   &quot;#CCA43B&quot;, &quot;#F92A82&quot;, &quot;#ED7B84&quot;, &quot;#7EB77F&quot;, 
+  &quot;#DEC4A1&quot;, &quot;#E5D1D0&quot;, &#39;#0E8482&#39;, &#39;#C9DAEA&#39;, &#39;#337357&#39;, 
+  &#39;#95C623&#39;, &#39;#E55812&#39;, &#39;#04471C&#39;, &#39;#F2D7EE&#39;, &#39;#D3BCC0&#39;, 
+  &#39;#A5668B&#39;, &#39;#69306D&#39;, &#39;#0E103D&#39;, &#39;#1A535C&#39;, &#39;#4ECDC4&#39;, 
+  &#39;#F7FFF7&#39;, &#39;#FF6B6B&#39;, &#39;#FFE66D&#39;, &#39;#6699CC&#39;, &#39;#FFF275&#39;, 
+  &#39;#FF8C42&#39;, &#39;#FF3C38&#39;, &#39;#A23E48&#39;, &#39;#000000&#39;, &#39;#CF5C36&#39;, 
+  &#39;#EEE5E9&#39;, &#39;#7C7C7C&#39;, &#39;#EFC88B&#39;, &#39;#2E5266&#39;, &#39;#6E8898&#39;, 
+  &#39;#9FB1BC&#39;, &#39;#D3D0CB&#39;, &#39;#E2C044&#39;, &#39;#5BC0EB&#39;, &#39;#FDE74C&#39;, 
+  &#39;#9BC53D&#39;, &#39;#E55934&#39;, &#39;#FA7921&#39;, &quot;#CD9BCD&quot;, &quot;#508578&quot;, &quot;#DA5724&quot;,
+  &quot;#CBD588&quot;, &quot;#5F7FC7&quot;, &quot;orange&quot;,  
+  &quot;#AD6F3B&quot;, &quot;#673770&quot;,&quot;#D14285&quot;, &quot;#652926&quot;, &quot;#C84248&quot;, 
+  &quot;#8569D5&quot;, &quot;#5E738F&quot;,&quot;#D1A33D&quot;, &quot;#8A7C64&quot;, &quot;#599861&quot;,
+  &quot;#616163&quot;,  &quot;#FFCDB2&quot;, &quot;#242F40&quot;, &quot;#6D9F71&quot;, 
+   &quot;#CCA43B&quot;, &quot;#F92A82&quot;, &quot;#ED7B84&quot;, &quot;#7EB77F&quot;, 
+  &quot;#DEC4A1&quot;, &quot;#E5D1D0&quot;, &#39;#0E8482&#39;, &#39;#C9DAEA&#39;, &#39;#337357&#39;, 
+  &#39;#95C623&#39;, &#39;#E55812&#39;, &#39;#04471C&#39;, &#39;#F2D7EE&#39;, &#39;#D3BCC0&#39;, 
+  &#39;#A5668B&#39;, &#39;#69306D&#39;, &#39;#0E103D&#39;, &#39;#1A535C&#39;, &#39;#4ECDC4&#39;, 
+  &#39;#F7FFF7&#39;, &#39;#FF6B6B&#39;, &#39;#FFE66D&#39;, &#39;#6699CC&#39;, &#39;#FFF275&#39;, 
+  &#39;#FF8C42&#39;, &#39;#FF3C38&#39;, &#39;#A23E48&#39;, &#39;#000000&#39;, &#39;#CF5C36&#39;, 
+  &#39;#EEE5E9&#39;, &#39;#7C7C7C&#39;, &#39;#EFC88B&#39;, &#39;#2E5266&#39;, &#39;#6E8898&#39;, 
+  &#39;#9FB1BC&#39;, &#39;#D3D0CB&#39;, &#39;#E2C044&#39;, &#39;#5BC0EB&#39;, &#39;#FDE74C&#39;, 
+  &#39;#9BC53D&#39;, &#39;#E55934&#39;, &#39;#FA7921&#39;, &quot;#CD9BCD&quot;, &quot;#508578&quot;, &quot;#DA5724&quot;,
+  &quot;#CBD588&quot;, &quot;#5F7FC7&quot;, &quot;orange&quot;)
+
+my_color2 &lt;- c(
+  &quot;#CBD588&quot;, &quot;#DA5724&quot;,&quot;#AD6F3B&quot;, &quot;#673770&quot;,&quot;#D14285&quot;, 
+  &quot;#652926&quot;, &quot;#C84248&quot;, &quot;#8569D5&quot;, &quot;#5E738F&quot;,&quot;#D1A33D&quot;, 
+  &quot;#8A7C64&quot;, &quot;#599861&quot;, &quot;#616163&quot;,  &quot;#FFCDB2&quot;, &quot;#242F40&quot;, 
+  &quot;#6D9F71&quot;, &quot;#CCA43B&quot;, &quot;#F92A82&quot;, &quot;#ED7B84&quot;, &quot;#7EB77F&quot;, 
+  &quot;#DEC4A1&quot;, &quot;#E5D1D0&quot;, &#39;#0E8482&#39;, &#39;#C9DAEA&#39;, &#39;#337357&#39;, 
+  &#39;#95C623&#39;, &#39;#E55812&#39;, &#39;#04471C&#39;, &#39;#F2D7EE&#39;, &#39;#D3BCC0&#39;, 
+  &#39;#A5668B&#39;, &#39;#69306D&#39;, &#39;#0E103D&#39;, &#39;#1A535C&#39;, &#39;#4ECDC4&#39;, 
+  &#39;#F7FFF7&#39;, &#39;#FF6B6B&#39;, &#39;#FFE66D&#39;, &#39;#6699CC&#39;, &#39;#FFF275&#39;, 
+  &#39;#FF8C42&#39;, &#39;#FF3C38&#39;, &#39;#A23E48&#39;, &#39;#000000&#39;, &#39;#CF5C36&#39;, 
+  &#39;#9FB1BC&#39;, &#39;springgreen&#39;, &#39;#E2C044&#39;, &#39;#5BC0EB&#39;, &#39;pink&#39;, 
+  &quot;orange&quot;, &quot;#CBD588&quot;, &quot;#5F7FC7&quot;,  
+  &#39;#9BC53D&#39;, &#39;#E55934&#39;, &#39;#FA7921&#39;, &quot;#CD9BCD&quot;, &quot;#508578&quot;, &quot;#DA5724&quot;,
+  &quot;#CBD588&quot;, &quot;#5F7FC7&quot;, &quot;orange&quot;,  
+  &quot;#AD6F3B&quot;, &quot;#673770&quot;,&quot;#D14285&quot;, &quot;#652926&quot;, &quot;#C84248&quot;, 
+  &quot;#8569D5&quot;, &quot;#5E738F&quot;,&quot;#D1A33D&quot;, &quot;#8A7C64&quot;, &quot;#599861&quot;,
+  &quot;#616163&quot;,  &quot;#FFCDB2&quot;, &quot;#242F40&quot;, &quot;#6D9F71&quot;, 
+   &quot;#CCA43B&quot;, &quot;#F92A82&quot;, &quot;#ED7B84&quot;, &quot;#7EB77F&quot;, 
+  &quot;#DEC4A1&quot;, &quot;#E5D1D0&quot;, &#39;#0E8482&#39;, &#39;#C9DAEA&#39;, &#39;#337357&#39;, 
+  &#39;#95C623&#39;, &#39;#E55812&#39;, &#39;#04471C&#39;, &#39;#F2D7EE&#39;, &#39;#D3BCC0&#39;, 
+  &#39;#A5668B&#39;, &#39;#69306D&#39;, &#39;#0E103D&#39;, &#39;#1A535C&#39;, &#39;#4ECDC4&#39;, 
+  &#39;#F7FFF7&#39;, &#39;#FF6B6B&#39;, &#39;#FFE66D&#39;, &#39;#6699CC&#39;, &#39;#FFF275&#39;, 
+  &#39;#FF8C42&#39;, &#39;#FF3C38&#39;, &#39;#A23E48&#39;, &#39;#000000&#39;, &#39;#CF5C36&#39;, 
+  &#39;#EEE5E9&#39;, &#39;#7C7C7C&#39;, &#39;#EFC88B&#39;, &#39;#2E5266&#39;, &#39;#6E8898&#39;, 
+  &#39;#9FB1BC&#39;, &#39;#D3D0CB&#39;, &#39;#E2C044&#39;, &#39;#5BC0EB&#39;, &#39;#FDE74C&#39;, 
+  &#39;#9BC53D&#39;, &#39;#E55934&#39;, &#39;#FA7921&#39;, &quot;#CD9BCD&quot;, &quot;#508578&quot;, &quot;#DA5724&quot;,
+  &quot;#CBD588&quot;, &quot;#5F7FC7&quot;, &quot;orange&quot;,  
+  &quot;#AD6F3B&quot;, &quot;#673770&quot;,&quot;#D14285&quot;, &quot;#652926&quot;, &quot;#C84248&quot;, 
+  &quot;#8569D5&quot;, &quot;#5E738F&quot;,&quot;#D1A33D&quot;, &quot;#8A7C64&quot;, &quot;#599861&quot;,
+  &quot;#616163&quot;,  &quot;#FFCDB2&quot;, &quot;#242F40&quot;, &quot;#6D9F71&quot;, 
+   &quot;#CCA43B&quot;, &quot;#F92A82&quot;, &quot;#ED7B84&quot;, &quot;#7EB77F&quot;, 
+  &quot;#DEC4A1&quot;, &quot;#E5D1D0&quot;, &#39;#0E8482&#39;, &#39;#C9DAEA&#39;, &#39;#337357&#39;, 
+  &#39;#95C623&#39;, &#39;#E55812&#39;, &#39;#04471C&#39;, &#39;#F2D7EE&#39;, &#39;#D3BCC0&#39;, 
+  &#39;#A5668B&#39;, &#39;#69306D&#39;, &#39;#0E103D&#39;, &#39;#1A535C&#39;, &#39;#4ECDC4&#39;, 
+  &#39;#F7FFF7&#39;, &#39;#FF6B6B&#39;, &#39;#FFE66D&#39;, &#39;#6699CC&#39;, &#39;#FFF275&#39;, 
+  &#39;#FF8C42&#39;, &#39;#FF3C38&#39;, &#39;#A23E48&#39;, &#39;#000000&#39;, &#39;#CF5C36&#39;, 
+  &#39;#EEE5E9&#39;, &#39;#7C7C7C&#39;, &#39;#EFC88B&#39;, &#39;#2E5266&#39;, &#39;#6E8898&#39;, 
+  &#39;#9FB1BC&#39;, &#39;#D3D0CB&#39;, &#39;#E2C044&#39;, &#39;#5BC0EB&#39;, &#39;#FDE74C&#39;, 
+  &#39;#9BC53D&#39;, &#39;#E55934&#39;, &#39;#FA7921&#39;, &quot;#CD9BCD&quot;, &quot;#508578&quot;, &quot;#DA5724&quot;,
+  &quot;#CBD588&quot;, &quot;#5F7FC7&quot;, &quot;orange&quot;,  
+  &quot;#AD6F3B&quot;, &quot;#673770&quot;,&quot;#D14285&quot;, &quot;#652926&quot;, &quot;#C84248&quot;, 
+  &quot;#8569D5&quot;, &quot;#5E738F&quot;,&quot;#D1A33D&quot;, &quot;#8A7C64&quot;, &quot;#599861&quot;,
+  &quot;#616163&quot;,  &quot;#FFCDB2&quot;, &quot;#242F40&quot;, &quot;#6D9F71&quot;, 
+   &quot;#CCA43B&quot;, &quot;#F92A82&quot;, &quot;#ED7B84&quot;, &quot;#7EB77F&quot;, 
+  &quot;#DEC4A1&quot;, &quot;#E5D1D0&quot;, &#39;#0E8482&#39;, &#39;#C9DAEA&#39;, &#39;#337357&#39;, 
+  &#39;#95C623&#39;, &#39;#E55812&#39;, &#39;#04471C&#39;, &#39;#F2D7EE&#39;, &#39;#D3BCC0&#39;, 
+  &#39;#A5668B&#39;, &#39;#69306D&#39;, &#39;#0E103D&#39;, &#39;#1A535C&#39;, &#39;#4ECDC4&#39;, 
+  &#39;#F7FFF7&#39;, &#39;#FF6B6B&#39;, &#39;#FFE66D&#39;, &#39;#6699CC&#39;, &#39;#FFF275&#39;, 
+  &#39;#FF8C42&#39;, &#39;#FF3C38&#39;, &#39;#A23E48&#39;, &#39;#000000&#39;, &#39;#CF5C36&#39;, 
+  &#39;#EEE5E9&#39;, &#39;#7C7C7C&#39;, &#39;#EFC88B&#39;, &#39;#2E5266&#39;, &#39;#6E8898&#39;, 
+  &#39;#9FB1BC&#39;, &#39;#D3D0CB&#39;, &#39;#E2C044&#39;, &#39;#5BC0EB&#39;, &#39;#FDE74C&#39;, 
+  &#39;#9BC53D&#39;, &#39;#E55934&#39;, &#39;#FA7921&#39;, &quot;#CD9BCD&quot;, &quot;#508578&quot;, &quot;#DA5724&quot;,
+  &quot;#CBD588&quot;, &quot;#5F7FC7&quot;, &quot;orange&quot;,  
+  &quot;#AD6F3B&quot;, &quot;#673770&quot;,&quot;#D14285&quot;, &quot;#652926&quot;, &quot;#C84248&quot;, 
+  &quot;#8569D5&quot;, &quot;#5E738F&quot;,&quot;#D1A33D&quot;, &quot;#8A7C64&quot;, &quot;#599861&quot;,
+  &quot;#616163&quot;,  &quot;#FFCDB2&quot;, &quot;#242F40&quot;, &quot;#6D9F71&quot;, 
+   &quot;#CCA43B&quot;, &quot;#F92A82&quot;, &quot;#ED7B84&quot;, &quot;#7EB77F&quot;, 
+  &quot;#DEC4A1&quot;, &quot;#E5D1D0&quot;, &#39;#0E8482&#39;, &#39;#C9DAEA&#39;, &#39;#337357&#39;, 
+  &#39;#95C623&#39;, &#39;#E55812&#39;, &#39;#04471C&#39;, &#39;#F2D7EE&#39;, &#39;#D3BCC0&#39;, 
+  &#39;#A5668B&#39;, &#39;#69306D&#39;, &#39;#0E103D&#39;, &#39;#1A535C&#39;, &#39;#4ECDC4&#39;, 
+  &#39;#F7FFF7&#39;, &#39;#FF6B6B&#39;, &#39;#FFE66D&#39;, &#39;#6699CC&#39;, &#39;#FFF275&#39;, 
+  &#39;#FF8C42&#39;, &#39;#FF3C38&#39;, &#39;#A23E48&#39;, &#39;#000000&#39;, &#39;#CF5C36&#39;, 
+  &#39;#EEE5E9&#39;, &#39;#7C7C7C&#39;, &#39;#EFC88B&#39;, &#39;#2E5266&#39;, &#39;#6E8898&#39;, 
+  &#39;#9FB1BC&#39;, &#39;#D3D0CB&#39;, &#39;#E2C044&#39;, &#39;#5BC0EB&#39;, &#39;#FDE74C&#39;, 
+  &#39;#9BC53D&#39;, &#39;#E55934&#39;, &#39;#FA7921&#39;, &quot;#CD9BCD&quot;, &quot;#508578&quot;, &quot;#DA5724&quot;,
+  &quot;#CBD588&quot;, &quot;#5F7FC7&quot;, &quot;orange&quot;,  
+  &quot;#AD6F3B&quot;, &quot;#673770&quot;,&quot;#D14285&quot;, &quot;#652926&quot;, &quot;#C84248&quot;, 
+  &quot;#8569D5&quot;, &quot;#5E738F&quot;,&quot;#D1A33D&quot;, &quot;#8A7C64&quot;, &quot;#599861&quot;,
+  &quot;#616163&quot;,  &quot;#FFCDB2&quot;, &quot;#242F40&quot;, &quot;#6D9F71&quot;, 
+   &quot;#CCA43B&quot;, &quot;#F92A82&quot;, &quot;#ED7B84&quot;, &quot;#7EB77F&quot;, 
+  &quot;#DEC4A1&quot;, &quot;#E5D1D0&quot;, &#39;#0E8482&#39;, &#39;#C9DAEA&#39;, &#39;#337357&#39;, 
+  &#39;#95C623&#39;, &#39;#E55812&#39;, &#39;#04471C&#39;, &#39;#F2D7EE&#39;, &#39;#D3BCC0&#39;, 
+  &#39;#A5668B&#39;, &#39;#69306D&#39;, &#39;#0E103D&#39;, &#39;#1A535C&#39;, &#39;#4ECDC4&#39;, 
+  &#39;#F7FFF7&#39;, &#39;#FF6B6B&#39;, &#39;#FFE66D&#39;, &#39;#6699CC&#39;, &#39;#FFF275&#39;, 
+  &#39;#FF8C42&#39;, &#39;#FF3C38&#39;, &#39;#A23E48&#39;, &#39;#000000&#39;, &#39;#CF5C36&#39;, 
+  &#39;#EEE5E9&#39;, &#39;#7C7C7C&#39;, &#39;#EFC88B&#39;, &#39;#2E5266&#39;, &#39;#6E8898&#39;, 
+  &#39;#9FB1BC&#39;, &#39;#D3D0CB&#39;, &#39;#E2C044&#39;, &#39;#5BC0EB&#39;, &#39;#FDE74C&#39;, 
+  &#39;#9BC53D&#39;, &#39;#E55934&#39;, &#39;#FA7921&#39;, &quot;#CD9BCD&quot;, &quot;#508578&quot;, &quot;#DA5724&quot;,
+  &quot;#CBD588&quot;, &quot;orange&quot;)
+
+# plot relative abundance
+df.sci.rel.p1 &lt;- ggplot(df.sci.rel, aes(x=Peptide_id, y = RelAbundance, fill = Strain)) + 
+  geom_bar(stat=&quot;identity&quot;, width = 0.8, position = &#39;stack&#39;, colour=&quot;black&quot;) +
+  #scale_fill_discrete() +
+  scale_fill_manual(values = my_color2) +
+  
+  xlab(&#39;&#39;)+
+  ylab(&quot;Relative Abundance (%) \n&quot;) +
+  ggtitle(&quot;Matched taxa for each peptide \n&quot;) +
+  ## adjust positions
+  guides(fill = guide_legend(ncol = 7,reverse = T))+
+  theme(legend.position=&quot;bottom&quot;) +
+  theme(plot.title = element_text(size = 20,hjust = 0.5, face=&#39;bold&#39;)) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, face=&#39;bold&#39;)) + 
+  theme(axis.title.y = element_text(size = 13,hjust = 0.5, face=&#39;bold&#39;)) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.95, vjust=0.1,size=12, face=&#39;bold&#39;,color=&#39;black&#39;))+
+  theme(axis.text.y = element_text(size=15, face=&#39;bold&#39;,color=&#39;black&#39;))+
+  scale_y_continuous(breaks=seq(0,1000,100))+
+  theme(panel.grid.major = element_blank()) +
+  theme(panel.grid.minor = element_blank(), panel.background=element_blank(),panel.border=element_blank(), plot.background=element_blank())
+
+df.sci.rel.p1</code></pre>
+<p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-4-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p>Let’s go to the upper taxa level and see.<br />
+</p>
+<p>Making of function</p>
+<pre class="r"><code># function for plotting
+
+rhythmic_tax_profile &lt;- function(rain_sig, depth=&quot;SRF&quot;, df_peptax, tax_level,legend_coln=7){
+  # tax_level=c(&quot;Strain&quot;,&quot;Species&quot;,&quot;Genus&quot;,&quot;Family&quot;,&quot;Order&quot;,&quot;Class&quot;,&quot;Phylum&quot;,&quot;Kingdom&quot;,&quot;Domain&quot;)
+  tax_col=tax_level
+  # first test with the Surface periodic peptides
+  rhythm_SRF &lt;- rain_sig %&gt;% filter(Depth==depth) %&gt;% select(Peptide_id)
+  rhy_tax_SRF &lt;- rhythm_SRF %&gt;% left_join(df_peptax, by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))
+  rhy_tax_SRF %&gt;% select(Peptide_id) %&gt;% unique() %&gt;% dim() # 69 peptides
+  # Working only with the peptides that have ORF matches
+  rhy_tax_SRF2 &lt;- rhy_tax_SRF %&gt;% filter(!is.na(ORF))
+  # NA in taxonomy?
+  rhy_tax_SRF2 %&gt;% filter(is.na(!!sym(tax_col)))
+
+  # plot the scientific name level histogram
+  df.sci &lt;- rhy_tax_SRF2 %&gt;% count(Peptide_id, !!sym(tax_col))
+
+  # we need to group by Peptides
+  df.sci.rel &lt;- df.sci %&gt;%  
+    group_by(Peptide_id) %&gt;%                               
+    mutate(RelAbundance = n*100/sum(n))  # Transform to rel. abundance
+  
+  ### let&#39;s test
+  ord &lt;- df.sci.rel %&gt;% group_by(!!sym(tax_col)) %&gt;% summarise(sumRel = sum(RelAbundance)) %&gt;% arrange(sumRel)
+  vec &lt;- ord[,1]
+  tail(vec)
+  
+  # plot relative abundance
+  df.sci.rel.p1 &lt;- ggplot(df.sci.rel, aes_string(x=&quot;Peptide_id&quot;, y = &quot;RelAbundance&quot;, fill = tax_col)) + 
+    geom_bar(stat=&quot;identity&quot;, width = 0.8, position = &#39;stack&#39;, colour=&quot;black&quot;) +
+    scale_fill_manual(values = my_color2) +
+    xlab(&#39;&#39;)+
+    ylab(&quot;Relative Abundance (%) \n&quot;) +
+    ggtitle(paste0(&quot;Matched taxa for rhythmic peptides (Depth: &quot;,depth,&quot; / Level: &quot;,tax_col,&quot;)&quot;)) +
+    ## adjust positions
+    guides(fill = guide_legend(ncol = legend_coln,reverse = T))+
+    theme(legend.position=&quot;bottom&quot;) +
+    theme(plot.title = element_text(size = 20,hjust = 0.5, face=&#39;bold&#39;)) + 
+    theme(axis.title.x = element_text(size = 15,hjust = 0.5, face=&#39;bold&#39;)) + 
+    theme(axis.title.y = element_text(size = 13,hjust = 0.5, face=&#39;bold&#39;)) + 
+    theme(axis.text.x = element_text(angle = 90, hjust = 0.95, vjust=0.4,size=12, face=&#39;bold&#39;,color=&#39;black&#39;))+
+    theme(axis.text.y = element_text(size=15, face=&#39;bold&#39;,color=&#39;black&#39;))+
+    scale_y_continuous(breaks=seq(0,100,10))+
+    theme(panel.grid.major = element_blank()) +
+    theme(panel.grid.minor = element_blank(), panel.background=element_blank(),panel.border=element_blank(), plot.background=element_blank())
+  
+  return(df.sci.rel.p1)
+}</code></pre>
+<p>Plotting for different levels</p>
+<pre class="r"><code># SRF rhythmic taxa - Strain level
+rhythmic_tax_profile(rain_sig, depth=&quot;SRF&quot;, df_peptax, tax_level=&quot;Strain&quot;, legend_coln=7)</code></pre>
+<p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-6-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># SRF rhythmic taxa - Species level
+rhythmic_tax_profile(rain_sig, depth=&quot;SRF&quot;, df_peptax, tax_level=&quot;Species&quot;, legend_coln=7)</code></pre>
+<p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-6-2.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># SRF rhythmic taxa - Genus level
+rhythmic_tax_profile(rain_sig, depth=&quot;SRF&quot;, df_peptax, tax_level=&quot;Genus&quot;, legend_coln=7)</code></pre>
+<p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-6-3.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># SRF rhythmic taxa - Family level
+rhythmic_tax_profile(rain_sig, depth=&quot;SRF&quot;, df_peptax, tax_level=&quot;Family&quot;, legend_coln=7)</code></pre>
+<p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-6-4.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># SRF rhythmic taxa - Order level
+rhythmic_tax_profile(rain_sig, depth=&quot;SRF&quot;, df_peptax, tax_level=&quot;Order&quot;, legend_coln=7)</code></pre>
+<p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-6-5.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># SRF rhythmic taxa - Phylum level
+rhythmic_tax_profile(rain_sig, depth=&quot;SRF&quot;, df_peptax, tax_level=&quot;Phylum&quot;, legend_coln=7)</code></pre>
+<p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-6-6.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># SRF rhythmic taxa - Kingdom level
+rhythmic_tax_profile(rain_sig, depth=&quot;SRF&quot;, df_peptax, tax_level=&quot;Kingdom&quot;, legend_coln=7)</code></pre>
+<p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-6-7.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># SRF rhythmic taxa - Domain level
+rhythmic_tax_profile(rain_sig, depth=&quot;SRF&quot;, df_peptax, tax_level=&quot;Domain&quot;, legend_coln=7)</code></pre>
+<p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-6-8.png" width="1056" style="display: block; margin: auto;" /></p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.3 (2020-10-10)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 19042)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] parallel  stats     graphics  grDevices utils     datasets  methods  
+[8] base     
+
+other attached packages:
+ [1] rain_1.24.0         multtest_2.46.0     Biobase_2.50.0     
+ [4] BiocGenerics_0.36.0 gmp_0.6-2           maditr_0.7.4       
+ [7] formattable_0.2.1   ggplot2_3.3.3       stringr_1.4.0      
+[10] tidyr_1.1.2         dplyr_1.0.4         workflowr_1.6.2    
+
+loaded via a namespace (and not attached):
+ [1] tidyselect_1.1.0  xfun_0.20         bslib_0.2.4       purrr_0.3.4      
+ [5] lattice_0.20-41   splines_4.0.3     colorspace_2.0-0  vctrs_0.3.6      
+ [9] generics_0.1.0    stats4_4.0.3      htmltools_0.5.1.1 yaml_2.2.1       
+[13] survival_3.2-7    utf8_1.1.4        rlang_0.4.10      jquerylib_0.1.3  
+[17] later_1.1.0.1     pillar_1.5.1      glue_1.4.2        withr_2.4.1      
+[21] DBI_1.1.1         lifecycle_1.0.0   munsell_0.5.0     gtable_0.3.0     
+[25] htmlwidgets_1.5.3 evaluate_0.14     labeling_0.4.2    knitr_1.31       
+[29] httpuv_1.5.4      ps_1.6.0          fansi_0.4.2       highr_0.8        
+[33] Rcpp_1.0.5        promises_1.1.1    scales_1.1.1      jsonlite_1.7.2   
+[37] farver_2.1.0      fs_1.5.0          digest_0.6.27     stringi_1.5.3    
+[41] rprojroot_2.0.2   grid_4.0.3        cli_2.3.1         tools_4.0.3      
+[45] magrittr_2.0.1    sass_0.3.1        tibble_3.0.4      crayon_1.4.1     
+[49] whisker_0.4       pkgconfig_2.0.3   MASS_7.3-53       Matrix_1.2-18    
+[53] ellipsis_0.3.1    data.table_1.14.0 assertthat_0.2.1  rmarkdown_2.7    
+[57] rstudioapi_0.13   R6_2.5.0          git2r_0.28.0      compiler_4.0.3   </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
