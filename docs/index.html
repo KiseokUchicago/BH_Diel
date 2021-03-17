@@ -302,7 +302,7 @@ $(document).ready(function () {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-03-10
+<strong>Last updated:</strong> 2021-03-16
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -333,16 +333,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree8416f77ee942e7b77c7395dc43f6ec4bdb9e653ctargetblank8416f77a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/8416f77ee942e7b77c7395dc43f6ec4bdb9e653c" target="_blank">8416f77</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree8d5c8232b740f5f578953bab2fb265fd90c00548targetblank8d5c823a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/8d5c8232b740f5f578953bab2fb265fd90c00548" target="_blank">8d5c823</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree8416f77ee942e7b77c7395dc43f6ec4bdb9e653ctargetblank8416f77a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree8d5c8232b740f5f578953bab2fb265fd90c00548targetblank8d5c823a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/8416f77ee942e7b77c7395dc43f6ec4bdb9e653c" target="_blank">8416f77</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/8d5c8232b740f5f578953bab2fb265fd90c00548" target="_blank">8d5c823</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -506,7 +506,15 @@ Untracked files:
     Untracked:  Replicate_BC_combined.xlsx
     Untracked:  Replicate_B_combined.tsv
     Untracked:  Replicate_B_combined.xlsx
+    Untracked:  Taxonomy_genus.pdf
+    Untracked:  Taxonomy_order.pdf
+    Untracked:  Taxonomy_phylum.pdf
+    Untracked:  Taxonomy_species.pdf
+    Untracked:  Taxonomy_strain.pdf
+    Untracked:  Taxonoy_family.pdf
     Untracked:  Time_series_intesity_all.pdf
+    Untracked:  analysis/taxonomy_assignment_and_analysis.Rmd
+    Untracked:  data/Final_pep_seq_ORF_rankedlineage.tsv
     Untracked:  data/Time_metadata.txt
     Untracked:  data/counts_example.csv
     Untracked:  data/diel-Feb21/
@@ -516,9 +524,6 @@ Untracked files:
     Untracked:  data/synthetic_control.data.txt
     Untracked:  hclust_DTW_average_wide.pdf
     Untracked:  hclust_DTW_average_wide_after_normalization.pdf
-
-Unstaged changes:
-    Modified:   analysis/peptide_level_visualization.Rmd
 
 </code></pre>
 <p>
@@ -557,6 +562,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KiseokUchicago/BH_Diel/blob/8d5c8232b740f5f578953bab2fb265fd90c00548/analysis/index.Rmd" target="_blank">8d5c823</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-16
+</td>
+<td>
+index
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KiseokUchicago/BH_Diel/8e21790fe4808669182d152e79d009db286eea97/docs/index.html" target="_blank">8e21790</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-10
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -688,6 +727,7 @@ Start workflowr project.
 <li><a href="convert_tsv_to_dataframe.html">Converting_tsv_to_dataframe</a></li>
 <li><a href="peptide_level_visualization.html">Peptide_level_visualization</a></li>
 <li><a href="clustering_time_series.html">Time_series_clustering</a></li>
+<li><a href="taxonomy_assignment_and_analysis.html">Taxonomy_assignment_and_analysis</a></li>
 </ul>
 
 
