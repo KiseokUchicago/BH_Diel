@@ -1,0 +1,461 @@
+---
+title: "taxonomy_assignment_and_analysis"
+author: "KiseokUchicago"
+date: "2021-03-16"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=11, fig.height=9,
+                      error=TRUE, echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE)
+```
+
+### Taxonomy assignment to peptides and taxonomy profiling analysis
+
+```{r}
+# libraries
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(ggplot2)
+library(formattable)
+```
+
+### 0. Get the rhythmic(periodic) peptide_ids from the rain analysis (from previous script of "peptide_level_visualization.Rmd")
+```{r}
+# read in combined table of 24 samples (Replicate B)
+df_pep <- read.table("Replicate_ABC67_combined.tsv",sep='\t',header = T)
+# Let's try to plot all of them at once
+df_all <- df_pep %>% select(Peptide_id, SampleID, Time, Depth) %>% unique() %>% arrange(Peptide_id)
+# How many time points did it appear
+(df_all2 <- df_all %>% group_by(Peptide_id, Depth) %>% summarize(Timepoints = n_distinct(Time)) %>% ungroup())
+df_all2$Depth <- factor(df_all2$Depth, levels = c('SRF','DCL','BDCL'))
+# (1) Get list of peptides that are present in 7 or 8 timepoints
+df_all2_filt <- df_all2 %>% filter(Timepoints > 6) %>% unique() 
+# (2) Let's average the abundance_ratio for each unique peptide
+df_int <- df_pep %>% select(Peptide_id, Spec_id, cent.log2.16O.18O.Ratio, SampleID, Time, Depth, Replicate) %>%
+  unique() %>% arrange(Peptide_id)
+# first average the spectrum_id per sample 
+# important to make sure to take the mean of the log raio (instead of taking log2 after averaging the original value(2^x))
+df_ave <- df_int %>% group_by(SampleID, Time, Depth, Replicate, Peptide_id) %>%
+  summarize(Mean_abundance_ratio=mean(cent.log2.16O.18O.Ratio),
+            SD_pep=sd(cent.log2.16O.18O.Ratio)) %>% ungroup()
+# Now, average and error by replicate
+# SE calculated with Jake Waldbauer's method: sqrt(se(Mean_abundance_ratio)^2 +(mean(SD_pep))^2))
+# standard error
+se <- function(x) sd(x)/sqrt(length(x))
+df_ave_rep <- df_ave %>% group_by(Time, Depth, Peptide_id) %>%
+  summarize(Ave_abundance_ratio=mean(Mean_abundance_ratio),
+            SE_abundance_ratio=sqrt((se(Mean_abundance_ratio))^2 +(mean(SD_pep))^2)) %>% ungroup()
+# why is there no sd for Pep_1004?
+df_ave %>% group_by(SampleID) %>% filter(Peptide_id=='Pep_1003') # there is only 1 sample for T1 BDCL 
+df_ave_rep2 <- df_ave_rep %>% mutate(error_up=Ave_abundance_ratio+SE_abundance_ratio) %>%
+  mutate(error_down=Ave_abundance_ratio-SE_abundance_ratio)
+# (3) import time metadata and merge
+(df_time <- read.table('data/Time_metadata.txt', header=T, sep='\t'))
+df_time$date_time <- str_replace(df_time$date_time, "/2019"," ")
+df_time$date_time <- str_replace(df_time$date_time, ":00$","")
+# left_join with average data
+df_ave2 <- df_ave_rep2 %>% left_join(df_time, by=c('Time'='timepoint'))
+head(df_ave2)
+# only use peptides that appear 7 or 8 times
+df_ave2 %>% select(Peptide_id) %>% unique() %>% dim() # 3233 peptides before
+df_filt78 <- inner_join(df_ave2, df_all2_filt, by=c('Peptide_id'='Peptide_id','Depth'='Depth'))
+df_filt78$Depth <- factor(df_filt78$Depth, levels = c('SRF','DCL','BDCL'))
+
+# get only 8 ones
+df_filt8 <- df_filt78 %>% filter(Timepoints > 7)
+df_filt8 %>% select(Peptide_id) %>% unique() %>% dim() # 661 peptides for peptides in all 8 timepoints
+df_filt8$Depth <- factor(df_filt8$Depth, levels = c('SRF','DCL','BDCL'))
+# rain analysis function
+rain_analysis <- function(df_filt8,depth="SRF"){
+  # setting our data into input format
+  df_8 <- df_filt8 %>% filter(Depth==depth) %>% select(Peptide_id,Time,Ave_abundance_ratio)
+  # reshape the dataframe with timepoints
+  library(maditr)
+  v_names <- c("T1","T2","T3","T4","T5","T6","T7","T8")
+  df_8$Time <- factor(df_8$Time, levels=v_names)
+  dc_8 <- dcast(df_8, Peptide_id ~ Time, value.var = "Ave_abundance_ratio")
+  # make Peptide_id more simpler (Pep_1 -> 1)
+  dc_8$Peptide_id <- str_replace(dc_8$Peptide_id,"Pep_","P.")
+  # make first column into row name
+  dc_8 <- tibble::column_to_rownames(dc_8, var="Peptide_id")
+  t <- c(1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,1,0,0,1) # adjusted for irregular repeats
+  # RAIN analysis
+  library(rain)
+  rainresult <- rain(t(dc_8), period=8, measure.sequence=t, deltat=1, method='independent')
+  return(rainresult)
+}
+
+rain_SRF8 <- rain_analysis(df_filt8,depth="SRF") %>% mutate(Depth="SRF") %>% tibble::rownames_to_column(var = "Peptide_id")
+rain_DCL8 <- rain_analysis(df_filt8,depth="DCL") %>% mutate(Depth="DCL") %>% tibble::rownames_to_column(var = "Peptide_id")
+rain_BDCL8 <- rain_analysis(df_filt8,depth="BDCL") %>% mutate(Depth="BDCL") %>% tibble::rownames_to_column(var = "Peptide_id")
+dim(rain_SRF8)
+dim(rain_DCL8)
+dim(rain_BDCL8)
+rain_8 <- rbind(rain_SRF8, rain_DCL8) %>% rbind(rain_BDCL8)
+dim(rain_8)
+tail(rain_8)
+
+rain_sig <- rain_8 %>% filter(pVal <= 0.25)
+
+color_vec <- c('#fc8d62','#66c2a5','#8da0cb')
+depth_vec <- c('SRF','DCL','BDCL')
+
+rain_sig$Depth <- factor(rain_sig$Depth, levels=depth_vec)
+rain_sig$Peptide_id <- str_replace(rain_sig$Peptide_id,"P.","Pep_")
+
+```
+
+### 1. Input the taxonomy data (created from linux)
+Get Final_pep_seq_ORF_rankedlineage.tsv from 05_taxonomy (at /project2/mlcoleman/project/diel_proteomics_kiseok/20210302_diel_proteomics_replicateABC_67samples) \
+This is a tab-delimited dataframe.
+Peptide_id    Peptide_sequence    Strain   Species   Genus   Family    Order   Class   Phylum    Phylum    Kingdom
+
+The blanks are denoted as "NULL"
+```{r}
+# read in the dataframe and change "NULL" to NA
+df_peptax <- read.table("data/Final_pep_seq_ORF_rankedlineage.tsv",sep='\t',header = F,na.strings=c("NULL","NA"))
+
+colnames(df_peptax) <- c("Peptide_id","Peptide_sequence","ORF","Strain","Species","Genus","Family","Order","Class","Phylum","Kingdom","Domain")
+
+df_peptax %>% select(Kingdom) %>% unique()
+df_peptax %>% select(Domain) %>% unique()
+
+# Are there NAs in the dataframe?
+head(df_peptax)
+dim(df_peptax)
+any(is.na(df_peptax))
+
+# first test with the Surface periodic peptides
+rhythm_SRF <- rain_sig %>% filter(Depth=="SRF") %>% select(Peptide_id)
+rhy_tax_SRF <- rhythm_SRF %>% left_join(df_peptax, by=c("Peptide_id"="Peptide_id"))
+
+rhy_tax_SRF %>% select(Peptide_id) %>% unique() %>% dim() # 69 peptides
+
+# See the distribution of number of matched ORFs
+rhy_t <- rhy_tax_SRF %>% group_by(Peptide_id) %>% summarize(freq = n())
+
+ggplot(rhy_t, aes(freq)) + geom_bar() +
+  ylab("Frequency \n") +
+  xlab("\n Number of matched ORFs per peptide") +
+  # scale_x_continuous(breaks=seq(1,8,1))+
+  ggtitle("Histogram of matched ORFs per peptide (Surface) \n")+
+  ## adjust positions
+  theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.text.x = element_text(hjust = 0.5, vjust=0.3,size=13, family="serif"))+
+  theme(axis.text.y = element_text(size=10))
+
+rhy_tax_SRF %>% left_join(rhy_t, by=c("Peptide_id"="Peptide_id")) %>% filter(freq==1)
+rhy_tax_SRF %>% left_join(rhy_t, by=c("Peptide_id"="Peptide_id")) %>% filter(freq==1) %>% dim()
+rhy_tax_SRF1 <- rhy_tax_SRF %>% left_join(rhy_t, by=c("Peptide_id"="Peptide_id"))
+```
+43 out of 69 peptides have no matches to the ORF.\
+Let's work with only the peptides that have ORF matches
+
+### 1. Lowest common ancester method assignment
+
+
+```{r}
+# Working only with the peptides that have ORF matches
+rhy_tax_SRF2 <- rhy_tax_SRF1 %>% filter(!is.na(ORF))
+rhy_tax_SRF2 %>% select(freq) %>% unique() %>% arrange(freq)
+# NA in taxonomy?
+rhy_tax_SRF2 %>% filter(is.na(Strain))
+
+# plot the scientific name level histogram
+df.sci <- rhy_tax_SRF2 %>% count(Peptide_id, Strain)
+
+# we need to group by Peptides
+df.sci.rel <- df.sci %>%  
+  group_by(Peptide_id) %>%                               
+  mutate(RelAbundance = n*100/sum(n))  # Transform to rel. abundance
+
+# df.sci.rel[df.sci.rel$RelAbundance < 5,]$Phylum <- 'Low abundance'
+
+### let's test
+ord <- df.sci.rel %>% group_by(Strain) %>% summarise(sumRel = sum(RelAbundance)) %>% arrange(sumRel)
+vec <- ord$Strain
+rev(tail(vec,10))
+head(vec)
+
+df.sci.rel$Strain <- factor(df.sci.rel$Strain, levels = vec) 
+
+my_color <- c(
+  "black","#CBD588", "#5F7FC7", "orange",  
+  "#AD6F3B", "#673770","#D14285", "#652926", "#C84248", 
+  "#8569D5", "#5E738F","#D1A33D", "#8A7C64", "#599861",
+  "#616163",  "#FFCDB2", "#242F40", "#6D9F71", 
+   "#CCA43B", "#F92A82", "#ED7B84", "#7EB77F", 
+  "#DEC4A1", "#E5D1D0", '#0E8482', '#C9DAEA', '#337357', 
+  '#95C623', '#E55812', '#04471C', '#F2D7EE', '#D3BCC0', 
+  '#A5668B', '#69306D', '#0E103D', '#1A535C', '#4ECDC4', 
+  '#F7FFF7', '#FF6B6B', '#FFE66D', '#6699CC', '#FFF275', 
+  '#FF8C42', '#FF3C38', '#A23E48', '#000000', '#CF5C36', 
+  '#EEE5E9', '#7C7C7C', '#EFC88B', '#2E5266', '#6E8898', 
+  '#9FB1BC', '#D3D0CB', '#E2C044', '#5BC0EB', '#FDE74C', 
+  '#9BC53D', '#E55934', '#FA7921', "#CD9BCD", "#508578", "#DA5724",
+  "#CBD588", "#5F7FC7", "orange",  
+  "#AD6F3B", "#673770","#D14285", "#652926", "#C84248", 
+  "#8569D5", "#5E738F","#D1A33D", "#8A7C64", "#599861",
+  "#616163",  "#FFCDB2", "#242F40", "#6D9F71", 
+   "#CCA43B", "#F92A82", "#ED7B84", "#7EB77F", 
+  "#DEC4A1", "#E5D1D0", '#0E8482', '#C9DAEA', '#337357', 
+  '#95C623', '#E55812', '#04471C', '#F2D7EE', '#D3BCC0', 
+  '#A5668B', '#69306D', '#0E103D', '#1A535C', '#4ECDC4', 
+  '#F7FFF7', '#FF6B6B', '#FFE66D', '#6699CC', '#FFF275', 
+  '#FF8C42', '#FF3C38', '#A23E48', '#000000', '#CF5C36', 
+  '#EEE5E9', '#7C7C7C', '#EFC88B', '#2E5266', '#6E8898', 
+  '#9FB1BC', '#D3D0CB', '#E2C044', '#5BC0EB', '#FDE74C', 
+  '#9BC53D', '#E55934', '#FA7921', "#CD9BCD", "#508578", "#DA5724",
+  "#CBD588", "#5F7FC7", "orange",  
+  "#AD6F3B", "#673770","#D14285", "#652926", "#C84248", 
+  "#8569D5", "#5E738F","#D1A33D", "#8A7C64", "#599861",
+  "#616163",  "#FFCDB2", "#242F40", "#6D9F71", 
+   "#CCA43B", "#F92A82", "#ED7B84", "#7EB77F", 
+  "#DEC4A1", "#E5D1D0", '#0E8482', '#C9DAEA', '#337357', 
+  '#95C623', '#E55812', '#04471C', '#F2D7EE', '#D3BCC0', 
+  '#A5668B', '#69306D', '#0E103D', '#1A535C', '#4ECDC4', 
+  '#F7FFF7', '#FF6B6B', '#FFE66D', '#6699CC', '#FFF275', 
+  '#FF8C42', '#FF3C38', '#A23E48', '#000000', '#CF5C36', 
+  '#EEE5E9', '#7C7C7C', '#EFC88B', '#2E5266', '#6E8898', 
+  '#9FB1BC', '#D3D0CB', '#E2C044', '#5BC0EB', '#FDE74C', 
+  '#9BC53D', '#E55934', '#FA7921', "#CD9BCD", "#508578", "#DA5724",
+  "#CBD588", "#5F7FC7", "orange",  
+  "#AD6F3B", "#673770","#D14285", "#652926", "#C84248", 
+  "#8569D5", "#5E738F","#D1A33D", "#8A7C64", "#599861",
+  "#616163",  "#FFCDB2", "#242F40", "#6D9F71", 
+   "#CCA43B", "#F92A82", "#ED7B84", "#7EB77F", 
+  "#DEC4A1", "#E5D1D0", '#0E8482', '#C9DAEA', '#337357', 
+  '#95C623', '#E55812', '#04471C', '#F2D7EE', '#D3BCC0', 
+  '#A5668B', '#69306D', '#0E103D', '#1A535C', '#4ECDC4', 
+  '#F7FFF7', '#FF6B6B', '#FFE66D', '#6699CC', '#FFF275', 
+  '#FF8C42', '#FF3C38', '#A23E48', '#000000', '#CF5C36', 
+  '#EEE5E9', '#7C7C7C', '#EFC88B', '#2E5266', '#6E8898', 
+  '#9FB1BC', '#D3D0CB', '#E2C044', '#5BC0EB', '#FDE74C', 
+  '#9BC53D', '#E55934', '#FA7921', "#CD9BCD", "#508578", "#DA5724",
+  "#CBD588", "#5F7FC7", "orange",  
+  "#AD6F3B", "#673770","#D14285", "#652926", "#C84248", 
+  "#8569D5", "#5E738F","#D1A33D", "#8A7C64", "#599861",
+  "#616163",  "#FFCDB2", "#242F40", "#6D9F71", 
+   "#CCA43B", "#F92A82", "#ED7B84", "#7EB77F", 
+  "#DEC4A1", "#E5D1D0", '#0E8482', '#C9DAEA', '#337357', 
+  '#95C623', '#E55812', '#04471C', '#F2D7EE', '#D3BCC0', 
+  '#A5668B', '#69306D', '#0E103D', '#1A535C', '#4ECDC4', 
+  '#F7FFF7', '#FF6B6B', '#FFE66D', '#6699CC', '#FFF275', 
+  '#FF8C42', '#FF3C38', '#A23E48', '#000000', '#CF5C36', 
+  '#EEE5E9', '#7C7C7C', '#EFC88B', '#2E5266', '#6E8898', 
+  '#9FB1BC', '#D3D0CB', '#E2C044', '#5BC0EB', '#FDE74C', 
+  '#9BC53D', '#E55934', '#FA7921', "#CD9BCD", "#508578", "#DA5724",
+  "#CBD588", "#5F7FC7", "orange",  
+  "#AD6F3B", "#673770","#D14285", "#652926", "#C84248", 
+  "#8569D5", "#5E738F","#D1A33D", "#8A7C64", "#599861",
+  "#616163",  "#FFCDB2", "#242F40", "#6D9F71", 
+   "#CCA43B", "#F92A82", "#ED7B84", "#7EB77F", 
+  "#DEC4A1", "#E5D1D0", '#0E8482', '#C9DAEA', '#337357', 
+  '#95C623', '#E55812', '#04471C', '#F2D7EE', '#D3BCC0', 
+  '#A5668B', '#69306D', '#0E103D', '#1A535C', '#4ECDC4', 
+  '#F7FFF7', '#FF6B6B', '#FFE66D', '#6699CC', '#FFF275', 
+  '#FF8C42', '#FF3C38', '#A23E48', '#000000', '#CF5C36', 
+  '#EEE5E9', '#7C7C7C', '#EFC88B', '#2E5266', '#6E8898', 
+  '#9FB1BC', '#D3D0CB', '#E2C044', '#5BC0EB', '#FDE74C', 
+  '#9BC53D', '#E55934', '#FA7921', "#CD9BCD", "#508578", "#DA5724",
+  "#CBD588", "#5F7FC7", "orange")
+
+my_color2 <- c(
+  "#CBD588", "#DA5724","#AD6F3B", "#673770","#D14285", 
+  "#652926", "#C84248", "#8569D5", "#5E738F","#D1A33D", 
+  "#8A7C64", "#599861", "#616163",  "#FFCDB2", "#242F40", 
+  "#6D9F71", "#CCA43B", "#F92A82", "#ED7B84", "#7EB77F", 
+  "#DEC4A1", "#E5D1D0", '#0E8482', '#C9DAEA', '#337357', 
+  '#95C623', '#E55812', '#04471C', '#F2D7EE', '#D3BCC0', 
+  '#A5668B', '#69306D', '#0E103D', '#1A535C', '#4ECDC4', 
+  '#F7FFF7', '#FF6B6B', '#FFE66D', '#6699CC', '#FFF275', 
+  '#FF8C42', '#FF3C38', '#A23E48', '#000000', '#CF5C36', 
+  '#9FB1BC', 'springgreen', '#E2C044', '#5BC0EB', 'pink', 
+  "orange", "#CBD588", "#5F7FC7",  
+  '#9BC53D', '#E55934', '#FA7921', "#CD9BCD", "#508578", "#DA5724",
+  "#CBD588", "#5F7FC7", "orange",  
+  "#AD6F3B", "#673770","#D14285", "#652926", "#C84248", 
+  "#8569D5", "#5E738F","#D1A33D", "#8A7C64", "#599861",
+  "#616163",  "#FFCDB2", "#242F40", "#6D9F71", 
+   "#CCA43B", "#F92A82", "#ED7B84", "#7EB77F", 
+  "#DEC4A1", "#E5D1D0", '#0E8482', '#C9DAEA', '#337357', 
+  '#95C623', '#E55812', '#04471C', '#F2D7EE', '#D3BCC0', 
+  '#A5668B', '#69306D', '#0E103D', '#1A535C', '#4ECDC4', 
+  '#F7FFF7', '#FF6B6B', '#FFE66D', '#6699CC', '#FFF275', 
+  '#FF8C42', '#FF3C38', '#A23E48', '#000000', '#CF5C36', 
+  '#EEE5E9', '#7C7C7C', '#EFC88B', '#2E5266', '#6E8898', 
+  '#9FB1BC', '#D3D0CB', '#E2C044', '#5BC0EB', '#FDE74C', 
+  '#9BC53D', '#E55934', '#FA7921', "#CD9BCD", "#508578", "#DA5724",
+  "#CBD588", "#5F7FC7", "orange",  
+  "#AD6F3B", "#673770","#D14285", "#652926", "#C84248", 
+  "#8569D5", "#5E738F","#D1A33D", "#8A7C64", "#599861",
+  "#616163",  "#FFCDB2", "#242F40", "#6D9F71", 
+   "#CCA43B", "#F92A82", "#ED7B84", "#7EB77F", 
+  "#DEC4A1", "#E5D1D0", '#0E8482', '#C9DAEA', '#337357', 
+  '#95C623', '#E55812', '#04471C', '#F2D7EE', '#D3BCC0', 
+  '#A5668B', '#69306D', '#0E103D', '#1A535C', '#4ECDC4', 
+  '#F7FFF7', '#FF6B6B', '#FFE66D', '#6699CC', '#FFF275', 
+  '#FF8C42', '#FF3C38', '#A23E48', '#000000', '#CF5C36', 
+  '#EEE5E9', '#7C7C7C', '#EFC88B', '#2E5266', '#6E8898', 
+  '#9FB1BC', '#D3D0CB', '#E2C044', '#5BC0EB', '#FDE74C', 
+  '#9BC53D', '#E55934', '#FA7921', "#CD9BCD", "#508578", "#DA5724",
+  "#CBD588", "#5F7FC7", "orange",  
+  "#AD6F3B", "#673770","#D14285", "#652926", "#C84248", 
+  "#8569D5", "#5E738F","#D1A33D", "#8A7C64", "#599861",
+  "#616163",  "#FFCDB2", "#242F40", "#6D9F71", 
+   "#CCA43B", "#F92A82", "#ED7B84", "#7EB77F", 
+  "#DEC4A1", "#E5D1D0", '#0E8482', '#C9DAEA', '#337357', 
+  '#95C623', '#E55812', '#04471C', '#F2D7EE', '#D3BCC0', 
+  '#A5668B', '#69306D', '#0E103D', '#1A535C', '#4ECDC4', 
+  '#F7FFF7', '#FF6B6B', '#FFE66D', '#6699CC', '#FFF275', 
+  '#FF8C42', '#FF3C38', '#A23E48', '#000000', '#CF5C36', 
+  '#EEE5E9', '#7C7C7C', '#EFC88B', '#2E5266', '#6E8898', 
+  '#9FB1BC', '#D3D0CB', '#E2C044', '#5BC0EB', '#FDE74C', 
+  '#9BC53D', '#E55934', '#FA7921', "#CD9BCD", "#508578", "#DA5724",
+  "#CBD588", "#5F7FC7", "orange",  
+  "#AD6F3B", "#673770","#D14285", "#652926", "#C84248", 
+  "#8569D5", "#5E738F","#D1A33D", "#8A7C64", "#599861",
+  "#616163",  "#FFCDB2", "#242F40", "#6D9F71", 
+   "#CCA43B", "#F92A82", "#ED7B84", "#7EB77F", 
+  "#DEC4A1", "#E5D1D0", '#0E8482', '#C9DAEA', '#337357', 
+  '#95C623', '#E55812', '#04471C', '#F2D7EE', '#D3BCC0', 
+  '#A5668B', '#69306D', '#0E103D', '#1A535C', '#4ECDC4', 
+  '#F7FFF7', '#FF6B6B', '#FFE66D', '#6699CC', '#FFF275', 
+  '#FF8C42', '#FF3C38', '#A23E48', '#000000', '#CF5C36', 
+  '#EEE5E9', '#7C7C7C', '#EFC88B', '#2E5266', '#6E8898', 
+  '#9FB1BC', '#D3D0CB', '#E2C044', '#5BC0EB', '#FDE74C', 
+  '#9BC53D', '#E55934', '#FA7921', "#CD9BCD", "#508578", "#DA5724",
+  "#CBD588", "#5F7FC7", "orange",  
+  "#AD6F3B", "#673770","#D14285", "#652926", "#C84248", 
+  "#8569D5", "#5E738F","#D1A33D", "#8A7C64", "#599861",
+  "#616163",  "#FFCDB2", "#242F40", "#6D9F71", 
+   "#CCA43B", "#F92A82", "#ED7B84", "#7EB77F", 
+  "#DEC4A1", "#E5D1D0", '#0E8482', '#C9DAEA', '#337357', 
+  '#95C623', '#E55812', '#04471C', '#F2D7EE', '#D3BCC0', 
+  '#A5668B', '#69306D', '#0E103D', '#1A535C', '#4ECDC4', 
+  '#F7FFF7', '#FF6B6B', '#FFE66D', '#6699CC', '#FFF275', 
+  '#FF8C42', '#FF3C38', '#A23E48', '#000000', '#CF5C36', 
+  '#EEE5E9', '#7C7C7C', '#EFC88B', '#2E5266', '#6E8898', 
+  '#9FB1BC', '#D3D0CB', '#E2C044', '#5BC0EB', '#FDE74C', 
+  '#9BC53D', '#E55934', '#FA7921', "#CD9BCD", "#508578", "#DA5724",
+  "#CBD588", "orange")
+
+# plot relative abundance
+df.sci.rel.p1 <- ggplot(df.sci.rel, aes(x=Peptide_id, y = RelAbundance, fill = Strain)) + 
+  geom_bar(stat="identity", width = 0.8, position = 'stack', colour="black") +
+  #scale_fill_discrete() +
+  scale_fill_manual(values = my_color2) +
+  
+  xlab('')+
+  ylab("Relative Abundance (%) \n") +
+  ggtitle("Matched taxa for each peptide \n") +
+  ## adjust positions
+  guides(fill = guide_legend(ncol = 7,reverse = T))+
+  theme(legend.position="bottom") +
+  theme(plot.title = element_text(size = 20,hjust = 0.5, face='bold')) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, face='bold')) + 
+  theme(axis.title.y = element_text(size = 13,hjust = 0.5, face='bold')) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.95, vjust=0.1,size=12, face='bold',color='black'))+
+  theme(axis.text.y = element_text(size=15, face='bold',color='black'))+
+  scale_y_continuous(breaks=seq(0,1000,100))+
+  theme(panel.grid.major = element_blank()) +
+  theme(panel.grid.minor = element_blank(), panel.background=element_blank(),panel.border=element_blank(), plot.background=element_blank())
+
+df.sci.rel.p1
+
+
+```
+
+Let's go to the upper taxa level and see. \
+
+Making of function
+
+
+```{r}
+# function for plotting
+
+rhythmic_tax_profile <- function(rain_sig, depth="SRF", df_peptax, tax_level,legend_coln=7){
+  # tax_level=c("Strain","Species","Genus","Family","Order","Class","Phylum","Kingdom","Domain")
+  tax_col=tax_level
+  # first test with the Surface periodic peptides
+  rhythm_SRF <- rain_sig %>% filter(Depth==depth) %>% select(Peptide_id)
+  rhy_tax_SRF <- rhythm_SRF %>% left_join(df_peptax, by=c("Peptide_id"="Peptide_id"))
+  rhy_tax_SRF %>% select(Peptide_id) %>% unique() %>% dim() # 69 peptides
+  # Working only with the peptides that have ORF matches
+  rhy_tax_SRF2 <- rhy_tax_SRF %>% filter(!is.na(ORF))
+  # NA in taxonomy?
+  rhy_tax_SRF2 %>% filter(is.na(!!sym(tax_col)))
+
+  # plot the scientific name level histogram
+  df.sci <- rhy_tax_SRF2 %>% count(Peptide_id, !!sym(tax_col))
+
+  # we need to group by Peptides
+  df.sci.rel <- df.sci %>%  
+    group_by(Peptide_id) %>%                               
+    mutate(RelAbundance = n*100/sum(n))  # Transform to rel. abundance
+  
+  ### let's test
+  ord <- df.sci.rel %>% group_by(!!sym(tax_col)) %>% summarise(sumRel = sum(RelAbundance)) %>% arrange(sumRel)
+  vec <- ord[,1]
+  tail(vec)
+  
+  # plot relative abundance
+  df.sci.rel.p1 <- ggplot(df.sci.rel, aes_string(x="Peptide_id", y = "RelAbundance", fill = tax_col)) + 
+    geom_bar(stat="identity", width = 0.8, position = 'stack', colour="black") +
+    scale_fill_manual(values = my_color2) +
+    xlab('')+
+    ylab("Relative Abundance (%) \n") +
+    ggtitle(paste0("Matched taxa for rhythmic peptides (Depth: ",depth," / Level: ",tax_col,")")) +
+    ## adjust positions
+    guides(fill = guide_legend(ncol = legend_coln,reverse = T))+
+    theme(legend.position="bottom") +
+    theme(plot.title = element_text(size = 20,hjust = 0.5, face='bold')) + 
+    theme(axis.title.x = element_text(size = 15,hjust = 0.5, face='bold')) + 
+    theme(axis.title.y = element_text(size = 13,hjust = 0.5, face='bold')) + 
+    theme(axis.text.x = element_text(angle = 90, hjust = 0.95, vjust=0.4,size=12, face='bold',color='black'))+
+    theme(axis.text.y = element_text(size=15, face='bold',color='black'))+
+    scale_y_continuous(breaks=seq(0,100,10))+
+    theme(panel.grid.major = element_blank()) +
+    theme(panel.grid.minor = element_blank(), panel.background=element_blank(),panel.border=element_blank(), plot.background=element_blank())
+  
+  return(df.sci.rel.p1)
+}
+```
+
+Plotting for different levels
+```{r}
+# SRF rhythmic taxa - Strain level
+rhythmic_tax_profile(rain_sig, depth="SRF", df_peptax, tax_level="Strain", legend_coln=7)
+
+# SRF rhythmic taxa - Species level
+rhythmic_tax_profile(rain_sig, depth="SRF", df_peptax, tax_level="Species", legend_coln=7)
+
+# SRF rhythmic taxa - Genus level
+rhythmic_tax_profile(rain_sig, depth="SRF", df_peptax, tax_level="Genus", legend_coln=7)
+
+# SRF rhythmic taxa - Family level
+rhythmic_tax_profile(rain_sig, depth="SRF", df_peptax, tax_level="Family", legend_coln=7)
+
+# SRF rhythmic taxa - Order level
+rhythmic_tax_profile(rain_sig, depth="SRF", df_peptax, tax_level="Order", legend_coln=7)
+
+# SRF rhythmic taxa - Phylum level
+rhythmic_tax_profile(rain_sig, depth="SRF", df_peptax, tax_level="Phylum", legend_coln=7)
+
+# SRF rhythmic taxa - Kingdom level
+rhythmic_tax_profile(rain_sig, depth="SRF", df_peptax, tax_level="Kingdom", legend_coln=7)
+
+# SRF rhythmic taxa - Domain level
+rhythmic_tax_profile(rain_sig, depth="SRF", df_peptax, tax_level="Domain", legend_coln=7)
+
+
+```
+
+
+
