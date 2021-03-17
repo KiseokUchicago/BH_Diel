@@ -13,3 +13,4 @@ Welcome to my research website.
 * [Converting_tsv_to_dataframe](convert_tsv_to_dataframe.html)
 * [Peptide_level_visualization](peptide_level_visualization.html)
 * [Time_series_clustering](clustering_time_series.html)
+* [Taxonomy_assignment_and_analysis](taxonomy_assignment_and_analysis.html)
