@@ -126,7 +126,7 @@ dt.out[, Base.Peptide.Sequence := cummax(Base.Peptide.Sequence)]
 
 # getting ready to make plot
 df.out <- tibble::rowid_to_column(dt.out) 
-df.out2 <- df.out %>% select(rowid, Base.Peptide.Sequence) %>% rename(value=Base.Peptide.Sequence) ## 3366 unique peptides
+df.out2 <- df.out %>% select(rowid, Base.Peptide.Sequence) %>% rename(value=Base.Peptide.Sequence) ## 3326 unique peptides
 # Making line plot
 theme_set(theme_bw())
 
@@ -812,7 +812,7 @@ hist_abundance_ratio <- function(depth="SRF",time="T1"){
   theme_set(theme_bw())
   h1 <- ggplot(df_ave_SRF_T1, aes(x=Mean_abundance_ratio)) +
     geom_freqpoly(binwidth = 0.05, aes(color=Replicate)) +
-    scale_fill_brewer(palette=' Set2') +
+    scale_fill_brewer(palette='Set2') +
     ylab("Mean protein abundance ratio (log2(16O/18O)) \n") +
     xlab("\n Frequency of ratio") +
     ggtitle(paste0("Histogram of sample (",depth,"-",time,") \n"))+
@@ -909,8 +909,8 @@ df_8_S <- df_filt8 %>% filter(Depth=='SRF') %>% select(Peptide_id,Time,Ave_abund
 # reshape the dataframe with timepoints
 library(maditr)
 v_names <- c("T1","T2","T3","T4","T5","T6","T7","T8")
-df_8$Time <- factor(df_8$Time, levels=v_names)
-dc_8 <- dcast(df_8, Peptide_id ~ Time, value.var = "Ave_abundance_ratio")
+df_8_S$Time <- factor(df_8_S$Time, levels=v_names)
+dc_8 <- dcast(df_8_S, Peptide_id ~ Time, value.var = "Ave_abundance_ratio")
 # make Peptide_id more simpler (Pep_1 -> 1)
 dc_8$Peptide_id <- str_replace(dc_8$Peptide_id,"Pep_","P.")
 # make first column into row name

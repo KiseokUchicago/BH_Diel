@@ -13,6 +13,7 @@ knitr::opts_chunk$set(fig.width=11, fig.height=9,
                       error=TRUE, echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE)
 ```
 
+It is very important to change I to L.
 
 ```{r}
 # libraries
@@ -25,6 +26,11 @@ library(ggplot2)
 df <- read.csv(file='data/diel-Mar2/IPTL-CyanoSUMI-MI41M-18OMix-16O-B-T1-BDCL_filtered_PSMs.tsv', sep = '\t')
 df <- tibble::rownames_to_column(df, var = 'Index')
 df2 <- df %>% select(Index,Scan.Number, Base.Peptide.Sequence, log2.18O.16O.Ratio, Target., Decoy.)
+# change I to L
+sum(grepl("I", df2$Base.Peptide.Sequence))
+df2$Base.Peptide.Sequence <- gsub("I","L",df2$Base.Peptide.Sequence) 
+sum(grepl("I", df2$Base.Peptide.Sequence))
+
 df3 <- df2 %>% separate(Scan.Number, into = c('dir',"file_name"), sep = 'IPTL-')
 colnames(df3)
 df4 <- df3 %>% select(-dir)
@@ -72,6 +78,8 @@ convert_tsv <- function(file_number, filename){
   df <- read.csv(file=paste0(directory_path,"/" ,filename), sep = '\t')
   df <- tibble::rownames_to_column(df, var = 'Index')
   df2 <- df %>% select(Index,Scan.Number, Base.Peptide.Sequence, log2.18O.16O.Ratio, Target., Decoy.)
+  # change I to L
+  df2$Base.Peptide.Sequence <- gsub("I","L",df2$Base.Peptide.Sequence) 
   df3 <- df2 %>% separate(Scan.Number, into = c('dir',"file_name"), sep = 'IPTL-')
   colnames(df3)
   df4 <- df3 %>% select(-dir)
