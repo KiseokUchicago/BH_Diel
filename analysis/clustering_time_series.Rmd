@@ -29,6 +29,8 @@ library(tidyr)
 library(stringr)
 library(ggplot2)
 library(formattable)
+library(dtwclust)
+require("TSclust")
 ```
 
 Input data formating
@@ -368,10 +370,9 @@ plot(pc_tp4, type="centroid")
 plot(pc_tp5)
 plot(pc_tp5, type="centroid")
 
-
 ```
 
-### Other Depths with Tadpole
+### 4. Using Tadpole for other depths
 
 (2) DCL
 
@@ -421,6 +422,61 @@ partial_tadpole(df_filt8, depth="BDCL",k=3)
 partial_tadpole(df_filt8, depth="BDCL",k=4)
 partial_tadpole(df_filt8, depth="BDCL",k=5)
 partial_tadpole(df_filt8, depth="BDCL",k=6)
+
+```
+
+### 4.1. Getting Cluster id with Tadpole
+
+Function to get the cluster id for clusters
+
+```{r}
+# get the cluster id for clusters
+
+# function to plot and get dataframe for cluster_id for Peptide_id
+peptide_to_clusters_tadpole <- function(df_filt8,depth="SRF",num_cluster=4L){
+  df_SRF8 <- df_filt8 %>% filter(Depth==depth) %>% select(Peptide_id,Time,Ave_abundance_ratio)
+  # reshape the dataframe with timepoints
+  library(maditr)
+  v_names <- c("T1","T2","T3","T4","T5","T6","T7","T8")
+  df_SRF8$Time <- factor(df_SRF8$Time, levels=v_names)
+  dc_SRF8 <- dcast(df_SRF8, Peptide_id ~ Time, value.var = "Ave_abundance_ratio")
+  dc_SRF8_save <- dc_SRF8
+  # make Peptide_id more simpler (Pep_1 -> P.1)
+  dc_SRF8$Peptide_id <- str_replace(dc_SRF8$Peptide_id,"Pep_","P.")
+  # make first column into row name
+  dc_SRF8 <- tibble::column_to_rownames(dc_SRF8, var="Peptide_id")
+  dim(dc_SRF8)
+  # make it into list format
+  # l_SRF8 <- setNames(split(dc_SRF8, seq(nrow(dc_SRF8))), rownames(dc_SRF8))
+  l_SRF8 <- as.list(as.data.frame(t(dc_SRF8)))
+  l_SRF8_z <- zscore(l_SRF8)
+  # tadpole
+  pc_tp4 <- tsclust(l_SRF8_z, k = num_cluster, type = "t",
+    seed = 8, trace = TRUE,
+    control = tadpole_control(dc = 1.5,
+    window.size = 4L))
+  plot(pc_tp4)
+  plot(pc_tp4, type="centroid")
+  df_cluster <- data.frame(Peptide_id = dc_SRF8_save$Peptide_id, Cluster_id = pc_tp4@cluster)
+  return(df_cluster)
+}
+
+
+```
+
+Make dataframe for all depths
+
+```{r}
+# 4 clusters
+tad_SRF4 <- peptide_to_clusters_tadpole(df_filt8,depth="SRF",num_cluster=4L)
+write.table(tad_SRF4,file='tad_SRF4.tsv', sep='\t',row.names = F)
+
+tad_DCL4 <- peptide_to_clusters_tadpole(df_filt8,depth="DCL",num_cluster=4L)
+write.table(tad_DCL4,file='tad_DCL4.tsv', sep='\t',row.names = F)
+
+tad_BDCL4 <- peptide_to_clusters_tadpole(df_filt8,depth="BDCL",num_cluster=4L)
+write.table(tad_BDCL4,file='tad_BDCL4.tsv', sep='\t',row.names = F)
+
 
 ```
 
