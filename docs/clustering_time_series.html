@@ -382,7 +382,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-03-18
+<strong>Last updated:</strong> 2021-03-20
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -473,16 +473,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltreefb4d76396edc94e7c43cff8cad6db42ebadbaabftargetblankfb4d763a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/fb4d76396edc94e7c43cff8cad6db42ebadbaabf" target="_blank">fb4d763</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltreea2a49038d7cd9edb488d21a259b5e484af3b0838targetblanka2a4903a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/a2a49038d7cd9edb488d21a259b5e484af3b0838" target="_blank">a2a4903</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltreefb4d76396edc94e7c43cff8cad6db42ebadbaabftargetblankfb4d763a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltreea2a49038d7cd9edb488d21a259b5e484af3b0838targetblanka2a4903a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/fb4d76396edc94e7c43cff8cad6db42ebadbaabf" target="_blank">fb4d763</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/a2a49038d7cd9edb488d21a259b5e484af3b0838" target="_blank">a2a4903</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -628,6 +628,12 @@ Untracked files:
     Untracked:  67_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T8-SRF_filtered_PSMs.tsv
     Untracked:  67_IPTL-CyanoSUMI-MI41M-18OMix-16O-C-T8-SRF_filtered_PSMs.xlsx
     Untracked:  Depth_tax_12_15.pdf
+    Untracked:  Depth_tax_class_12_15.pdf
+    Untracked:  Depth_tax_family_12_15.pdf
+    Untracked:  Depth_tax_genus_12_15.pdf
+    Untracked:  Depth_tax_order_12_15.pdf
+    Untracked:  Depth_tax_phylum_12_15.pdf
+    Untracked:  Depth_tax_strain_15_20.pdf
     Untracked:  Hist_freq_of_peptide_id.pdf
     Untracked:  Hist_intensity_replicate_centered.pdf
     Untracked:  Hist_intensity_replicate_not_centered.pdf
@@ -650,6 +656,9 @@ Untracked files:
     Untracked:  SRF_Genus_15_18.pdf
     Untracked:  SRF_family_12_15.pdf
     Untracked:  SRF_order_12_15.pdf
+    Untracked:  Tadpole_SRF4_family_12_15.pdf
+    Untracked:  Tadpole_SRF4_genus_15_18.pdf
+    Untracked:  Tadpole_SRF4_strain_20_25.pdf
     Untracked:  Tax_strain.pdf
     Untracked:  Tax_strain_24_31.pdf
     Untracked:  Taxonomy_for_rhythmic_peptide.pdf
@@ -670,6 +679,12 @@ Untracked files:
     Untracked:  data/synthetic_control.data.txt
     Untracked:  hclust_DTW_average_wide.pdf
     Untracked:  hclust_DTW_average_wide_after_normalization.pdf
+    Untracked:  tad_BDCL4.tsv
+    Untracked:  tad_DCL4.tsv
+    Untracked:  tad_SRF4.tsv
+
+Unstaged changes:
+    Modified:   analysis/taxonomy_assignment_and_analysis.Rmd
 
 </code></pre>
 <p>
@@ -708,6 +723,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KiseokUchicago/BH_Diel/blob/a2a49038d7cd9edb488d21a259b5e484af3b0838/analysis/clustering_time_series.Rmd" target="_blank">a2a4903</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-20
+</td>
+<td>
+cluster
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KiseokUchicago/BH_Diel/2ea3135f1dd0cccf8d6107471f27491185949c12/docs/clustering_time_series.html" target="_blank">2ea3135</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-19
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -769,7 +818,9 @@ library(dplyr)
 library(tidyr)
 library(stringr)
 library(ggplot2)
-library(formattable)</code></pre>
+library(formattable)
+library(dtwclust)
+require(&quot;TSclust&quot;)</code></pre>
 <p>Input data formating</p>
 <pre class="r"><code># read in combined table of 24 samples (Replicate B)
 df_pep &lt;- read.table(&quot;Replicate_ABC67_combined.tsv&quot;,sep=&#39;\t&#39;,header = T)
@@ -970,12 +1021,9 @@ l_SRF8 &lt;- make_list(df_filt8,&#39;SRF&#39;)
 l_DCL8 &lt;- make_list(df_filt8,&#39;DCL&#39;)
 l_BDCL8 &lt;- make_list(df_filt8,&#39;BDCL&#39;)
 
-l_SRF8_z &lt;- zscore(l_SRF8)</code></pre>
-<pre><code>Error in zscore(l_SRF8): could not find function &quot;zscore&quot;</code></pre>
-<pre class="r"><code>l_DCL8_z &lt;- zscore(l_DCL8)</code></pre>
-<pre><code>Error in zscore(l_DCL8): could not find function &quot;zscore&quot;</code></pre>
-<pre class="r"><code>l_BDCL8_z &lt;- zscore(l_BDCL8)</code></pre>
-<pre><code>Error in zscore(l_BDCL8): could not find function &quot;zscore&quot;</code></pre>
+l_SRF8_z &lt;- zscore(l_SRF8)
+l_DCL8_z &lt;- zscore(l_DCL8)
+l_BDCL8_z &lt;- zscore(l_BDCL8)</code></pre>
 </div>
 <div id="hierarchical-clustering-w-shape-based-distance" class="section level3">
 <h3>2. Hierarchical clustering w/ shape based distance</h3>
@@ -2395,7 +2443,7 @@ Iteration 11: Changes / Distsum = 2 / 842.8662
     DBA Iteration: 1, 2, 3 - Converged!
 Iteration 12: Changes / Distsum = 0 / 842.8333
 
-    Elapsed time is 3.14 seconds.</code></pre>
+    Elapsed time is 4.02 seconds.</code></pre>
 <pre class="r"><code>internal_CVI(pc_dtw, &quot;Partial clustering with DTW distance&quot;)</code></pre>
 <pre><code>    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
          11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
@@ -2489,7 +2537,7 @@ Iteration 15: Changes / Distsum = 4 / 1091.502
     DBA Iteration: 1, 2, 3 - Converged!
 Iteration 16: Changes / Distsum = 0 / 1091.377
 
-    Elapsed time is 0.31 seconds.</code></pre>
+    Elapsed time is 0.42 seconds.</code></pre>
 <pre class="r"><code>pc_dtw3 &lt;- tsclust(l_SRF8_z, k = 3L,
   distance = &quot;dtw_basic&quot;, centroid = &quot;dba&quot;,
   trace = TRUE, seed = 8,
@@ -2572,7 +2620,7 @@ Iteration 17: Changes / Distsum = 1 / 1023.693
     DBA Iteration: 1, 2 - Converged!
 Iteration 18: Changes / Distsum = 0 / 1023.745
 
-    Elapsed time is 0.32 seconds.</code></pre>
+    Elapsed time is 0.39 seconds.</code></pre>
 <pre class="r"><code>pc_dtw4 &lt;- tsclust(l_SRF8_z, k = 4L,
   distance = &quot;dtw_basic&quot;, centroid = &quot;dba&quot;,
   trace = TRUE, seed = 8,
@@ -2628,7 +2676,7 @@ Iteration 9: Changes / Distsum = 1 / 990.8614
     DBA Iteration: 1, 2, 3 - Converged!
 Iteration 10: Changes / Distsum = 0 / 990.9112
 
-    Elapsed time is 0.17 seconds.</code></pre>
+    Elapsed time is 0.21 seconds.</code></pre>
 <pre class="r"><code># Prototypes for 2 clusters
 plot(pc_dtw2)</code></pre>
 <p><img src="figure/clustering_time_series.Rmd/unnamed-chunk-5-2.png" width="1056" style="display: block; margin: auto;" /></p>
@@ -3975,7 +4023,7 @@ Iteration 16: Changes / Distsum = 1 / 842.6386
     DBA Iteration: 1, 2 - Converged!
 Iteration 17: Changes / Distsum = 0 / 842.5875
 
-    Elapsed time is 3.95 seconds.</code></pre>
+    Elapsed time is 4.91 seconds.</code></pre>
 <pre class="r"><code>internal_CVI(pc_dtwlb, &quot;Partial clustering with DTW_lb distance&quot;)</code></pre>
 <pre><code>    DBA Iteration: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
          11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
@@ -4097,7 +4145,7 @@ Iteration 10: Changes / Distsum = 1 / 872.9496
     DBA Iteration: 1, 2 - Converged!
 Iteration 11: Changes / Distsum = 0 / 872.8778
 
-    Elapsed time is 0.22 seconds.</code></pre>
+    Elapsed time is 0.27 seconds.</code></pre>
 <pre class="r"><code># Prototypes for 8 clusters
 plot(pc_dtwlb8)</code></pre>
 <p><img src="figure/clustering_time_series.Rmd/unnamed-chunk-6-2.png" width="1056" style="display: block; margin: auto;" /></p>
@@ -4205,7 +4253,7 @@ Iteration 18: Changes / Distsum = 2 / 982.4296
     DBA Iteration: 1, 2 - Converged!
 Iteration 19: Changes / Distsum = 0 / 982.3685
 
-    Elapsed time is 0.35 seconds.</code></pre>
+    Elapsed time is 0.42 seconds.</code></pre>
 <pre class="r"><code># Prototypes for 8 clusters
 plot(pc_dtwlb4)</code></pre>
 <p><img src="figure/clustering_time_series.Rmd/unnamed-chunk-6-4.png" width="1056" style="display: block; margin: auto;" /></p>
@@ -4429,7 +4477,7 @@ Iteration 15: Changes / Distsum = 2 / 104.3224
 Iteration 16: Changes / Distsum = 1 / 104.3121
 Iteration 17: Changes / Distsum = 0 / 104.3047
 
-    Elapsed time is 10.2 seconds.</code></pre>
+    Elapsed time is 10.68 seconds.</code></pre>
 <pre class="r"><code>internal_CVI(pc_ks, &quot;Partial clustering with k-shape method&quot;)</code></pre>
 <p><img src="figure/clustering_time_series.Rmd/unnamed-chunk-7-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># use 2, 3, or 4 clusters
@@ -4515,7 +4563,7 @@ Iteration 54: Changes / Distsum = 5 / 151.1062
 Iteration 55: Changes / Distsum = 1 / 151.1062
 Iteration 56: Changes / Distsum = 0 / 151.1071
 
-    Elapsed time is 3.04 seconds.</code></pre>
+    Elapsed time is 3.15 seconds.</code></pre>
 <pre class="r"><code>pc_ks4 &lt;- tsclust(l_SRF8_z, k = 4L,
   distance = &quot;sbd&quot;, centroid = &quot;shape&quot;,
   seed = 8, trace = TRUE)</code></pre>
@@ -4546,7 +4594,7 @@ Iteration 24: Changes / Distsum = 5 / 139.9031
 Iteration 25: Changes / Distsum = 5 / 139.8854
 Iteration 26: Changes / Distsum =  0 / 139.856
 
-    Elapsed time is 1.45 seconds.</code></pre>
+    Elapsed time is 1.5 seconds.</code></pre>
 <pre class="r"><code>pc_ks5 &lt;- tsclust(l_SRF8_z, k = 5L,
   distance = &quot;sbd&quot;, centroid = &quot;shape&quot;,
   seed = 8, trace = TRUE)</code></pre>
@@ -4623,7 +4671,7 @@ TADPole completed for k = 8 &amp; dc = 1.5
 TADPole completed for k = 9 &amp; dc = 1.5
 TADPole completed for k = 10 &amp; dc = 1.5
 
-    Elapsed time is 0.64 seconds.</code></pre>
+    Elapsed time is 0.56 seconds.</code></pre>
 <pre class="r"><code>internal_CVI(pc_tp, &quot;Partial clustering with Tadpole method&quot;)</code></pre>
 <p><img src="figure/clustering_time_series.Rmd/unnamed-chunk-8-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># use 4 or 5 clusters
@@ -4643,7 +4691,7 @@ Performing cluster assignment
 
 TADPole completed for k = 4 &amp; dc = 1.5
 
-    Elapsed time is 0.43 seconds.</code></pre>
+    Elapsed time is 0.45 seconds.</code></pre>
 <pre class="r"><code>pc_tp5 &lt;- tsclust(l_SRF8_z, k = 5L, type = &quot;t&quot;,
   seed = 8, trace = TRUE,
   control = tadpole_control(dc = 1.5,
@@ -4660,7 +4708,7 @@ Performing cluster assignment
 
 TADPole completed for k = 5 &amp; dc = 1.5
 
-    Elapsed time is 0.43 seconds.</code></pre>
+    Elapsed time is 0.44 seconds.</code></pre>
 <pre class="r"><code># Prototypes for 4,5 clusters
 plot(pc_tp4)</code></pre>
 <p><img src="figure/clustering_time_series.Rmd/unnamed-chunk-8-2.png" width="1056" style="display: block; margin: auto;" /></p>
@@ -4671,8 +4719,8 @@ plot(pc_tp4)</code></pre>
 <pre class="r"><code>plot(pc_tp5, type=&quot;centroid&quot;)</code></pre>
 <p><img src="figure/clustering_time_series.Rmd/unnamed-chunk-8-5.png" width="1056" style="display: block; margin: auto;" /></p>
 </div>
-<div id="other-depths-with-tadpole" class="section level3">
-<h3>Other Depths with Tadpole</h3>
+<div id="using-tadpole-for-other-depths" class="section level3">
+<h3>4. Using Tadpole for other depths</h3>
 <ol start="2" style="list-style-type: decimal">
 <li>DCL</li>
 </ol>
@@ -4681,7 +4729,27 @@ pc_tp &lt;- tsclust(l_DCL8_z, k = 2L:10L, type = &quot;t&quot;,
   seed = 8, trace = TRUE,
   control = tadpole_control(dc = 1.5,
   window.size = 4L))</code></pre>
-<pre><code>Error in tslist(series, error.check): object &#39;l_DCL8_z&#39; not found</code></pre>
+<pre><code>
+    Entering TADPole...
+
+Computing lower and upper bound matrices
+Pruning during local density calculation
+Pruning during nearest-neighbor distance calculation (phase 1)
+Pruning during nearest-neighbor distance calculation (phase 2)
+Pruning percentage = 5.39%
+Performing cluster assignment
+
+TADPole completed for k = 2 &amp; dc = 1.5
+TADPole completed for k = 3 &amp; dc = 1.5
+TADPole completed for k = 4 &amp; dc = 1.5
+TADPole completed for k = 5 &amp; dc = 1.5
+TADPole completed for k = 6 &amp; dc = 1.5
+TADPole completed for k = 7 &amp; dc = 1.5
+TADPole completed for k = 8 &amp; dc = 1.5
+TADPole completed for k = 9 &amp; dc = 1.5
+TADPole completed for k = 10 &amp; dc = 1.5
+
+    Elapsed time is 0.43 seconds.</code></pre>
 <pre class="r"><code>internal_CVI(pc_tp, &quot;Partial clustering with Tadpole method&quot;)</code></pre>
 <p><img src="figure/clustering_time_series.Rmd/unnamed-chunk-9-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># use 4 or 5 clusters
@@ -4710,7 +4778,7 @@ Performing cluster assignment
 
 TADPole completed for k = 3 &amp; dc = 1.5
 
-    Elapsed time is 0.3 seconds.</code></pre>
+    Elapsed time is 0.29 seconds.</code></pre>
 <p><img src="figure/clustering_time_series.Rmd/unnamed-chunk-9-2.png" width="1056" style="display: block; margin: auto;" /><img src="figure/clustering_time_series.Rmd/unnamed-chunk-9-3.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>partial_tadpole(df_filt8, depth=&quot;DCL&quot;,k=4)</code></pre>
 <pre><code>
@@ -4725,7 +4793,7 @@ Performing cluster assignment
 
 TADPole completed for k = 4 &amp; dc = 1.5
 
-    Elapsed time is 0.3 seconds.</code></pre>
+    Elapsed time is 0.33 seconds.</code></pre>
 <p><img src="figure/clustering_time_series.Rmd/unnamed-chunk-9-4.png" width="1056" style="display: block; margin: auto;" /><img src="figure/clustering_time_series.Rmd/unnamed-chunk-9-5.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>partial_tadpole(df_filt8, depth=&quot;DCL&quot;,k=5)</code></pre>
 <pre><code>
@@ -4740,7 +4808,7 @@ Performing cluster assignment
 
 TADPole completed for k = 5 &amp; dc = 1.5
 
-    Elapsed time is 0.3 seconds.</code></pre>
+    Elapsed time is 0.32 seconds.</code></pre>
 <p><img src="figure/clustering_time_series.Rmd/unnamed-chunk-9-6.png" width="1056" style="display: block; margin: auto;" /><img src="figure/clustering_time_series.Rmd/unnamed-chunk-9-7.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>partial_tadpole(df_filt8, depth=&quot;DCL&quot;,k=6)</code></pre>
 <pre><code>
@@ -4755,7 +4823,7 @@ Performing cluster assignment
 
 TADPole completed for k = 6 &amp; dc = 1.5
 
-    Elapsed time is 0.3 seconds.</code></pre>
+    Elapsed time is 0.32 seconds.</code></pre>
 <p><img src="figure/clustering_time_series.Rmd/unnamed-chunk-9-8.png" width="1056" style="display: block; margin: auto;" /><img src="figure/clustering_time_series.Rmd/unnamed-chunk-9-9.png" width="1056" style="display: block; margin: auto;" /></p>
 <ol start="3" style="list-style-type: decimal">
 <li>BDCL</li>
@@ -4765,7 +4833,27 @@ pc_tp &lt;- tsclust(l_BDCL8_z, k = 2L:10L, type = &quot;t&quot;,
   seed = 8, trace = TRUE,
   control = tadpole_control(dc = 1.5,
   window.size = 4L))</code></pre>
-<pre><code>Error in tslist(series, error.check): object &#39;l_BDCL8_z&#39; not found</code></pre>
+<pre><code>
+    Entering TADPole...
+
+Computing lower and upper bound matrices
+Pruning during local density calculation
+Pruning during nearest-neighbor distance calculation (phase 1)
+Pruning during nearest-neighbor distance calculation (phase 2)
+Pruning percentage = 6.4%
+Performing cluster assignment
+
+TADPole completed for k = 2 &amp; dc = 1.5
+TADPole completed for k = 3 &amp; dc = 1.5
+TADPole completed for k = 4 &amp; dc = 1.5
+TADPole completed for k = 5 &amp; dc = 1.5
+TADPole completed for k = 6 &amp; dc = 1.5
+TADPole completed for k = 7 &amp; dc = 1.5
+TADPole completed for k = 8 &amp; dc = 1.5
+TADPole completed for k = 9 &amp; dc = 1.5
+TADPole completed for k = 10 &amp; dc = 1.5
+
+    Elapsed time is 0.36 seconds.</code></pre>
 <pre class="r"><code>internal_CVI(pc_tp, &quot;Partial clustering with Tadpole method&quot;)</code></pre>
 <p><img src="figure/clustering_time_series.Rmd/unnamed-chunk-10-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># Prototypes for BDCL
@@ -4797,7 +4885,7 @@ Performing cluster assignment
 
 TADPole completed for k = 3 &amp; dc = 1.5
 
-    Elapsed time is 0.29 seconds.</code></pre>
+    Elapsed time is 0.3 seconds.</code></pre>
 <p><img src="figure/clustering_time_series.Rmd/unnamed-chunk-10-4.png" width="1056" style="display: block; margin: auto;" /><img src="figure/clustering_time_series.Rmd/unnamed-chunk-10-5.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>partial_tadpole(df_filt8, depth=&quot;BDCL&quot;,k=4)</code></pre>
 <pre><code>
@@ -4842,8 +4930,94 @@ Performing cluster assignment
 
 TADPole completed for k = 6 &amp; dc = 1.5
 
-    Elapsed time is 0.28 seconds.</code></pre>
+    Elapsed time is 0.31 seconds.</code></pre>
 <p><img src="figure/clustering_time_series.Rmd/unnamed-chunk-10-10.png" width="1056" style="display: block; margin: auto;" /><img src="figure/clustering_time_series.Rmd/unnamed-chunk-10-11.png" width="1056" style="display: block; margin: auto;" /></p>
+</div>
+<div id="getting-cluster-id-with-tadpole" class="section level3">
+<h3>4.1. Getting Cluster id with Tadpole</h3>
+<p>Function to get the cluster id for clusters</p>
+<pre class="r"><code># get the cluster id for clusters
+
+# function to plot and get dataframe for cluster_id for Peptide_id
+peptide_to_clusters_tadpole &lt;- function(df_filt8,depth=&quot;SRF&quot;,num_cluster=4L){
+  df_SRF8 &lt;- df_filt8 %&gt;% filter(Depth==depth) %&gt;% select(Peptide_id,Time,Ave_abundance_ratio)
+  # reshape the dataframe with timepoints
+  library(maditr)
+  v_names &lt;- c(&quot;T1&quot;,&quot;T2&quot;,&quot;T3&quot;,&quot;T4&quot;,&quot;T5&quot;,&quot;T6&quot;,&quot;T7&quot;,&quot;T8&quot;)
+  df_SRF8$Time &lt;- factor(df_SRF8$Time, levels=v_names)
+  dc_SRF8 &lt;- dcast(df_SRF8, Peptide_id ~ Time, value.var = &quot;Ave_abundance_ratio&quot;)
+  dc_SRF8_save &lt;- dc_SRF8
+  # make Peptide_id more simpler (Pep_1 -&gt; P.1)
+  dc_SRF8$Peptide_id &lt;- str_replace(dc_SRF8$Peptide_id,&quot;Pep_&quot;,&quot;P.&quot;)
+  # make first column into row name
+  dc_SRF8 &lt;- tibble::column_to_rownames(dc_SRF8, var=&quot;Peptide_id&quot;)
+  dim(dc_SRF8)
+  # make it into list format
+  # l_SRF8 &lt;- setNames(split(dc_SRF8, seq(nrow(dc_SRF8))), rownames(dc_SRF8))
+  l_SRF8 &lt;- as.list(as.data.frame(t(dc_SRF8)))
+  l_SRF8_z &lt;- zscore(l_SRF8)
+  # tadpole
+  pc_tp4 &lt;- tsclust(l_SRF8_z, k = num_cluster, type = &quot;t&quot;,
+    seed = 8, trace = TRUE,
+    control = tadpole_control(dc = 1.5,
+    window.size = 4L))
+  plot(pc_tp4)
+  plot(pc_tp4, type=&quot;centroid&quot;)
+  df_cluster &lt;- data.frame(Peptide_id = dc_SRF8_save$Peptide_id, Cluster_id = pc_tp4@cluster)
+  return(df_cluster)
+}</code></pre>
+<p>Make dataframe for all depths</p>
+<pre class="r"><code># 4 clusters
+tad_SRF4 &lt;- peptide_to_clusters_tadpole(df_filt8,depth=&quot;SRF&quot;,num_cluster=4L)</code></pre>
+<pre><code>
+    Entering TADPole...
+
+Computing lower and upper bound matrices
+Pruning during local density calculation
+Pruning during nearest-neighbor distance calculation (phase 1)
+Pruning during nearest-neighbor distance calculation (phase 2)
+Pruning percentage = 5.12%
+Performing cluster assignment
+
+TADPole completed for k = 4 &amp; dc = 1.5
+
+    Elapsed time is 0.49 seconds.</code></pre>
+<p><img src="figure/clustering_time_series.Rmd/unnamed-chunk-12-1.png" width="1056" style="display: block; margin: auto;" /><img src="figure/clustering_time_series.Rmd/unnamed-chunk-12-2.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>write.table(tad_SRF4,file=&#39;tad_SRF4.tsv&#39;, sep=&#39;\t&#39;,row.names = F)</code></pre>
+<pre><code>Error in file(file, ifelse(append, &quot;a&quot;, &quot;w&quot;)): cannot open the connection</code></pre>
+<pre class="r"><code>tad_DCL4 &lt;- peptide_to_clusters_tadpole(df_filt8,depth=&quot;DCL&quot;,num_cluster=4L)</code></pre>
+<pre><code>
+    Entering TADPole...
+
+Computing lower and upper bound matrices
+Pruning during local density calculation
+Pruning during nearest-neighbor distance calculation (phase 1)
+Pruning during nearest-neighbor distance calculation (phase 2)
+Pruning percentage = 5.39%
+Performing cluster assignment
+
+TADPole completed for k = 4 &amp; dc = 1.5
+
+    Elapsed time is 0.31 seconds.</code></pre>
+<p><img src="figure/clustering_time_series.Rmd/unnamed-chunk-12-3.png" width="1056" style="display: block; margin: auto;" /><img src="figure/clustering_time_series.Rmd/unnamed-chunk-12-4.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>write.table(tad_DCL4,file=&#39;tad_DCL4.tsv&#39;, sep=&#39;\t&#39;,row.names = F)
+
+tad_BDCL4 &lt;- peptide_to_clusters_tadpole(df_filt8,depth=&quot;BDCL&quot;,num_cluster=4L)</code></pre>
+<pre><code>
+    Entering TADPole...
+
+Computing lower and upper bound matrices
+Pruning during local density calculation
+Pruning during nearest-neighbor distance calculation (phase 1)
+Pruning during nearest-neighbor distance calculation (phase 2)
+Pruning percentage = 6.4%
+Performing cluster assignment
+
+TADPole completed for k = 4 &amp; dc = 1.5
+
+    Elapsed time is 0.29 seconds.</code></pre>
+<p><img src="figure/clustering_time_series.Rmd/unnamed-chunk-12-5.png" width="1056" style="display: block; margin: auto;" /><img src="figure/clustering_time_series.Rmd/unnamed-chunk-12-6.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>write.table(tad_BDCL4,file=&#39;tad_BDCL4.tsv&#39;, sep=&#39;\t&#39;,row.names = F)</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -4874,8 +5048,8 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] TSclust_1.3.1     cluster_2.1.0     pdc_1.0.3         dtwclust_5.5.6   
- [5] dtw_1.22-3        proxy_0.4-24      maditr_0.7.4      formattable_0.2.1
+ [1] maditr_0.7.4      TSclust_1.3.1     cluster_2.1.0     pdc_1.0.3        
+ [5] dtwclust_5.5.6    dtw_1.22-3        proxy_0.4-24      formattable_0.2.1
  [9] ggplot2_3.3.3     stringr_1.4.0     tidyr_1.1.2       dplyr_1.0.4      
 [13] workflowr_1.6.2  
 
@@ -4887,13 +5061,13 @@ loaded via a namespace (and not attached):
  [13] nnet_7.3-14             manipulateWidget_0.10.1 withr_2.4.1            
  [16] tidyselect_1.1.0        curl_4.3                compiler_4.0.3         
  [19] git2r_0.28.0            flexclust_1.4-0         cli_2.3.1              
- [22] shinyjs_2.0.0           labeling_0.4.2          tseries_0.10-48        
- [25] sass_0.3.1              scales_1.1.1            lmtest_0.9-38          
+ [22] shinyjs_2.0.0           labeling_0.4.2          sass_0.3.1             
+ [25] tseries_0.10-48         scales_1.1.1            lmtest_0.9-38          
  [28] fracdiff_1.5-1          quadprog_1.5-8          digest_0.6.27          
  [31] clv_0.3-2.2             rmarkdown_2.7           pkgconfig_2.0.3        
  [34] htmltools_0.5.1.1       highr_0.8               fastmap_1.1.0          
  [37] TTR_0.24.2              htmlwidgets_1.5.3       rlang_0.4.10           
- [40] quantmod_0.4.18         rstudioapi_0.13         shiny_1.6.0            
+ [40] rstudioapi_0.13         quantmod_0.4.18         shiny_1.6.0            
  [43] farver_2.1.0            jquerylib_0.1.3         generics_0.1.0         
  [46] zoo_1.8-8               jsonlite_1.7.2          crosstalk_1.1.1        
  [49] magrittr_2.0.1          modeltools_0.2-23       Matrix_1.2-18          
@@ -4903,7 +5077,7 @@ loaded via a namespace (and not attached):
  [61] grid_4.0.3              misc3d_0.9-0            parallel_4.0.3         
  [64] promises_1.1.1          ggrepel_0.9.1           bigmemory.sri_0.1.3    
  [67] crayon_1.4.1            miniUI_0.1.1.1          lattice_0.20-41        
- [70] knitr_1.31              ps_1.6.0                pillar_1.5.1           
+ [70] ps_1.6.0                knitr_1.31              pillar_1.5.1           
  [73] tcltk_4.0.3             reshape2_1.4.4          codetools_0.2-16       
  [76] stats4_4.0.3            urca_1.3-0              glue_1.4.2             
  [79] evaluate_0.14           data.table_1.14.0       RcppParallel_5.0.3     
