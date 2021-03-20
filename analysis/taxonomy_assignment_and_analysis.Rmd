@@ -174,7 +174,7 @@ Let's work with only the peptides that have ORF matches
 
 ### 1. Lowest common ancester method assignment
 
-(1) Using Surface rhythmic peptides and plotting the distribution of each peptide's match
+### 1.1. Using Surface rhythmic peptides and plotting the distribution of each peptide's match
 ```{r}
 # Working only with the peptides that have ORF matches
 rhy_tax_SRF1 <- rhy_tax_SRF %>% left_join(rhy_t, by=c("Peptide_id"="Peptide_id"))
@@ -312,7 +312,7 @@ df.sci.rel.p1
 
 ```
 
-(2) Let's go to the upper taxa level and observe
+### 1.2. Let's go to the upper taxa level and observe
 
 Making the plotting function
 ```{r}
@@ -366,7 +366,7 @@ rhythmic_tax_profile <- function(rain_sig, depth="SRF", df_peptax, tax_level,leg
 }
 ```
 
-Plotting for different levels
+### 1.3. Plotting for different levels
 ```{r}
 # SRF rhythmic taxa - Strain level
 rhythmic_tax_profile(rain_sig, depth="SRF", df_peptax, tax_level="Strain", legend_coln=7)
@@ -408,31 +408,186 @@ rhythmic_tax_profile(rain_sig, depth="SRF", df_peptax, tax_level="Domain", legen
 df_assign <- df_peptax
 colnames(df_assign)
 
-# Make Storing dataframe
-df_stor <- df_assign %>% select(Peptide_id, Peptide_sequence) %>% unique() %>% arrange()
-df_stor$Assign <- NA
-# plot the scientific name level histogram (https://dplyr.tidyverse.org/reference/count.html)
-
-# for loop for every peptide
-for (i in 1:nrow(df_stor)){
-  # print(i)
-  # print(df_stor$Peptide_id[i])
-  id <- df_stor$Peptide_id[i]
-  # id <- "Pep_1027"
-  print(paste0("----",id,"----"))
+# function for assigning from the strain level
+# for df_assign, put in the left_join for peptide_id of interest for examples left_join(some dataframe, df_peptax, by=c("Peptide_id"="Peptide_id"))
+assign_from_strain_level <- function(df_assign){
+  # Make Storing dataframe
+  df_stor <- df_assign %>% select(Peptide_id, Peptide_sequence) %>% unique() %>% arrange()
+  df_stor$Assign <- NA
+  # plot the scientific name level histogram (https://dplyr.tidyverse.org/reference/count.html)
   
-  ### (1) start from Strain level
-  df_assign2 <- df_assign %>% filter(!is.na(Strain)) %>% count(Peptide_id, Strain)
-  df_id <- df_assign2[df_assign2$Peptide_id==id,]
-  # print(df_id)
-  
-  cutoff <- sum(df_id$n)/2
-  majority <- df_id[df_id$n > cutoff,]$Strain
-  if (length(majority) ==0){
-    print("no majority in (1) strain level")
-    print("going to (2) Genus level")
+  # for loop for every peptide
+  for (i in 1:nrow(df_stor)){
+    # print(i)
+    # print(df_stor$Peptide_id[i])
+    id <- df_stor$Peptide_id[i]
+    # id <- "Pep_1027"
+    print(paste0("----",id,"----"))
     
-  ### (2) Now the Genus level (skip species level, redundant with strain)
+    ### (1) start from Strain level
+    df_assign2 <- df_assign %>% filter(!is.na(Strain)) %>% count(Peptide_id, Strain)
+    df_id <- df_assign2[df_assign2$Peptide_id==id,]
+    # print(df_id)
+    
+    cutoff <- sum(df_id$n)/2
+    majority <- df_id[df_id$n > cutoff,]$Strain
+    if (length(majority) ==0){
+      print("no majority in (1) strain level")
+      print("going to (2) Genus level")
+      
+    ### (2) Now the Genus level (skip species level, redundant with strain)
+      df_assign_g <- df_assign %>% filter(!is.na(Genus)) %>% count(Peptide_id, Genus)
+      df_id_g <- df_assign_g[df_assign_g$Peptide_id==id,]
+      # print(df_id)
+      
+      cutoff <- sum(df_id_g$n)/2
+      majority <- df_id_g[df_id_g$n > cutoff,]$Genus
+      if (length(majority) ==0){
+        print("no majority in (2) Genus level")
+        print("going to (3) Family level")
+        
+    #### (3) Now the Family level
+        df_assign_f <- df_assign %>% filter(!is.na(Family)) %>% count(Peptide_id, Family)
+        df_id_f <- df_assign_f[df_assign_f$Peptide_id==id,]
+        # print(df_id)
+        
+        cutoff <- sum(df_id_f$n)/2
+        majority <- df_id_f[df_id_f$n > cutoff,]$Family
+        if (length(majority) ==0){
+          print("no majority in (3) Family level")
+          print("going to (4) Order level")
+          
+            
+    ##### (4) Now the Order level
+          df_assign_o <- df_assign %>% filter(!is.na(Order)) %>% count(Peptide_id, Order)
+          df_id_o <- df_assign_o[df_assign_o$Peptide_id==id,]
+          # print(df_id)
+          
+          cutoff <- sum(df_id_o$n)/2
+          majority <- df_id_o[df_id_o$n > cutoff,]$Order
+          if (length(majority) ==0){
+            print("no majority in (4) Order level")
+            print("going to (5) Class level")
+            
+    ####### (5) Now the Class level
+            df_assign_c <- df_assign %>% filter(!is.na(Class)) %>% count(Peptide_id, Class)
+            df_id_c <- df_assign_c[df_assign_c$Peptide_id==id,]
+            # print(df_id)
+            
+            cutoff <- sum(df_id_c$n)/2
+            majority <- df_id_c[df_id_c$n > cutoff,]$Class
+            if (length(majority) ==0){
+              print("no majority in (5) Class level")
+              print("going to (6) Phylum level")
+              
+    ######### (6) Now the Phylum level
+              df_assign_p <- df_assign %>% filter(!is.na(Phylum)) %>% count(Peptide_id, Phylum)
+              df_id_p <- df_assign_p[df_assign_p$Peptide_id==id,]
+              # print(df_id)
+              
+              cutoff <- sum(df_id_p$n)/2
+              majority <- df_id_p[df_id_p$n > cutoff,]$Phylum
+              if (length(majority) ==0){
+                print("no majority in (6) Phylum level")
+                print("You don't have any assignment (assign ambiguous)")
+                df_stor[df_stor$Peptide_id==id,]$Assign <- "ambiguous"
+                
+              } else if(length(majority)==1){
+                print("found a match")
+                df_stor[df_stor$Peptide_id==id,]$Assign <- majority
+              } else{
+                print("Warning: check what is happening! More than 1 assigned (6) Phylum level")
+                break
+              } 
+              ### (6) Phylum level end
+  
+            } else if(length(majority)==1){
+              print("found a match")
+              df_stor[df_stor$Peptide_id==id,]$Assign <- majority
+            } else{
+              print("Warning: check what is happening! More than 1 assigned (5) Class level")
+              break
+            } 
+            ### (5) Class level end 
+  
+          } else if(length(majority)==1){
+            print("found a match")
+            df_stor[df_stor$Peptide_id==id,]$Assign <- majority
+          } else{
+            print("Warning: check what is happening! More than 1 assigned (4) Order level")
+            break
+          } 
+          ### (4) Order level end 
+        
+        } else if(length(majority)==1){
+          print("found a match")
+          df_stor[df_stor$Peptide_id==id,]$Assign <- majority
+        } else{
+          print("Warning: check what is happening! More than 1 assigned (3) Family level")
+          break
+        } 
+        ### (3) Family level end                   
+  
+      } else if(length(majority)==1){
+        print("found a match")
+        df_stor[df_stor$Peptide_id==id,]$Assign <- majority
+      } else{
+        print("Warning: check what is happening! More than 1 assigned (2) Genus level")
+        break
+      } 
+      ### (2) Genus level end
+    } else if(length(majority)==1){
+      print("found a match in (1) strain level")
+      df_stor[df_stor$Peptide_id==id,]$Assign <- majority
+    } else{
+      print("Warning: check what is happening! More than 1 assigned (1) strain level")
+      break
+    } ### (1) Strain level end
+  
+  }
+  return(df_stor)
+
+}
+
+# # df_stor <- assign_from_strain_level(df_assign)
+# head(df_stor)
+# 
+# # how many are ambiguous?
+# df_stor %>% filter(Assign=="ambiguous") %>% nrow() # 834 are ambiguous failed to assign until the Class level) # 751 are ambiguous (failed to assign until the Phylum level)
+# 
+# # are there NAs? 
+# df_stor %>% filter(is.na(Assign)) # nope
+# 
+# # phylum level assignment?
+# sum(grepl("p_",df_stor$Assign)) 
+# df_stor$Assign[grepl("p_",df_stor$Assign)]
+# # order level assignment
+# sum(grepl("o_",df_stor$Assign)) # 61
+# df_stor[grepl("o_",df_stor$Assign),]
+
+```
+
+(3-2) Skip the strain level and start from the genus level
+
+```{r}
+df_assign <- df_peptax
+colnames(df_assign)
+
+assign_from_genus_level <- function(df_assign){
+  # Make Storing dataframe
+  df_stor2 <- df_assign %>% select(Peptide_id, Peptide_sequence) %>% unique() %>% arrange()
+  df_stor2$Assign <- NA
+  # plot the scientific name level histogram (https://dplyr.tidyverse.org/reference/count.html)
+  
+  # for loop for every peptide
+  for (i in 1:nrow(df_stor2)){
+    # print(i)
+    # print(df_stor2$Peptide_id[i])
+    id <- df_stor2$Peptide_id[i]
+    # id <- "Pep_1027"
+    print(paste0("----",id,"----"))
+      
+  ### (2) Start from the Genus level (skip species level, redundant with strain)
     df_assign_g <- df_assign %>% filter(!is.na(Genus)) %>% count(Peptide_id, Genus)
     df_id_g <- df_assign_g[df_assign_g$Peptide_id==id,]
     # print(df_id)
@@ -487,29 +642,29 @@ for (i in 1:nrow(df_stor)){
             if (length(majority) ==0){
               print("no majority in (6) Phylum level")
               print("You don't have any assignment (assign ambiguous)")
-              df_stor[df_stor$Peptide_id==id,]$Assign <- "ambiguous"
+              df_stor2[df_stor2$Peptide_id==id,]$Assign <- "ambiguous"
               
             } else if(length(majority)==1){
               print("found a match")
-              df_stor[df_stor$Peptide_id==id,]$Assign <- majority
+              df_stor2[df_stor2$Peptide_id==id,]$Assign <- majority
             } else{
               print("Warning: check what is happening! More than 1 assigned (6) Phylum level")
               break
             } 
             ### (6) Phylum level end
-
+  
           } else if(length(majority)==1){
             print("found a match")
-            df_stor[df_stor$Peptide_id==id,]$Assign <- majority
+            df_stor2[df_stor2$Peptide_id==id,]$Assign <- majority
           } else{
             print("Warning: check what is happening! More than 1 assigned (5) Class level")
             break
           } 
           ### (5) Class level end 
-
+  
         } else if(length(majority)==1){
           print("found a match")
-          df_stor[df_stor$Peptide_id==id,]$Assign <- majority
+          df_stor2[df_stor2$Peptide_id==id,]$Assign <- majority
         } else{
           print("Warning: check what is happening! More than 1 assigned (4) Order level")
           break
@@ -518,78 +673,62 @@ for (i in 1:nrow(df_stor)){
       
       } else if(length(majority)==1){
         print("found a match")
-        df_stor[df_stor$Peptide_id==id,]$Assign <- majority
+        df_stor2[df_stor2$Peptide_id==id,]$Assign <- majority
       } else{
         print("Warning: check what is happening! More than 1 assigned (3) Family level")
         break
       } 
       ### (3) Family level end                   
-
+  
     } else if(length(majority)==1){
       print("found a match")
-      df_stor[df_stor$Peptide_id==id,]$Assign <- majority
+      df_stor2[df_stor2$Peptide_id==id,]$Assign <- majority
     } else{
       print("Warning: check what is happening! More than 1 assigned (2) Genus level")
       break
     } 
     ### (2) Genus level end
-  } else if(length(majority)==1){
-    print("found a match in (1) strain level")
-    df_stor[df_stor$Peptide_id==id,]$Assign <- majority
-  } else{
-    print("Warning: check what is happening! More than 1 assigned (1) strain level")
-    break
-  } ### (1) Strain level end
-
+  }
+  return(df_stor2)
 }
 
-head(df_stor)
+# df_stor2 <- assign_from_genus_level(df_assign)
 
-# how many are ambiguous?
-df_stor %>% filter(Assign=="ambiguous") %>% nrow() # 834 are ambiguous failed to assign until the Class level) # 751 are ambiguous (failed to assign until the Phylum level)
+# head(df_stor2)
 
-# are there NAs? 
-df_stor %>% filter(is.na(Assign)) # nope
-
-# phylum level assignment?
-sum(grepl("p_",df_stor$Assign)) # nothing
-df_stor$Assign[grepl("p_",df_stor$Assign)]
-# order level assignment
-sum(grepl("o_",df_stor$Assign)) # 61
-df_stor[grepl("o_",df_stor$Assign),]
+# # how many are ambiguous?
+# df_stor2 %>% filter(Assign=="ambiguous") %>% nrow() # 834 are ambiguous failed to assign until the Class level) # 751 are ambiguous (failed to assign until the Phylum level)
+# 
+# # are there NAs? 
+# df_stor2 %>% filter(is.na(Assign)) # nope
+# 
+# # phylum level assignment?
+# sum(grepl("p_",df_stor2$Assign)) # nothing
+# df_stor2$Assign[grepl("p_",df_stor2$Assign)]
+# # order level assignment
+# sum(grepl("o_",df_stor2$Assign)) # 61
+# df_stor2[grepl("o_",df_stor2$Assign),]
 
 ```
 
-(3-2) Skip the strain level and start from the genus level
+(3-3) Start from the family level 
 
 ```{r}
-df_assign <- df_peptax
-colnames(df_assign)
 
-# Make Storing dataframe
-df_stor2 <- df_assign %>% select(Peptide_id, Peptide_sequence) %>% unique() %>% arrange()
-df_stor2$Assign <- NA
-# plot the scientific name level histogram (https://dplyr.tidyverse.org/reference/count.html)
-
-# for loop for every peptide
-for (i in 1:nrow(df_stor2)){
-  # print(i)
-  # print(df_stor2$Peptide_id[i])
-  id <- df_stor2$Peptide_id[i]
-  # id <- "Pep_1027"
-  print(paste0("----",id,"----"))
-    
-### (2) Start from the Genus level (skip species level, redundant with strain)
-  df_assign_g <- df_assign %>% filter(!is.na(Genus)) %>% count(Peptide_id, Genus)
-  df_id_g <- df_assign_g[df_assign_g$Peptide_id==id,]
-  # print(df_id)
+assign_from_family_level <- function(df_assign){
+  # Make Storing dataframe
+  df_stor2 <- df_assign %>% select(Peptide_id, Peptide_sequence) %>% unique() %>% arrange()
+  df_stor2$Assign <- NA
+  # plot the scientific name level histogram (https://dplyr.tidyverse.org/reference/count.html)
   
-  cutoff <- sum(df_id_g$n)/2
-  majority <- df_id_g[df_id_g$n > cutoff,]$Genus
-  if (length(majority) ==0){
-    print("no majority in (2) Genus level")
-    print("going to (3) Family level")
-    
+  # for loop for every peptide
+  for (i in 1:nrow(df_stor2)){
+    # print(i)
+    # print(df_stor2$Peptide_id[i])
+    id <- df_stor2$Peptide_id[i]
+    # id <- "Pep_1027"
+    print(paste0("----",id,"----"))
+      
 #### (3) Now the Family level
     df_assign_f <- df_assign %>% filter(!is.na(Family)) %>% count(Peptide_id, Family)
     df_id_f <- df_assign_f[df_assign_f$Peptide_id==id,]
@@ -671,146 +810,424 @@ for (i in 1:nrow(df_stor2)){
       break
     } 
     ### (3) Family level end                   
-
-  } else if(length(majority)==1){
-    print("found a match")
-    df_stor2[df_stor2$Peptide_id==id,]$Assign <- majority
-  } else{
-    print("Warning: check what is happening! More than 1 assigned (2) Genus level")
-    break
-  } 
-  ### (2) Genus level end
+  }
+  return(df_stor2)
 }
 
-head(df_stor2)
 
-# how many are ambiguous?
-df_stor2 %>% filter(Assign=="ambiguous") %>% nrow() # 834 are ambiguous failed to assign until the Class level) # 751 are ambiguous (failed to assign until the Phylum level)
 
-# are there NAs? 
-df_stor2 %>% filter(is.na(Assign)) # nope
+```
 
-# phylum level assignment?
-sum(grepl("p_",df_stor2$Assign)) # nothing
-df_stor2$Assign[grepl("p_",df_stor2$Assign)]
-# order level assignment
-sum(grepl("o_",df_stor2$Assign)) # 61
-df_stor2[grepl("o_",df_stor2$Assign),]
+(3-3) Start from the order level 
+
+```{r}
+
+assign_from_order_level <- function(df_assign){
+  # Make Storing dataframe
+  df_stor2 <- df_assign %>% select(Peptide_id, Peptide_sequence) %>% unique() %>% arrange()
+  df_stor2$Assign <- NA
+  # plot the scientific name level histogram (https://dplyr.tidyverse.org/reference/count.html)
+  
+  # for loop for every peptide
+  for (i in 1:nrow(df_stor2)){
+    # print(i)
+    # print(df_stor2$Peptide_id[i])
+    id <- df_stor2$Peptide_id[i]
+    # id <- "Pep_1027"
+    print(paste0("----",id,"----"))
+      
+
+##### (4) Now the Order level
+    df_assign_o <- df_assign %>% filter(!is.na(Order)) %>% count(Peptide_id, Order)
+    df_id_o <- df_assign_o[df_assign_o$Peptide_id==id,]
+    # print(df_id)
+    
+    cutoff <- sum(df_id_o$n)/2
+    majority <- df_id_o[df_id_o$n > cutoff,]$Order
+    if (length(majority) ==0){
+      print("no majority in (4) Order level")
+      print("going to (5) Class level")
+      
+####### (5) Now the Class level
+      df_assign_c <- df_assign %>% filter(!is.na(Class)) %>% count(Peptide_id, Class)
+      df_id_c <- df_assign_c[df_assign_c$Peptide_id==id,]
+      # print(df_id)
+      
+      cutoff <- sum(df_id_c$n)/2
+      majority <- df_id_c[df_id_c$n > cutoff,]$Class
+      if (length(majority) ==0){
+        print("no majority in (5) Class level")
+        print("going to (6) Phylum level")
+        
+######### (6) Now the Phylum level
+        df_assign_p <- df_assign %>% filter(!is.na(Phylum)) %>% count(Peptide_id, Phylum)
+        df_id_p <- df_assign_p[df_assign_p$Peptide_id==id,]
+        # print(df_id)
+        
+        cutoff <- sum(df_id_p$n)/2
+        majority <- df_id_p[df_id_p$n > cutoff,]$Phylum
+        if (length(majority) ==0){
+          print("no majority in (6) Phylum level")
+          print("You don't have any assignment (assign ambiguous)")
+          df_stor2[df_stor2$Peptide_id==id,]$Assign <- "ambiguous"
+          
+        } else if(length(majority)==1){
+          print("found a match")
+          df_stor2[df_stor2$Peptide_id==id,]$Assign <- majority
+        } else{
+          print("Warning: check what is happening! More than 1 assigned (6) Phylum level")
+          break
+        } 
+        ### (6) Phylum level end
+
+      } else if(length(majority)==1){
+        print("found a match")
+        df_stor2[df_stor2$Peptide_id==id,]$Assign <- majority
+      } else{
+        print("Warning: check what is happening! More than 1 assigned (5) Class level")
+        break
+      } 
+      ### (5) Class level end 
+
+    } else if(length(majority)==1){
+      print("found a match")
+      df_stor2[df_stor2$Peptide_id==id,]$Assign <- majority
+    } else{
+      print("Warning: check what is happening! More than 1 assigned (4) Order level")
+      break
+    } 
+    ### (4) Order level end 
+  }
+  return(df_stor2)
+}
+
+```
+
+(3-4) Start from the class level 
+
+```{r}
+
+assign_from_class_level <- function(df_assign){
+  # Make Storing dataframe
+  df_stor2 <- df_assign %>% select(Peptide_id, Peptide_sequence) %>% unique() %>% arrange()
+  df_stor2$Assign <- NA
+  # plot the scientific name level histogram (https://dplyr.tidyverse.org/reference/count.html)
+  
+  # for loop for every peptide
+  for (i in 1:nrow(df_stor2)){
+    # print(i)
+    # print(df_stor2$Peptide_id[i])
+    id <- df_stor2$Peptide_id[i]
+    # id <- "Pep_1027"
+    print(paste0("----",id,"----"))
+      
+####### (5) Now the Class level
+    df_assign_c <- df_assign %>% filter(!is.na(Class)) %>% count(Peptide_id, Class)
+    df_id_c <- df_assign_c[df_assign_c$Peptide_id==id,]
+    # print(df_id)
+    
+    cutoff <- sum(df_id_c$n)/2
+    majority <- df_id_c[df_id_c$n > cutoff,]$Class
+    if (length(majority) ==0){
+      print("no majority in (5) Class level")
+      print("going to (6) Phylum level")
+      
+######### (6) Now the Phylum level
+      df_assign_p <- df_assign %>% filter(!is.na(Phylum)) %>% count(Peptide_id, Phylum)
+      df_id_p <- df_assign_p[df_assign_p$Peptide_id==id,]
+      # print(df_id)
+      
+      cutoff <- sum(df_id_p$n)/2
+      majority <- df_id_p[df_id_p$n > cutoff,]$Phylum
+      if (length(majority) ==0){
+        print("no majority in (6) Phylum level")
+        print("You don't have any assignment (assign ambiguous)")
+        df_stor2[df_stor2$Peptide_id==id,]$Assign <- "ambiguous"
+        
+      } else if(length(majority)==1){
+        print("found a match")
+        df_stor2[df_stor2$Peptide_id==id,]$Assign <- majority
+      } else{
+        print("Warning: check what is happening! More than 1 assigned (6) Phylum level")
+        break
+      } 
+      ### (6) Phylum level end
+
+    } else if(length(majority)==1){
+      print("found a match")
+      df_stor2[df_stor2$Peptide_id==id,]$Assign <- majority
+    } else{
+      print("Warning: check what is happening! More than 1 assigned (5) Class level")
+      break
+    } 
+    ### (5) Class level end 
+  }
+  return(df_stor2)
+}
+
+```
+
+(3-5) Start from the phylum level 
+
+```{r}
+
+assign_from_phylum_level <- function(df_assign){
+  # Make Storing dataframe
+  df_stor2 <- df_assign %>% select(Peptide_id, Peptide_sequence) %>% unique() %>% arrange()
+  df_stor2$Assign <- NA
+  # plot the scientific name level histogram (https://dplyr.tidyverse.org/reference/count.html)
+  
+  # for loop for every peptide
+  for (i in 1:nrow(df_stor2)){
+    # print(i)
+    # print(df_stor2$Peptide_id[i])
+    id <- df_stor2$Peptide_id[i]
+    # id <- "Pep_1027"
+    print(paste0("----",id,"----"))
+      
+######### (6) Now the Phylum level
+    df_assign_p <- df_assign %>% filter(!is.na(Phylum)) %>% count(Peptide_id, Phylum)
+    df_id_p <- df_assign_p[df_assign_p$Peptide_id==id,]
+    # print(df_id)
+    
+    cutoff <- sum(df_id_p$n)/2
+    majority <- df_id_p[df_id_p$n > cutoff,]$Phylum
+    if (length(majority) ==0){
+      print("no majority in (6) Phylum level")
+      print("You don't have any assignment (assign ambiguous)")
+      df_stor2[df_stor2$Peptide_id==id,]$Assign <- "ambiguous"
+      
+    } else if(length(majority)==1){
+      print("found a match")
+      df_stor2[df_stor2$Peptide_id==id,]$Assign <- majority
+    } else{
+      print("Warning: check what is happening! More than 1 assigned (6) Phylum level")
+      break
+    } 
+    ### (6) Phylum level end
+  }
+  return(df_stor2)
+}
 
 ```
 
 
 (4) Plotting taxonomic profile for rhythmic peptides (Surface, DCL, Below DCL)
-```{r}
-colnames(rain_sig)
-colnames(df_stor)
-
-# taxonomy for rhythmic peptides
-rain_tax <- rain_sig %>% left_join(df_stor, by=c("Peptide_id"="Peptide_id"))
-head(rain_tax)
-dim(rain_tax)
-
-rain_tax %>% filter(is.na(Assign)) # 0 
-rain_tax %>% filter(Assign == "ambiguous") # 12 are ambiguous
-
-# plot the scientific name level histogram
-rain_depth <- rain_tax %>% count(Depth, Assign)
-
-# we need to group by Peptides
-rain_depth_rel <- rain_depth %>%  
-  group_by(Depth) %>%                               
-  mutate(RelAbundance = n*100/sum(n))  # Transform to rel. abundance
-
-# df.sci.rel[df.sci.rel$RelAbundance < 5,]$Phylum <- 'Low abundance'
-
-### let's test
-ord <- rain_depth_rel %>% group_by(Assign) %>% summarise(sumRel = sum(RelAbundance)) %>% arrange(sumRel)
-vec <- ord$Assign
-rev(tail(vec,10))
-head(vec)
- 
-rain_depth_rel$Assign <- factor(rain_depth_rel$Assign, levels = vec) 
-
-# plot Taxonomy for each depth's rhythmmic peptides(relative abundance)
-ggplot(rain_depth_rel, aes(x=Depth, y = RelAbundance, fill = Assign)) + 
-  geom_bar(stat="identity", width = 0.8, position = 'stack', colour="black") +
-  #scale_fill_discrete() +
-  scale_fill_manual(values = my_color2) +
-  
-  xlab('')+
-  ylab("Relative Abundance (%) \n") +
-  ggtitle("Taxonomy for each depth's rhythmmic peptides \n") +
-  ## adjust positions
-  guides(fill = guide_legend(ncol = 7,reverse = T))+
-  theme(legend.position="bottom") +
-  theme(plot.title = element_text(size = 20,hjust = 0.5, face='bold')) + 
-  theme(axis.title.x = element_text(size = 15,hjust = 0.5, face='bold')) + 
-  theme(axis.title.y = element_text(size = 13,hjust = 0.5, face='bold')) + 
-  theme(axis.text.x = element_text(angle = 90, hjust = 0.95, vjust=0.1,size=12, face='bold',color='black'))+
-  theme(axis.text.y = element_text(size=15, face='bold',color='black'))+
-  scale_y_continuous(breaks=seq(0,100,10))+
-  theme(panel.grid.major = element_blank()) +
-  theme(panel.grid.minor = element_blank(), panel.background=element_blank(),panel.border=element_blank(), plot.background=element_blank())
-
-```
-
-Plot taxonomy for each depth's rhythmmic peptides(relative abundance) \
-This is for the df_stor2 that started from the genus level
 
 ```{r}
 
-# taxonomy for rhythmic peptides
-rain_tax <- rain_sig %>% left_join(df_stor2, by=c("Peptide_id"="Peptide_id"))
-head(rain_tax)
-dim(rain_tax)
-
-rain_tax %>% filter(is.na(Assign)) # 0 
-rain_tax %>% filter(Assign == "ambiguous") # 12 are ambiguous
-
-# plot the scientific name level histogram
-rain_depth <- rain_tax %>% count(Depth, Assign)
-
-# we need to group by Peptides
-rain_depth_rel <- rain_depth %>%  
-  group_by(Depth) %>%                               
-  mutate(RelAbundance = n*100/sum(n))  # Transform to rel. abundance
-
-# df.sci.rel[df.sci.rel$RelAbundance < 5,]$Phylum <- 'Low abundance'
-
-### let's test
-ord <- rain_depth_rel %>% group_by(Assign) %>% summarise(sumRel = sum(RelAbundance)) %>% arrange(sumRel)
-vec <- ord$Assign
-rev(tail(vec,10))
-head(vec)
- 
-rain_depth_rel$Assign <- factor(rain_depth_rel$Assign, levels = vec) 
-
-# plot Taxonomy for each depth's rhythmmic peptides(relative abundance)
-ggplot(rain_depth_rel, aes(x=Depth, y = RelAbundance, fill = Assign)) + 
-  geom_bar(stat="identity", width = 0.8, position = 'stack', colour="black") +
-  #scale_fill_discrete() +
-  scale_fill_manual(values = my_color2) +
+# function for plotting relative abundance profile for all three depth
+plot_depth_rhythmic_taxa <- function(rain_assign,level_from="Strain"){
   
-  xlab('')+
-  ylab("Relative Abundance (%) \n") +
-  ggtitle("Taxonomy for each depth's rhythmmic peptides \n") +
-  ## adjust positions
-  guides(fill = guide_legend(ncol = 7,reverse = T))+
-  theme(legend.position="bottom") +
-  theme(plot.title = element_text(size = 20,hjust = 0.5, face='bold')) + 
-  theme(axis.title.x = element_text(size = 15,hjust = 0.5, face='bold')) + 
-  theme(axis.title.y = element_text(size = 13,hjust = 0.5, face='bold')) + 
-  theme(axis.text.x = element_text(angle = 90, hjust = 0.95, vjust=0.1,size=12, face='bold',color='black'))+
-  theme(axis.text.y = element_text(size=15, face='bold',color='black'))+
-  scale_y_continuous(breaks=seq(0,100,10))+
-  theme(panel.grid.major = element_blank()) +
-  theme(panel.grid.minor = element_blank(), panel.background=element_blank(),panel.border=element_blank(), plot.background=element_blank())
+  rain_assign %>% filter(is.na(Assign)) # 0 
+  n_amb <- rain_assign %>% filter(Assign == "ambiguous") %>% nrow()
+  print(paste0("The number of ambiguous taxa: ", n_amb)) 
+  # plot the scientific name level histogram
+  rain_depth <- rain_assign %>% count(Depth, Assign)
+  # we need to group by Peptides
+  rain_depth_rel <- rain_depth %>%  
+    group_by(Depth) %>%                               
+    mutate(RelAbundance = n*100/sum(n))  # Transform to rel. abundance
+  ### let's test
+  ord <- rain_depth_rel %>% group_by(Assign) %>% summarise(sumRel = sum(RelAbundance)) %>% arrange(sumRel)
+  vec <- ord$Assign
+  rev(tail(vec,10))
+  head(vec)
+  rain_depth_rel$Assign <- factor(rain_depth_rel$Assign, levels = vec) 
+  # plot Taxonomy for each depth's rhythmmic peptides(relative abundance)
+  relp <- ggplot(rain_depth_rel, aes(x=Depth, y = RelAbundance, fill = Assign)) + 
+    geom_bar(stat="identity", width = 0.8, position = 'stack', colour="black") +
+    #scale_fill_discrete() +
+    scale_fill_manual(values = my_color2) +
+    xlab('')+
+    ylab("Relative Abundance (%) \n") +
+    ggtitle(paste0("Taxonomy for each depth's rhythmmic peptides (from level: ", level_from,") \n")) +
+    ## adjust positions
+    guides(fill = guide_legend(ncol = 7,reverse = T))+
+    theme(legend.position="bottom") +
+    theme(plot.title = element_text(size = 20,hjust = 0.5, face='bold')) + 
+    theme(axis.title.x = element_text(size = 15,hjust = 0.5, face='bold')) + 
+    theme(axis.title.y = element_text(size = 13,hjust = 0.5, face='bold')) + 
+    theme(axis.text.x = element_text(angle = 90, hjust = 0.95, vjust=0.1,size=12, face='bold',color='black'))+
+    theme(axis.text.y = element_text(size=15, face='bold',color='black'))+
+    scale_y_continuous(breaks=seq(0,100,10))+
+    theme(panel.grid.major = element_blank()) +
+    theme(panel.grid.minor = element_blank(), panel.background=element_blank(),panel.border=element_blank(), plot.background=element_blank())
+  return(relp)
+}
+
+# function for plotting relative abundance profile for all three depth
+plot_cluster_rhythmic_taxa <- function(rain_assign,level_from="Strain"){
+  
+  rain_assign %>% filter(is.na(Assign)) # 0 
+  n_amb <- rain_assign %>% filter(Assign == "ambiguous") %>% nrow()
+  print(paste0("The number of ambiguous taxa: ", n_amb)) 
+  # plot the scientific name level histogram
+  rain_cluster <- rain_assign %>% count(Cluster_id, Assign)
+  # we need to group by Peptides
+  rain_cluster_rel <- rain_cluster %>%  
+    group_by(Cluster_id) %>%                               
+    mutate(RelAbundance = n*100/sum(n))  # Transform to rel. abundance
+  ### let's test
+  ord <- rain_cluster_rel %>% group_by(Assign) %>% summarise(sumRel = sum(RelAbundance)) %>% arrange(sumRel)
+  vec <- ord$Assign
+  rev(tail(vec,10))
+  head(vec)
+  rain_cluster_rel$Assign <- factor(rain_cluster_rel$Assign, levels = vec) 
+  # plot Taxonomy for each cluster's rhythmmic peptides(relative abundance)
+  relp <- ggplot(rain_cluster_rel, aes(x=Cluster_id, y = RelAbundance, fill = Assign)) + 
+    geom_bar(stat="identity", width = 0.8, position = 'stack', colour="black") +
+    #scale_fill_discrete() +
+    scale_fill_manual(values = my_color2) +
+    xlab('')+
+    ylab("Relative Abundance (%) \n") +
+    ggtitle(paste0("Taxonomy for each cluster's peptides (from level: ", level_from,") \n")) +
+    ## adjust positions
+    guides(fill = guide_legend(ncol = 7,reverse = T))+
+    theme(legend.position="bottom") +
+    theme(plot.title = element_text(size = 20,hjust = 0.5, face='bold')) + 
+    theme(axis.title.x = element_text(size = 15,hjust = 0.5, face='bold')) + 
+    theme(axis.title.y = element_text(size = 13,hjust = 0.5, face='bold')) + 
+    theme(axis.text.x = element_text(hjust = 0.95, vjust=0.1,size=12, face='bold',color='black'))+
+    theme(axis.text.y = element_text(size=15, face='bold',color='black'))+
+    scale_y_continuous(breaks=seq(0,100,10))+
+    theme(panel.grid.major = element_blank()) +
+    theme(panel.grid.minor = element_blank(), panel.background=element_blank(),panel.border=element_blank(), plot.background=element_blank())
+  return(relp)
+}
 
 
+# in all taxonomy levels
+rain_tax <- rain_sig %>% left_join(df_peptax, by=c("Peptide_id"="Peptide_id"))
+
+# (1) Strain level
+rain_assign <- left_join(rain_sig, assign_from_strain_level(rain_tax), by=c("Peptide_id"="Peptide_id"))
+plot_depth_rhythmic_taxa(rain_assign,level_from="Strain")
+
+# (2) Genus level
+rain_assign <- left_join(rain_sig, assign_from_genus_level(rain_tax), by=c("Peptide_id"="Peptide_id"))
+plot_depth_rhythmic_taxa(rain_assign,level_from="Genus")
+
+# (3) Family level
+rain_assign <- left_join(rain_sig, assign_from_family_level(rain_tax), by=c("Peptide_id"="Peptide_id"))
+plot_depth_rhythmic_taxa(rain_assign,level_from="Family")
+
+# (4) Order level
+rain_assign <- left_join(rain_sig, assign_from_order_level(rain_tax), by=c("Peptide_id"="Peptide_id"))
+plot_depth_rhythmic_taxa(rain_assign,level_from="Order")
+
+# (5) Class level
+rain_assign <- left_join(rain_sig, assign_from_class_level(rain_tax), by=c("Peptide_id"="Peptide_id"))
+plot_depth_rhythmic_taxa(rain_assign,level_from="Class")
+
+# (6) Phylum level
+rain_assign <- left_join(rain_sig, assign_from_phylum_level(rain_tax), by=c("Peptide_id"="Peptide_id"))
+plot_depth_rhythmic_taxa(rain_assign,level_from="Phylum")
 
 
 ```
 
+(5) Plot the taxonomy relative abundance from Tadpole partial clustering method
+
+Before doing this go to clustering_time_series and get the cluster_id dataframe.
+
+(5-1) SRF
+```{r}
+
+tad_SRF4 <- read.csv(file="tad_SRF4.tsv", sep = '\t')
+# in all taxonomy levels
+tad_SRF4_tax <- tad_SRF4 %>% left_join(df_peptax, by=c("Peptide_id"="Peptide_id"))
+
+# (1) Strain level
+tad_SRF4_assign <- left_join(tad_SRF4, assign_from_strain_level(tad_SRF4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_SRF4_assign,level_from="Strain @ SRF")
+
+# (2) Genus level
+tad_SRF4_assign <- left_join(tad_SRF4, assign_from_genus_level(tad_SRF4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_SRF4_assign,level_from="Genus @ SRF")
+
+# (3) Family level
+tad_SRF4_assign <- left_join(tad_SRF4, assign_from_family_level(tad_SRF4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_SRF4_assign,level_from="Family @ SRF")
+
+# (4) Order level
+tad_SRF4_assign <- left_join(tad_SRF4, assign_from_order_level(tad_SRF4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_SRF4_assign,level_from="Order @ SRF")
+
+# (5) Class level
+tad_SRF4_assign <- left_join(tad_SRF4, assign_from_class_level(tad_SRF4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_SRF4_assign,level_from="Class @ SRF")
+
+# (6) Phylum level
+tad_SRF4_assign <- left_join(tad_SRF4, assign_from_phylum_level(tad_SRF4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_SRF4_assign,level_from="Phylum @ SRF")
+
+```
 
 
+(5-2) DCL
+```{r}
+
+tad_DCL4 <- read.csv(file="tad_DCL4.tsv", sep = '\t')
+# in all taxonomy levels
+tad_DCL4_tax <- tad_DCL4 %>% left_join(df_peptax, by=c("Peptide_id"="Peptide_id"))
+
+# (1) Strain level
+tad_DCL4_assign <- left_join(tad_DCL4, assign_from_strain_level(tad_DCL4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_DCL4_assign,level_from="Strain @ DCL")
+
+# (2) Genus level
+tad_DCL4_assign <- left_join(tad_DCL4, assign_from_genus_level(tad_DCL4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_DCL4_assign,level_from="Genus @ DCL")
+
+# (3) Family level
+tad_DCL4_assign <- left_join(tad_DCL4, assign_from_family_level(tad_DCL4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_DCL4_assign,level_from="Family @ DCL")
+
+# (4) Order level
+tad_DCL4_assign <- left_join(tad_DCL4, assign_from_order_level(tad_DCL4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_DCL4_assign,level_from="Order @ DCL")
+
+# (5) Class level
+tad_DCL4_assign <- left_join(tad_DCL4, assign_from_class_level(tad_DCL4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_DCL4_assign,level_from="Class @ DCL")
+
+# (6) Phylum level
+tad_DCL4_assign <- left_join(tad_DCL4, assign_from_phylum_level(tad_DCL4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_DCL4_assign,level_from="Phylum @ DCL")
+
+```
+
+(5-3) BDCL
+```{r}
+
+tad_BDCL4 <- read.csv(file="tad_BDCL4.tsv", sep = '\t')
+# in all taxonomy levels
+tad_BDCL4_tax <- tad_BDCL4 %>% left_join(df_peptax, by=c("Peptide_id"="Peptide_id"))
+
+# (1) Strain level
+tad_BDCL4_assign <- left_join(tad_BDCL4, assign_from_strain_level(tad_BDCL4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_BDCL4_assign,level_from="Strain @ BDCL")
+
+# (2) Genus level
+tad_BDCL4_assign <- left_join(tad_BDCL4, assign_from_genus_level(tad_BDCL4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_BDCL4_assign,level_from="Genus @ BDCL")
+
+# (3) Family level
+tad_BDCL4_assign <- left_join(tad_BDCL4, assign_from_family_level(tad_BDCL4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_BDCL4_assign,level_from="Family @ BDCL")
+
+# (4) Order level
+tad_BDCL4_assign <- left_join(tad_BDCL4, assign_from_order_level(tad_BDCL4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_BDCL4_assign,level_from="Order @ BDCL")
+
+# (5) Class level
+tad_BDCL4_assign <- left_join(tad_BDCL4, assign_from_class_level(tad_BDCL4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_BDCL4_assign,level_from="Class @ BDCL")
+
+# (6) Phylum level
+tad_BDCL4_assign <- left_join(tad_BDCL4, assign_from_phylum_level(tad_BDCL4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_BDCL4_assign,level_from="Phylum @ BDCL")
+
+```
 
