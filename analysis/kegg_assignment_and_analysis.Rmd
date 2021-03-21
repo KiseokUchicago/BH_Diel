@@ -1,0 +1,493 @@
+---
+title: "kegg_assignment_and_analysis"
+author: "KiseokUchicago"
+date: "2021-03-21"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=11, fig.height=9,
+                      error=TRUE, echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE)
+```
+
+### KEGG assignment to peptides and analysis
+
+```{r}
+# libraries
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(ggplot2)
+library(formattable)
+```
+
+### 0. Get the rhythmic(periodic) peptide_ids from the rain analysis (from previous script of "peptide_level_visualization.Rmd")
+```{r}
+# read in combined table of 24 samples (Replicate B)
+df_pep <- read.table("Replicate_ABC67_combined.tsv",sep='\t',header = T)
+# Let's try to plot all of them at once
+df_all <- df_pep %>% select(Peptide_id, SampleID, Time, Depth) %>% unique() %>% arrange(Peptide_id)
+# How many time points did it appear
+(df_all2 <- df_all %>% group_by(Peptide_id, Depth) %>% summarize(Timepoints = n_distinct(Time)) %>% ungroup())
+df_all2$Depth <- factor(df_all2$Depth, levels = c('SRF','DCL','BDCL'))
+# (1) Get list of peptides that are present in 7 or 8 timepoints
+df_all2_filt <- df_all2 %>% filter(Timepoints > 6) %>% unique() 
+# (2) Let's average the abundance_ratio for each unique peptide
+df_int <- df_pep %>% select(Peptide_id, Spec_id, cent.log2.16O.18O.Ratio, SampleID, Time, Depth, Replicate) %>%
+  unique() %>% arrange(Peptide_id)
+# first average the spectrum_id per sample 
+# important to make sure to take the mean of the log raio (instead of taking log2 after averaging the original value(2^x))
+df_ave <- df_int %>% group_by(SampleID, Time, Depth, Replicate, Peptide_id) %>%
+  summarize(Mean_abundance_ratio=mean(cent.log2.16O.18O.Ratio),
+            SD_pep=sd(cent.log2.16O.18O.Ratio)) %>% ungroup()
+# Now, average and error by replicate
+# SE calculated with Jake Waldbauer's method: sqrt(se(Mean_abundance_ratio)^2 +(mean(SD_pep))^2))
+# standard error
+se <- function(x) sd(x)/sqrt(length(x))
+df_ave_rep <- df_ave %>% group_by(Time, Depth, Peptide_id) %>%
+  summarize(Ave_abundance_ratio=mean(Mean_abundance_ratio),
+            SE_abundance_ratio=sqrt((se(Mean_abundance_ratio))^2 +(mean(SD_pep))^2)) %>% ungroup()
+# why is there no sd for Pep_1004?
+df_ave %>% group_by(SampleID) %>% filter(Peptide_id=='Pep_1003') # there is only 1 sample for T1 BDCL 
+df_ave_rep2 <- df_ave_rep %>% mutate(error_up=Ave_abundance_ratio+SE_abundance_ratio) %>%
+  mutate(error_down=Ave_abundance_ratio-SE_abundance_ratio)
+# (3) import time metadata and merge
+(df_time <- read.table('data/Time_metadata.txt', header=T, sep='\t'))
+df_time$date_time <- str_replace(df_time$date_time, "/2019"," ")
+df_time$date_time <- str_replace(df_time$date_time, ":00$","")
+# left_join with average data
+df_ave2 <- df_ave_rep2 %>% left_join(df_time, by=c('Time'='timepoint'))
+head(df_ave2)
+# only use peptides that appear 7 or 8 times
+df_ave2 %>% select(Peptide_id) %>% unique() %>% dim() # 3233 peptides before
+df_filt78 <- inner_join(df_ave2, df_all2_filt, by=c('Peptide_id'='Peptide_id','Depth'='Depth'))
+df_filt78$Depth <- factor(df_filt78$Depth, levels = c('SRF','DCL','BDCL'))
+
+# get only 8 ones
+df_filt8 <- df_filt78 %>% filter(Timepoints > 7)
+df_filt8 %>% select(Peptide_id) %>% unique() %>% dim() # 661 peptides for peptides in all 8 timepoints
+df_filt8$Depth <- factor(df_filt8$Depth, levels = c('SRF','DCL','BDCL'))
+# rain analysis function
+rain_analysis <- function(df_filt8,depth="SRF"){
+  # setting our data into input format
+  df_8 <- df_filt8 %>% filter(Depth==depth) %>% select(Peptide_id,Time,Ave_abundance_ratio)
+  # reshape the dataframe with timepoints
+  library(maditr)
+  v_names <- c("T1","T2","T3","T4","T5","T6","T7","T8")
+  df_8$Time <- factor(df_8$Time, levels=v_names)
+  dc_8 <- dcast(df_8, Peptide_id ~ Time, value.var = "Ave_abundance_ratio")
+  # make Peptide_id more simpler (Pep_1 -> 1)
+  dc_8$Peptide_id <- str_replace(dc_8$Peptide_id,"Pep_","P.")
+  # make first column into row name
+  dc_8 <- tibble::column_to_rownames(dc_8, var="Peptide_id")
+  t <- c(1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,1,0,0,1) # adjusted for irregular repeats
+  # RAIN analysis
+  library(rain)
+  rainresult <- rain(t(dc_8), period=8, measure.sequence=t, deltat=1, method='independent')
+  return(rainresult)
+}
+
+rain_SRF8 <- rain_analysis(df_filt8,depth="SRF") %>% mutate(Depth="SRF") %>% tibble::rownames_to_column(var = "Peptide_id")
+rain_DCL8 <- rain_analysis(df_filt8,depth="DCL") %>% mutate(Depth="DCL") %>% tibble::rownames_to_column(var = "Peptide_id")
+rain_BDCL8 <- rain_analysis(df_filt8,depth="BDCL") %>% mutate(Depth="BDCL") %>% tibble::rownames_to_column(var = "Peptide_id")
+dim(rain_SRF8)
+dim(rain_DCL8)
+dim(rain_BDCL8)
+rain_8 <- rbind(rain_SRF8, rain_DCL8) %>% rbind(rain_BDCL8)
+dim(rain_8)
+tail(rain_8)
+
+rain_sig <- rain_8 %>% filter(pVal <= 0.25)
+
+color_vec <- c('#fc8d62','#66c2a5','#8da0cb')
+depth_vec <- c('SRF','DCL','BDCL')
+
+rain_sig$Depth <- factor(rain_sig$Depth, levels=depth_vec)
+rain_sig$Peptide_id <- str_replace(rain_sig$Peptide_id,"P.","Pep_")
+
+```
+
+### 1. Input the KEGG data (created from linux)
+Get Final_pep_seq_KEGG.tsv from 06_KEGG_orthology (this is processed from   /project2/mlcoleman/project/greatlakes/metagenomes/metaspades/analysis/lgl_mg_overview/whole_assembly/function/assembled_contig_function/annotations/LGL_Gene_Catalog_KO_Besthit.gz) \
+This is a tab-delimited dataframe.
+
+Peptide_id    Peptide_sequence    KO   Species   Genus   Family    Order   Class   Phylum    Phylum    Kingdom
+
+Changes made to the KEGG data
+- Input: The blanks are denoted as "NULL" -> changed it to NA
+- When reading in table: quote = "\"" (this is very important)
+
+```{r}
+# read in the dataframe and change "NULL" to NA
+df_kegg <- read.table("data/Final_pep_seq_KEGG.tsv",sep='\t',header = F,na.strings=c("NULL","NA"),quote = "\"")
+
+head(df_kegg)
+
+colnames(df_kegg) <- c("Peptide_id","Peptide_sequence","ORF","KO","KO_id","V6","V7","V8")
+
+# number of unique peptides
+unique(df_kegg$Peptide_id) %>% length() # 3326
+# number of unique KO
+unique(df_kegg$KO) %>% length() # KO 1785
+unique(df_kegg$KO_id) %>% length() # KO_id 1870
+# number of NA in KO
+df_kegg %>% filter(is.na(KO)) %>% nrow() # 7794
+sum(is.na(df_kegg$KO))
+# number of non NA in KO
+df_kegg %>% filter(!is.na(KO)) %>% nrow() # 63147
+
+# first test with the Surface periodic peptides
+rhythm_SRF <- rain_sig %>% filter(Depth=="SRF") %>% select(Peptide_id)
+rhy_kegg_SRF <- rhythm_SRF %>% left_join(df_kegg, by=c("Peptide_id"="Peptide_id"))
+
+rhy_kegg_SRF %>% select(Peptide_id) %>% unique() %>% dim() # 69 peptides
+
+# See the distribution of number of matched ORFs
+rhy_t <- rhy_kegg_SRF %>% group_by(Peptide_id) %>% summarize(freq = n())
+rhy_kegg_SRF %>% left_join(rhy_t, by=c("Peptide_id"="Peptide_id")) %>% filter(freq==1)
+rhy_kegg_SRF %>% left_join(rhy_t, by=c("Peptide_id"="Peptide_id")) %>% filter(freq==1) %>% dim()
+
+```
+3 out of 69 peptides have no matches to the ORF.\
+Let's work with only the peptides that have ORF matches
+
+### 2. Lowest common ancester method assignment
+
+### 2.1. Using Surface rhythmic peptides and plotting the distribution of each peptide's match
+```{r}
+# Working only with the peptides that have ORF matches
+rhy_kegg_SRF1 <- rhy_kegg_SRF %>% left_join(rhy_t, by=c("Peptide_id"="Peptide_id"))
+rhy_kegg_SRF2 <- rhy_kegg_SRF1 %>% filter(!is.na(ORF))
+rhy_kegg_SRF1 %>% filter(is.na(ORF))
+# rhy_kegg_SRF1 %>% filter(Peptide_id=="Pep_262")
+# rhy_kegg_SRF1 %>% filter(Peptide_id=="Pep_447")
+# rhy_kegg_SRF1 %>% filter(Peptide_id=="Pep_463")
+
+rhy_kegg_SRF2 %>% select(freq) %>% unique() %>% arrange(freq)
+# NA in kegg?
+rhy_kegg_SRF2 %>% filter(is.na(KO))
+rhy_kegg_SRF1 %>% filter(Peptide_id=="Pep_149")
+rhy_kegg_SRF1 %>% filter(Peptide_id=="Pep_298")
+rhy_kegg_SRF1 %>% filter(Peptide_id=="Pep_507")
+
+# plot the scientific name level histogram
+df.ko <- rhy_kegg_SRF2 %>% count(Peptide_id, KO)
+
+# we need to group by Peptides
+df.ko.rel <- df.ko %>%  
+  group_by(Peptide_id) %>%                               
+  mutate(RelAbundance = n*100/sum(n))  # Transform to rel. abundance
+
+# df.ko.rel[df.ko.rel$RelAbundance < 5,]$Phylum <- 'Low abundance'
+
+### let's test
+ord <- df.ko.rel %>% group_by(KO) %>% summarise(sumRel = sum(RelAbundance)) %>% arrange(sumRel)
+vec <- ord$KO
+rev(tail(vec,10))
+head(vec)
+ 
+df.ko.rel$KO <- factor(df.ko.rel$KO, levels = vec) 
+
+my_color2 <- c(
+  "#CBD588", "#DA5724","#AD6F3B", "#673770","#D14285", 
+  "#652926", "#C84248", "#8569D5", "#5E738F","#D1A33D", 
+  "#8A7C64", "#599861", "#616163",  "#FFCDB2", "#242F40", 
+  "#6D9F71", "#CCA43B", "#F92A82", "#ED7B84", "#7EB77F", 
+  "#DEC4A1", "#E5D1D0", '#0E8482', '#C9DAEA', '#337357', 
+  '#95C623', '#E55812', '#04471C', '#F2D7EE', '#D3BCC0', 
+  '#A5668B', '#69306D', '#0E103D', '#1A535C', '#4ECDC4', 
+  '#F7FFF7', '#FF6B6B', '#FFE66D', '#6699CC', '#FFF275', 
+  '#FF8C42', '#FF3C38', '#A23E48', '#000000', '#CF5C36', 
+  '#9FB1BC', 'springgreen', '#E2C044', '#5BC0EB', 'pink', 
+  "orange", "#CBD588", "#5F7FC7",  
+  '#9BC53D', '#E55934', '#FA7921', "#CD9BCD", "#508578", "#DA5724",
+  "#CBD588", "#5F7FC7", "orange",  
+  "#AD6F3B", "#673770","#D14285", "#652926", "#C84248", 
+  "#8569D5", "#5E738F","#D1A33D", "#8A7C64", "#599861",
+  "#616163",  "#FFCDB2", "#242F40", "#6D9F71", 
+   "#CCA43B", "#F92A82", "#ED7B84", "#7EB77F", 
+  "#DEC4A1", "#E5D1D0", '#0E8482', '#C9DAEA', '#337357', 
+  '#95C623', '#E55812', '#04471C', '#F2D7EE', '#D3BCC0', 
+  '#A5668B', '#69306D', '#0E103D', '#1A535C', '#4ECDC4', 
+  '#F7FFF7', '#FF6B6B', '#FFE66D', '#6699CC', '#FFF275', 
+  '#FF8C42', '#FF3C38', '#A23E48', '#000000', '#CF5C36', 
+  '#EEE5E9', '#7C7C7C', '#EFC88B', '#2E5266', '#6E8898', 
+  '#9FB1BC', '#D3D0CB', '#E2C044', '#5BC0EB', '#FDE74C', 
+  '#9BC53D', '#E55934', '#FA7921', "#CD9BCD", "#508578", "#DA5724",
+  "#CBD588", "#5F7FC7", "orange",  
+  "#AD6F3B", "#673770","#D14285", "#652926", "#C84248", 
+  "#8569D5", "#5E738F","#D1A33D", "#8A7C64", "#599861",
+  "#616163",  "#FFCDB2", "#242F40", "#6D9F71", 
+   "#CCA43B", "#F92A82", "#ED7B84", "#7EB77F", 
+  "#DEC4A1", "#E5D1D0", '#0E8482', '#C9DAEA', '#337357', 
+  '#95C623', '#E55812', '#04471C', '#F2D7EE', '#D3BCC0', 
+  '#A5668B', '#69306D', '#0E103D', '#1A535C', '#4ECDC4', 
+  '#F7FFF7', '#FF6B6B', '#FFE66D', '#6699CC', '#FFF275', 
+  '#FF8C42', '#FF3C38', '#A23E48', '#000000', '#CF5C36', 
+  '#EEE5E9', '#7C7C7C', '#EFC88B', '#2E5266', '#6E8898', 
+  '#9FB1BC', '#D3D0CB', '#E2C044', '#5BC0EB', '#FDE74C', 
+  '#9BC53D', '#E55934', '#FA7921', "#CD9BCD", "#508578", "#DA5724",
+  "#CBD588", "#5F7FC7", "orange",  
+  "#AD6F3B", "#673770","#D14285", "#652926", "#C84248", 
+  "#8569D5", "#5E738F","#D1A33D", "#8A7C64", "#599861",
+  "#616163",  "#FFCDB2", "#242F40", "#6D9F71", 
+   "#CCA43B", "#F92A82", "#ED7B84", "#7EB77F", 
+  "#DEC4A1", "#E5D1D0", '#0E8482', '#C9DAEA', '#337357', 
+  '#95C623', '#E55812', '#04471C', '#F2D7EE', '#D3BCC0', 
+  '#A5668B', '#69306D', '#0E103D', '#1A535C', '#4ECDC4', 
+  '#F7FFF7', '#FF6B6B', '#FFE66D', '#6699CC', '#FFF275', 
+  '#FF8C42', '#FF3C38', '#A23E48', '#000000', '#CF5C36', 
+  '#EEE5E9', '#7C7C7C', '#EFC88B', '#2E5266', '#6E8898', 
+  '#9FB1BC', '#D3D0CB', '#E2C044', '#5BC0EB', '#FDE74C', 
+  '#9BC53D', '#E55934', '#FA7921', "#CD9BCD", "#508578", "#DA5724",
+  "#CBD588", "#5F7FC7", "orange",  
+  "#AD6F3B", "#673770","#D14285", "#652926", "#C84248", 
+  "#8569D5", "#5E738F","#D1A33D", "#8A7C64", "#599861",
+  "#616163",  "#FFCDB2", "#242F40", "#6D9F71", 
+   "#CCA43B", "#F92A82", "#ED7B84", "#7EB77F", 
+  "#DEC4A1", "#E5D1D0", '#0E8482', '#C9DAEA', '#337357', 
+  '#95C623', '#E55812', '#04471C', '#F2D7EE', '#D3BCC0', 
+  '#A5668B', '#69306D', '#0E103D', '#1A535C', '#4ECDC4', 
+  '#F7FFF7', '#FF6B6B', '#FFE66D', '#6699CC', '#FFF275', 
+  '#FF8C42', '#FF3C38', '#A23E48', '#000000', '#CF5C36', 
+  '#EEE5E9', '#7C7C7C', '#EFC88B', '#2E5266', '#6E8898', 
+  '#9FB1BC', '#D3D0CB', '#E2C044', '#5BC0EB', '#FDE74C', 
+  '#9BC53D', '#E55934', '#FA7921', "#CD9BCD", "#508578", "#DA5724",
+  "#CBD588", "#5F7FC7", "orange",  
+  "#AD6F3B", "#673770","#D14285", "#652926", "#C84248", 
+  "#8569D5", "#5E738F","#D1A33D", "#8A7C64", "#599861",
+  "#616163",  "#FFCDB2", "#242F40", "#6D9F71", 
+   "#CCA43B", "#F92A82", "#ED7B84", "#7EB77F", 
+  "#DEC4A1", "#E5D1D0", '#0E8482', '#C9DAEA', '#337357', 
+  '#95C623', '#E55812', '#04471C', '#F2D7EE', '#D3BCC0', 
+  '#A5668B', '#69306D', '#0E103D', '#1A535C', '#4ECDC4', 
+  '#F7FFF7', '#FF6B6B', '#FFE66D', '#6699CC', '#FFF275', 
+  '#FF8C42', '#FF3C38', '#A23E48', '#000000', '#CF5C36', 
+  '#EEE5E9', '#7C7C7C', '#EFC88B', '#2E5266', '#6E8898', 
+  '#9FB1BC', '#D3D0CB', '#E2C044', '#5BC0EB', '#FDE74C', 
+  '#9BC53D', '#E55934', '#FA7921', "#CD9BCD", "#508578", "#DA5724",
+  "#CBD588", "orange")
+
+# plot relative abundance
+df.ko.rel.p1 <- ggplot(df.ko.rel, aes(x=Peptide_id, y = RelAbundance, fill = KO)) + 
+  geom_bar(stat="identity", width = 0.8, position = 'stack', colour="black") +
+  #scale_fill_discrete() +
+  scale_fill_manual(values = my_color2) +
+  
+  xlab('')+
+  ylab("Relative Abundance (%) \n") +
+  ggtitle("Matched KO for each peptide (Surface rhythmic) \n") +
+  ## adjust positions
+  guides(fill = guide_legend(ncol = 4,reverse = T))+
+  theme(legend.position="bottom") +
+  theme(plot.title = element_text(size = 20,hjust = 0.5, face='bold')) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, face='bold')) + 
+  theme(axis.title.y = element_text(size = 13,hjust = 0.5, face='bold')) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.95, vjust=0.1,size=12, face='bold',color='black'))+
+  theme(axis.text.y = element_text(size=15, face='bold',color='black'))+
+  scale_y_continuous(breaks=seq(0,100,10))+
+  theme(panel.grid.major = element_blank()) +
+  theme(panel.grid.minor = element_blank(), panel.background=element_blank(),panel.border=element_blank(), plot.background=element_blank())
+
+df.ko.rel.p1
+
+```
+
+There are 3 peptides that have no KO assigned. These peptides have to KEGGs assigned to all ORF that is matched to peptide_id
+
+### 2.2. Assigining each peptide the majority KO
+- Algorithm: if there is no majority (50%), mark the peptide as ambiguous.
+- When calculating majority, don't consider NAs when applying 50% criteria.
+- Need to be over 50%. (not equal to 50% because then there could be 2 candidates)
+
+```{r}
+df_assign <- df_kegg
+colnames(df_assign)
+
+# KEGG assigning function
+assign_kegg <- function(df_assign){
+  # Make Storing dataframe
+  df_stor <- df_assign %>% select(Peptide_id, Peptide_sequence) %>% unique() %>% arrange()
+  df_stor$Assign <- NA
+  # for loop for every peptide
+  for (i in 1:nrow(df_stor)){
+    # print(i)
+    # print(df_stor$Peptide_id[i])
+    id <- df_stor$Peptide_id[i]
+    # id <- "Pep_1027"
+    print(paste0("----",id,"----"))
+    
+    # remove NA is KO to count majority
+    df_assign2 <- df_assign %>% filter(!is.na(KO)) %>% count(Peptide_id, KO)
+    df_id <- df_assign2[df_assign2$Peptide_id==id,]
+    # print(df_id)
+    
+    cutoff <- sum(df_id$n)/2
+    majority <- df_id[df_id$n > cutoff,]$KO
+    if (length(majority) ==0){
+      print("No majority and assigning ambiguous")
+      df_stor[df_stor$Peptide_id==id,]$Assign <- "ambiguous"
+    } else if(length(majority)==1){
+      print("Found a match")
+      df_stor[df_stor$Peptide_id==id,]$Assign <- majority
+    } else{
+      print("Warning: check what is happening! More than 1 assigned (1) KO level")
+      break
+    } ### (1) KO level end
+  
+  }
+  return(df_stor)
+}
+
+df_stor <- assign_kegg(df_assign)
+head(df_stor)
+
+# how many are ambiguous?
+df_stor %>% filter(Assign=="ambiguous") %>% nrow() # 807 are ambiguous failed to assign
+
+# are there NAs?
+df_stor %>% filter(is.na(Assign)) # nope
+
+
+```
+
+
+### 3. Plotting taxonomic profile for rhythmic peptides (Surface, DCL, Below DCL)
+
+```{r}
+
+# function for plotting relative abundance profile for all three depth
+plot_depth_rhythmic_kegg <- function(rain_kegg){
+  
+  rain_kegg %>% filter(is.na(Assign)) # 0 
+  n_amb <- rain_kegg %>% filter(Assign == "ambiguous") %>% nrow()
+  print(paste0("The number of ambiguous KO: ", n_amb)) 
+  # plot the scientific name level histogram
+  rain_depth <- rain_kegg %>% count(Depth, Assign)
+  # we need to group by Peptides
+  rain_depth_rel <- rain_depth %>%  
+    group_by(Depth) %>%                               
+    mutate(RelAbundance = n*100/sum(n))  # Transform to rel. abundance
+  ### let's test
+  ord <- rain_depth_rel %>% group_by(Assign) %>% summarise(sumRel = sum(RelAbundance)) %>% arrange(sumRel)
+  vec <- ord$Assign
+  rev(tail(vec,10))
+  head(vec)
+  rain_depth_rel$Assign <- factor(rain_depth_rel$Assign, levels = vec) 
+  # plot KO for each depth's rhythmmic peptides(relative abundance)
+  relp <- ggplot(rain_depth_rel, aes(x=Depth, y = RelAbundance, fill = Assign)) + 
+    geom_bar(stat="identity", width = 0.8, position = 'stack', colour="black") +
+    #scale_fill_discrete() +
+    scale_fill_manual(values = my_color2) +
+    xlab('')+
+    ylab("Relative Abundance (%) \n") +
+    ggtitle(paste0("KO for each depth's rhythmmic peptides \n")) +
+    ## adjust positions
+    guides(fill = guide_legend(ncol = 4,reverse = T))+
+    theme(legend.position="bottom") +
+    theme(plot.title = element_text(size = 20,hjust = 0.5, face='bold')) + 
+    theme(axis.title.x = element_text(size = 15,hjust = 0.5, face='bold')) + 
+    theme(axis.title.y = element_text(size = 13,hjust = 0.5, face='bold')) + 
+    theme(axis.text.x = element_text(angle = 90, hjust = 0.95, vjust=0.1,size=12, face='bold',color='black'))+
+    theme(axis.text.y = element_text(size=15, face='bold',color='black'))+
+    scale_y_continuous(breaks=seq(0,100,10))+
+    theme(panel.grid.major = element_blank()) +
+    theme(panel.grid.minor = element_blank(), panel.background=element_blank(),panel.border=element_blank(), plot.background=element_blank())
+  return(relp)
+}
+
+# function for plotting relative abundance profile for all three depth
+plot_cluster_rhythmic_kegg <- function(rain_kegg,depth="SRF"){
+  
+  rain_kegg %>% filter(is.na(Assign)) # 0 
+  n_amb <- rain_kegg %>% filter(Assign == "ambiguous") %>% nrow()
+  print(paste0("The number of ambiguous KO: ", n_amb)) 
+  # plot the scientific name level histogram
+  rain_cluster <- rain_kegg %>% count(Cluster_id, Assign)
+  # we need to group by Peptides
+  rain_cluster_rel <- rain_cluster %>%  
+    group_by(Cluster_id) %>%                               
+    mutate(RelAbundance = n*100/sum(n))  # Transform to rel. abundance
+  ### let's test
+  ord <- rain_cluster_rel %>% group_by(Assign) %>% summarise(sumRel = sum(RelAbundance)) %>% arrange(sumRel)
+  vec <- ord$Assign
+  rev(tail(vec,10))
+  head(vec)
+  rain_cluster_rel$Assign <- factor(rain_cluster_rel$Assign, levels = vec) 
+  # plot KO for each cluster's rhythmmic peptides(relative abundance)
+  relp <- ggplot(rain_cluster_rel, aes(x=Cluster_id, y = RelAbundance, fill = Assign)) + 
+    geom_bar(stat="identity", width = 0.8, position = 'stack', colour="black") +
+    #scale_fill_discrete() +
+    scale_fill_manual(values = my_color2) +
+    xlab('')+
+    ylab("Relative Abundance (%) \n") +
+    ggtitle(paste0("KO for each cluster's peptides (", depth,") \n")) +
+    ## adjust positions
+    guides(fill = guide_legend(ncol = 4,reverse = T))+
+    theme(legend.position="bottom") +
+    theme(plot.title = element_text(size = 20,hjust = 0.5, face='bold')) + 
+    theme(axis.title.x = element_text(size = 15,hjust = 0.5, face='bold')) + 
+    theme(axis.title.y = element_text(size = 13,hjust = 0.5, face='bold')) + 
+    theme(axis.text.x = element_text(hjust = 0.95, vjust=0.1,size=12, face='bold',color='black'))+
+    theme(axis.text.y = element_text(size=15, face='bold',color='black'))+
+    scale_y_continuous(breaks=seq(0,100,10))+
+    theme(panel.grid.major = element_blank()) +
+    theme(panel.grid.minor = element_blank(), panel.background=element_blank(),panel.border=element_blank(), plot.background=element_blank())
+  return(relp)
+}
+
+
+# plot
+rain_kegg <- rain_sig %>% left_join(df_kegg, by=c("Peptide_id"="Peptide_id"))
+
+rain_kegg <- left_join(rain_sig, assign_kegg(rain_kegg), by=c("Peptide_id"="Peptide_id"))
+plot_depth_rhythmic_kegg(rain_kegg)
+
+```
+
+### 4. Plot the KO relative abundance from Tadpole partial clustering method
+
+Before doing this go to clustering_time_series and get the cluster_id dataframe.
+
+### 4.1. SRF
+```{r}
+
+tad_SRF4 <- read.csv(file="tad_SRF4.tsv", sep = '\t')
+# in all KO levels
+tad_SRF4_kegg <- tad_SRF4 %>% left_join(df_kegg, by=c("Peptide_id"="Peptide_id"))
+tad_SRF4_kegg <- left_join(tad_SRF4, assign_kegg(tad_SRF4_kegg), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_kegg(tad_SRF4_kegg,depth="SRF")
+```
+
+
+### 4.2. DCL
+```{r}
+
+tad_DCL4 <- read.csv(file="tad_DCL4.tsv", sep = '\t')
+# in all KO levels
+tad_DCL4_kegg <- tad_DCL4 %>% left_join(df_kegg, by=c("Peptide_id"="Peptide_id"))
+tad_DCL4_kegg <- left_join(tad_DCL4, assign_kegg(tad_DCL4_kegg), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_kegg(tad_DCL4_kegg,depth="DCL")
+
+```
+
+### 4.3. BDCL
+```{r}
+
+tad_BDCL4 <- read.csv(file="tad_BDCL4.tsv", sep = '\t')
+# in all KO levels
+tad_BDCL4_kegg <- tad_BDCL4 %>% left_join(df_kegg, by=c("Peptide_id"="Peptide_id"))
+tad_BDCL4_kegg <- left_join(tad_BDCL4, assign_kegg(tad_BDCL4_kegg), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_kegg(tad_BDCL4_kegg,depth="BDCL")
+
+```
+
+
+
+
+
+
+
