@@ -1143,24 +1143,24 @@ tad_SRF4_assign <- left_join(tad_SRF4, assign_from_strain_level(tad_SRF4_tax), b
 plot_cluster_rhythmic_taxa(tad_SRF4_assign,level_from="Strain @ SRF")
 
 # (2) Genus level
-tad_SRF4_assign <- left_join(tad_SRF4, assign_from_genus_level(tad_SRF4_tax), by=c("Peptide_id"="Peptide_id"))
-plot_cluster_rhythmic_taxa(tad_SRF4_assign,level_from="Genus @ SRF")
+tad_SRF4_assign_g <- left_join(tad_SRF4, assign_from_genus_level(tad_SRF4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_SRF4_assign_g,level_from="Genus @ SRF")
 
 # (3) Family level
-tad_SRF4_assign <- left_join(tad_SRF4, assign_from_family_level(tad_SRF4_tax), by=c("Peptide_id"="Peptide_id"))
-plot_cluster_rhythmic_taxa(tad_SRF4_assign,level_from="Family @ SRF")
+tad_SRF4_assign_f <- left_join(tad_SRF4, assign_from_family_level(tad_SRF4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_SRF4_assign_f,level_from="Family @ SRF")
 
 # (4) Order level
-tad_SRF4_assign <- left_join(tad_SRF4, assign_from_order_level(tad_SRF4_tax), by=c("Peptide_id"="Peptide_id"))
-plot_cluster_rhythmic_taxa(tad_SRF4_assign,level_from="Order @ SRF")
+tad_SRF4_assign_o <- left_join(tad_SRF4, assign_from_order_level(tad_SRF4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_SRF4_assign_o,level_from="Order @ SRF")
 
 # (5) Class level
-tad_SRF4_assign <- left_join(tad_SRF4, assign_from_class_level(tad_SRF4_tax), by=c("Peptide_id"="Peptide_id"))
-plot_cluster_rhythmic_taxa(tad_SRF4_assign,level_from="Class @ SRF")
+tad_SRF4_assign_c <- left_join(tad_SRF4, assign_from_class_level(tad_SRF4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_SRF4_assign_c,level_from="Class @ SRF")
 
 # (6) Phylum level
-tad_SRF4_assign <- left_join(tad_SRF4, assign_from_phylum_level(tad_SRF4_tax), by=c("Peptide_id"="Peptide_id"))
-plot_cluster_rhythmic_taxa(tad_SRF4_assign,level_from="Phylum @ SRF")
+tad_SRF4_assign_p <- left_join(tad_SRF4, assign_from_phylum_level(tad_SRF4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_SRF4_assign_p,level_from="Phylum @ SRF")
 
 ```
 
@@ -1177,24 +1177,24 @@ tad_DCL4_assign <- left_join(tad_DCL4, assign_from_strain_level(tad_DCL4_tax), b
 plot_cluster_rhythmic_taxa(tad_DCL4_assign,level_from="Strain @ DCL")
 
 # (2) Genus level
-tad_DCL4_assign <- left_join(tad_DCL4, assign_from_genus_level(tad_DCL4_tax), by=c("Peptide_id"="Peptide_id"))
-plot_cluster_rhythmic_taxa(tad_DCL4_assign,level_from="Genus @ DCL")
+tad_DCL4_assign_g <- left_join(tad_DCL4, assign_from_genus_level(tad_DCL4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_DCL4_assign_g,level_from="Genus @ DCL")
 
 # (3) Family level
-tad_DCL4_assign <- left_join(tad_DCL4, assign_from_family_level(tad_DCL4_tax), by=c("Peptide_id"="Peptide_id"))
-plot_cluster_rhythmic_taxa(tad_DCL4_assign,level_from="Family @ DCL")
+tad_DCL4_assign_f <- left_join(tad_DCL4, assign_from_family_level(tad_DCL4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_DCL4_assign_f,level_from="Family @ DCL")
 
 # (4) Order level
-tad_DCL4_assign <- left_join(tad_DCL4, assign_from_order_level(tad_DCL4_tax), by=c("Peptide_id"="Peptide_id"))
-plot_cluster_rhythmic_taxa(tad_DCL4_assign,level_from="Order @ DCL")
+tad_DCL4_assign_o <- left_join(tad_DCL4, assign_from_order_level(tad_DCL4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_DCL4_assign_o,level_from="Order @ DCL")
 
 # (5) Class level
-tad_DCL4_assign <- left_join(tad_DCL4, assign_from_class_level(tad_DCL4_tax), by=c("Peptide_id"="Peptide_id"))
-plot_cluster_rhythmic_taxa(tad_DCL4_assign,level_from="Class @ DCL")
+tad_DCL4_assign_c <- left_join(tad_DCL4, assign_from_class_level(tad_DCL4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_DCL4_assign_c,level_from="Class @ DCL")
 
 # (6) Phylum level
-tad_DCL4_assign <- left_join(tad_DCL4, assign_from_phylum_level(tad_DCL4_tax), by=c("Peptide_id"="Peptide_id"))
-plot_cluster_rhythmic_taxa(tad_DCL4_assign,level_from="Phylum @ DCL")
+tad_DCL4_assign_p <- left_join(tad_DCL4, assign_from_phylum_level(tad_DCL4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_DCL4_assign_p,level_from="Phylum @ DCL")
 
 ```
 
@@ -1210,24 +1210,24 @@ tad_BDCL4_assign <- left_join(tad_BDCL4, assign_from_strain_level(tad_BDCL4_tax)
 plot_cluster_rhythmic_taxa(tad_BDCL4_assign,level_from="Strain @ BDCL")
 
 # (2) Genus level
-tad_BDCL4_assign <- left_join(tad_BDCL4, assign_from_genus_level(tad_BDCL4_tax), by=c("Peptide_id"="Peptide_id"))
-plot_cluster_rhythmic_taxa(tad_BDCL4_assign,level_from="Genus @ BDCL")
+tad_BDCL4_assign_g <- left_join(tad_BDCL4, assign_from_genus_level(tad_BDCL4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_BDCL4_assign_g,level_from="Genus @ BDCL")
 
 # (3) Family level
-tad_BDCL4_assign <- left_join(tad_BDCL4, assign_from_family_level(tad_BDCL4_tax), by=c("Peptide_id"="Peptide_id"))
-plot_cluster_rhythmic_taxa(tad_BDCL4_assign,level_from="Family @ BDCL")
+tad_BDCL4_assign_f <- left_join(tad_BDCL4, assign_from_family_level(tad_BDCL4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_BDCL4_assign_f,level_from="Family @ BDCL")
 
 # (4) Order level
-tad_BDCL4_assign <- left_join(tad_BDCL4, assign_from_order_level(tad_BDCL4_tax), by=c("Peptide_id"="Peptide_id"))
-plot_cluster_rhythmic_taxa(tad_BDCL4_assign,level_from="Order @ BDCL")
+tad_BDCL4_assign_o <- left_join(tad_BDCL4, assign_from_order_level(tad_BDCL4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_BDCL4_assign_o,level_from="Order @ BDCL")
 
 # (5) Class level
-tad_BDCL4_assign <- left_join(tad_BDCL4, assign_from_class_level(tad_BDCL4_tax), by=c("Peptide_id"="Peptide_id"))
-plot_cluster_rhythmic_taxa(tad_BDCL4_assign,level_from="Class @ BDCL")
+tad_BDCL4_assign_c <- left_join(tad_BDCL4, assign_from_class_level(tad_BDCL4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_BDCL4_assign_c,level_from="Class @ BDCL")
 
 # (6) Phylum level
-tad_BDCL4_assign <- left_join(tad_BDCL4, assign_from_phylum_level(tad_BDCL4_tax), by=c("Peptide_id"="Peptide_id"))
-plot_cluster_rhythmic_taxa(tad_BDCL4_assign,level_from="Phylum @ BDCL")
+tad_BDCL4_assign_p <- left_join(tad_BDCL4, assign_from_phylum_level(tad_BDCL4_tax), by=c("Peptide_id"="Peptide_id"))
+plot_cluster_rhythmic_taxa(tad_BDCL4_assign_p,level_from="Phylum @ BDCL")
 
 ```
 
