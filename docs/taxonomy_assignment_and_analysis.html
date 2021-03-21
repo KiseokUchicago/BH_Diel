@@ -473,16 +473,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree3a9355b0b660cb19ab5ca3b61ed7911665685cf8targetblank3a9355ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/3a9355b0b660cb19ab5ca3b61ed7911665685cf8" target="_blank">3a9355b</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree794429086765114101f7a873d985d227e34b017btargetblank7944290a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/794429086765114101f7a873d985d227e34b017b" target="_blank">7944290</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree3a9355b0b660cb19ab5ca3b61ed7911665685cf8targetblank3a9355ba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree794429086765114101f7a873d985d227e34b017btargetblank7944290a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/3a9355b0b660cb19ab5ca3b61ed7911665685cf8" target="_blank">3a9355b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/794429086765114101f7a873d985d227e34b017b" target="_blank">7944290</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -656,8 +656,23 @@ Untracked files:
     Untracked:  SRF_Genus_15_18.pdf
     Untracked:  SRF_family_12_15.pdf
     Untracked:  SRF_order_12_15.pdf
+    Untracked:  Tadpole_BDCL4_class_12_15.pdf
+    Untracked:  Tadpole_BDCL4_family_15_18.pdf
+    Untracked:  Tadpole_BDCL4_genus_15_18.pdf
+    Untracked:  Tadpole_BDCL4_order_12_15.pdf
+    Untracked:  Tadpole_BDCL4_phylum_9_12.pdf
+    Untracked:  Tadpole_DCL4_class_12_15.pdf
+    Untracked:  Tadpole_DCL4_family_15_18.pdf
+    Untracked:  Tadpole_DCL4_genus_15_18.pdf
+    Untracked:  Tadpole_DCL4_order_12_15.pdf
+    Untracked:  Tadpole_DCL4_phylum_12_15.pdf
+    Untracked:  Tadpole_DCL4_strain_22_24.pdf
+    Untracked:  Tadpole_DCL4_strain_22_26.pdf
+    Untracked:  Tadpole_SRF4_class_12_15.pdf
     Untracked:  Tadpole_SRF4_family_12_15.pdf
     Untracked:  Tadpole_SRF4_genus_15_18.pdf
+    Untracked:  Tadpole_SRF4_order_12_14.pdf
+    Untracked:  Tadpole_SRF4_order_9_12.pdf
     Untracked:  Tadpole_SRF4_strain_20_25.pdf
     Untracked:  Tax_strain.pdf
     Untracked:  Tax_strain_24_31.pdf
@@ -720,6 +735,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KiseokUchicago/BH_Diel/blob/794429086765114101f7a873d985d227e34b017b/analysis/taxonomy_assignment_and_analysis.Rmd" target="_blank">7944290</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-20
+</td>
+<td>
+cluster and taxonomy
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KiseokUchicago/BH_Diel/f43fd51d0092d2e99991de717568759c0020c2ec/docs/taxonomy_assignment_and_analysis.html" target="_blank">f43fd51</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-20
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -7111,7 +7160,7 @@ tad_SRF4_assign &lt;- left_join(tad_SRF4, assign_from_strain_level(tad_SRF4_tax)
 <pre><code>[1] &quot;The number of ambiguous taxa: 35&quot;</code></pre>
 <p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-14-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># (2) Genus level
-tad_SRF4_assign &lt;- left_join(tad_SRF4, assign_from_genus_level(tad_SRF4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
+tad_SRF4_assign_g &lt;- left_join(tad_SRF4, assign_from_genus_level(tad_SRF4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
 <pre><code>[1] &quot;----Pep_1----&quot;
 [1] &quot;found a match&quot;
 [1] &quot;----Pep_10----&quot;
@@ -9002,11 +9051,11 @@ tad_SRF4_assign &lt;- left_join(tad_SRF4, assign_from_genus_level(tad_SRF4_tax),
 [1] &quot;no majority in (2) Genus level&quot;
 [1] &quot;going to (3) Family level&quot;
 [1] &quot;found a match&quot;</code></pre>
-<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_SRF4_assign,level_from=&quot;Genus @ SRF&quot;)</code></pre>
+<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_SRF4_assign_g,level_from=&quot;Genus @ SRF&quot;)</code></pre>
 <pre><code>[1] &quot;The number of ambiguous taxa: 36&quot;</code></pre>
 <p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-14-2.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># (3) Family level
-tad_SRF4_assign &lt;- left_join(tad_SRF4, assign_from_family_level(tad_SRF4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
+tad_SRF4_assign_f &lt;- left_join(tad_SRF4, assign_from_family_level(tad_SRF4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
 <pre><code>[1] &quot;----Pep_1----&quot;
 [1] &quot;found a match&quot;
 [1] &quot;----Pep_10----&quot;
@@ -10650,11 +10699,11 @@ tad_SRF4_assign &lt;- left_join(tad_SRF4, assign_from_family_level(tad_SRF4_tax)
 [1] &quot;You don&#39;t have any assignment (assign ambiguous)&quot;
 [1] &quot;----Pep_99----&quot;
 [1] &quot;found a match&quot;</code></pre>
-<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_SRF4_assign,level_from=&quot;Family @ SRF&quot;)</code></pre>
+<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_SRF4_assign_f,level_from=&quot;Family @ SRF&quot;)</code></pre>
 <pre><code>[1] &quot;The number of ambiguous taxa: 37&quot;</code></pre>
 <p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-14-3.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># (4) Order level
-tad_SRF4_assign &lt;- left_join(tad_SRF4, assign_from_order_level(tad_SRF4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
+tad_SRF4_assign_o &lt;- left_join(tad_SRF4, assign_from_order_level(tad_SRF4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
 <pre><code>[1] &quot;----Pep_1----&quot;
 [1] &quot;found a match&quot;
 [1] &quot;----Pep_10----&quot;
@@ -12072,11 +12121,11 @@ tad_SRF4_assign &lt;- left_join(tad_SRF4, assign_from_order_level(tad_SRF4_tax),
 [1] &quot;You don&#39;t have any assignment (assign ambiguous)&quot;
 [1] &quot;----Pep_99----&quot;
 [1] &quot;found a match&quot;</code></pre>
-<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_SRF4_assign,level_from=&quot;Order @ SRF&quot;)</code></pre>
+<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_SRF4_assign_o,level_from=&quot;Order @ SRF&quot;)</code></pre>
 <pre><code>[1] &quot;The number of ambiguous taxa: 39&quot;</code></pre>
 <p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-14-4.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># (5) Class level
-tad_SRF4_assign &lt;- left_join(tad_SRF4, assign_from_class_level(tad_SRF4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
+tad_SRF4_assign_c &lt;- left_join(tad_SRF4, assign_from_class_level(tad_SRF4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
 <pre><code>[1] &quot;----Pep_1----&quot;
 [1] &quot;found a match&quot;
 [1] &quot;----Pep_10----&quot;
@@ -13342,11 +13391,11 @@ tad_SRF4_assign &lt;- left_join(tad_SRF4, assign_from_class_level(tad_SRF4_tax),
 [1] &quot;You don&#39;t have any assignment (assign ambiguous)&quot;
 [1] &quot;----Pep_99----&quot;
 [1] &quot;found a match&quot;</code></pre>
-<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_SRF4_assign,level_from=&quot;Class @ SRF&quot;)</code></pre>
+<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_SRF4_assign_c,level_from=&quot;Class @ SRF&quot;)</code></pre>
 <pre><code>[1] &quot;The number of ambiguous taxa: 41&quot;</code></pre>
 <p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-14-5.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># (6) Phylum level
-tad_SRF4_assign &lt;- left_join(tad_SRF4, assign_from_phylum_level(tad_SRF4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
+tad_SRF4_assign_p &lt;- left_join(tad_SRF4, assign_from_phylum_level(tad_SRF4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
 <pre><code>[1] &quot;----Pep_1----&quot;
 [1] &quot;found a match&quot;
 [1] &quot;----Pep_10----&quot;
@@ -14463,7 +14512,7 @@ tad_SRF4_assign &lt;- left_join(tad_SRF4, assign_from_phylum_level(tad_SRF4_tax)
 [1] &quot;You don&#39;t have any assignment (assign ambiguous)&quot;
 [1] &quot;----Pep_99----&quot;
 [1] &quot;found a match&quot;</code></pre>
-<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_SRF4_assign,level_from=&quot;Phylum @ SRF&quot;)</code></pre>
+<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_SRF4_assign_p,level_from=&quot;Phylum @ SRF&quot;)</code></pre>
 <pre><code>[1] &quot;The number of ambiguous taxa: 52&quot;</code></pre>
 <p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-14-6.png" width="1056" style="display: block; margin: auto;" /></p>
 <p>(5-2) DCL</p>
@@ -16021,7 +16070,7 @@ tad_DCL4_assign &lt;- left_join(tad_DCL4, assign_from_strain_level(tad_DCL4_tax)
 <pre><code>[1] &quot;The number of ambiguous taxa: 26&quot;</code></pre>
 <p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-15-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># (2) Genus level
-tad_DCL4_assign &lt;- left_join(tad_DCL4, assign_from_genus_level(tad_DCL4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
+tad_DCL4_assign_g &lt;- left_join(tad_DCL4, assign_from_genus_level(tad_DCL4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
 <pre><code>[1] &quot;----Pep_1----&quot;
 [1] &quot;found a match&quot;
 [1] &quot;----Pep_10----&quot;
@@ -17511,11 +17560,11 @@ tad_DCL4_assign &lt;- left_join(tad_DCL4, assign_from_genus_level(tad_DCL4_tax),
 [1] &quot;no majority in (2) Genus level&quot;
 [1] &quot;going to (3) Family level&quot;
 [1] &quot;found a match&quot;</code></pre>
-<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_DCL4_assign,level_from=&quot;Genus @ DCL&quot;)</code></pre>
+<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_DCL4_assign_g,level_from=&quot;Genus @ DCL&quot;)</code></pre>
 <pre><code>[1] &quot;The number of ambiguous taxa: 27&quot;</code></pre>
 <p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-15-2.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># (3) Family level
-tad_DCL4_assign &lt;- left_join(tad_DCL4, assign_from_family_level(tad_DCL4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
+tad_DCL4_assign_f &lt;- left_join(tad_DCL4, assign_from_family_level(tad_DCL4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
 <pre><code>[1] &quot;----Pep_1----&quot;
 [1] &quot;found a match&quot;
 [1] &quot;----Pep_10----&quot;
@@ -18803,11 +18852,11 @@ tad_DCL4_assign &lt;- left_join(tad_DCL4, assign_from_family_level(tad_DCL4_tax)
 [1] &quot;You don&#39;t have any assignment (assign ambiguous)&quot;
 [1] &quot;----Pep_99----&quot;
 [1] &quot;found a match&quot;</code></pre>
-<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_DCL4_assign,level_from=&quot;Family @ DCL&quot;)</code></pre>
+<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_DCL4_assign_f,level_from=&quot;Family @ DCL&quot;)</code></pre>
 <pre><code>[1] &quot;The number of ambiguous taxa: 27&quot;</code></pre>
 <p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-15-3.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># (4) Order level
-tad_DCL4_assign &lt;- left_join(tad_DCL4, assign_from_order_level(tad_DCL4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
+tad_DCL4_assign_o &lt;- left_join(tad_DCL4, assign_from_order_level(tad_DCL4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
 <pre><code>[1] &quot;----Pep_1----&quot;
 [1] &quot;found a match&quot;
 [1] &quot;----Pep_10----&quot;
@@ -19922,11 +19971,11 @@ tad_DCL4_assign &lt;- left_join(tad_DCL4, assign_from_order_level(tad_DCL4_tax),
 [1] &quot;You don&#39;t have any assignment (assign ambiguous)&quot;
 [1] &quot;----Pep_99----&quot;
 [1] &quot;found a match&quot;</code></pre>
-<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_DCL4_assign,level_from=&quot;Order @ DCL&quot;)</code></pre>
+<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_DCL4_assign_o,level_from=&quot;Order @ DCL&quot;)</code></pre>
 <pre><code>[1] &quot;The number of ambiguous taxa: 28&quot;</code></pre>
 <p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-15-4.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># (5) Class level
-tad_DCL4_assign &lt;- left_join(tad_DCL4, assign_from_class_level(tad_DCL4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
+tad_DCL4_assign_c &lt;- left_join(tad_DCL4, assign_from_class_level(tad_DCL4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
 <pre><code>[1] &quot;----Pep_1----&quot;
 [1] &quot;found a match&quot;
 [1] &quot;----Pep_10----&quot;
@@ -20919,11 +20968,11 @@ tad_DCL4_assign &lt;- left_join(tad_DCL4, assign_from_class_level(tad_DCL4_tax),
 [1] &quot;You don&#39;t have any assignment (assign ambiguous)&quot;
 [1] &quot;----Pep_99----&quot;
 [1] &quot;found a match&quot;</code></pre>
-<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_DCL4_assign,level_from=&quot;Class @ DCL&quot;)</code></pre>
+<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_DCL4_assign_c,level_from=&quot;Class @ DCL&quot;)</code></pre>
 <pre><code>[1] &quot;The number of ambiguous taxa: 28&quot;</code></pre>
 <p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-15-5.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># (6) Phylum level
-tad_DCL4_assign &lt;- left_join(tad_DCL4, assign_from_phylum_level(tad_DCL4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
+tad_DCL4_assign_p &lt;- left_join(tad_DCL4, assign_from_phylum_level(tad_DCL4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
 <pre><code>[1] &quot;----Pep_1----&quot;
 [1] &quot;found a match&quot;
 [1] &quot;----Pep_10----&quot;
@@ -21814,7 +21863,7 @@ tad_DCL4_assign &lt;- left_join(tad_DCL4, assign_from_phylum_level(tad_DCL4_tax)
 [1] &quot;You don&#39;t have any assignment (assign ambiguous)&quot;
 [1] &quot;----Pep_99----&quot;
 [1] &quot;found a match&quot;</code></pre>
-<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_DCL4_assign,level_from=&quot;Phylum @ DCL&quot;)</code></pre>
+<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_DCL4_assign_p,level_from=&quot;Phylum @ DCL&quot;)</code></pre>
 <pre><code>[1] &quot;The number of ambiguous taxa: 38&quot;</code></pre>
 <p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-15-6.png" width="1056" style="display: block; margin: auto;" /></p>
 <p>(5-3) BDCL</p>
@@ -23293,7 +23342,7 @@ tad_BDCL4_assign &lt;- left_join(tad_BDCL4, assign_from_strain_level(tad_BDCL4_t
 <pre><code>[1] &quot;The number of ambiguous taxa: 25&quot;</code></pre>
 <p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-16-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># (2) Genus level
-tad_BDCL4_assign &lt;- left_join(tad_BDCL4, assign_from_genus_level(tad_BDCL4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
+tad_BDCL4_assign_g &lt;- left_join(tad_BDCL4, assign_from_genus_level(tad_BDCL4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
 <pre><code>[1] &quot;----Pep_1----&quot;
 [1] &quot;found a match&quot;
 [1] &quot;----Pep_10----&quot;
@@ -24702,11 +24751,11 @@ tad_BDCL4_assign &lt;- left_join(tad_BDCL4, assign_from_genus_level(tad_BDCL4_ta
 [1] &quot;no majority in (2) Genus level&quot;
 [1] &quot;going to (3) Family level&quot;
 [1] &quot;found a match&quot;</code></pre>
-<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_BDCL4_assign,level_from=&quot;Genus @ BDCL&quot;)</code></pre>
+<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_BDCL4_assign_g,level_from=&quot;Genus @ BDCL&quot;)</code></pre>
 <pre><code>[1] &quot;The number of ambiguous taxa: 26&quot;</code></pre>
 <p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-16-2.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># (3) Family level
-tad_BDCL4_assign &lt;- left_join(tad_BDCL4, assign_from_family_level(tad_BDCL4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
+tad_BDCL4_assign_f &lt;- left_join(tad_BDCL4, assign_from_family_level(tad_BDCL4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
 <pre><code>[1] &quot;----Pep_1----&quot;
 [1] &quot;found a match&quot;
 [1] &quot;----Pep_10----&quot;
@@ -25921,11 +25970,11 @@ tad_BDCL4_assign &lt;- left_join(tad_BDCL4, assign_from_family_level(tad_BDCL4_t
 [1] &quot;You don&#39;t have any assignment (assign ambiguous)&quot;
 [1] &quot;----Pep_99----&quot;
 [1] &quot;found a match&quot;</code></pre>
-<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_BDCL4_assign,level_from=&quot;Family @ BDCL&quot;)</code></pre>
+<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_BDCL4_assign_f,level_from=&quot;Family @ BDCL&quot;)</code></pre>
 <pre><code>[1] &quot;The number of ambiguous taxa: 26&quot;</code></pre>
 <p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-16-3.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># (4) Order level
-tad_BDCL4_assign &lt;- left_join(tad_BDCL4, assign_from_order_level(tad_BDCL4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
+tad_BDCL4_assign_o &lt;- left_join(tad_BDCL4, assign_from_order_level(tad_BDCL4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
 <pre><code>[1] &quot;----Pep_1----&quot;
 [1] &quot;found a match&quot;
 [1] &quot;----Pep_10----&quot;
@@ -26971,11 +27020,11 @@ tad_BDCL4_assign &lt;- left_join(tad_BDCL4, assign_from_order_level(tad_BDCL4_ta
 [1] &quot;You don&#39;t have any assignment (assign ambiguous)&quot;
 [1] &quot;----Pep_99----&quot;
 [1] &quot;found a match&quot;</code></pre>
-<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_BDCL4_assign,level_from=&quot;Order @ BDCL&quot;)</code></pre>
+<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_BDCL4_assign_o,level_from=&quot;Order @ BDCL&quot;)</code></pre>
 <pre><code>[1] &quot;The number of ambiguous taxa: 27&quot;</code></pre>
 <p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-16-4.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># (5) Class level
-tad_BDCL4_assign &lt;- left_join(tad_BDCL4, assign_from_class_level(tad_BDCL4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
+tad_BDCL4_assign_c &lt;- left_join(tad_BDCL4, assign_from_class_level(tad_BDCL4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
 <pre><code>[1] &quot;----Pep_1----&quot;
 [1] &quot;found a match&quot;
 [1] &quot;----Pep_10----&quot;
@@ -27903,11 +27952,11 @@ tad_BDCL4_assign &lt;- left_join(tad_BDCL4, assign_from_class_level(tad_BDCL4_ta
 [1] &quot;You don&#39;t have any assignment (assign ambiguous)&quot;
 [1] &quot;----Pep_99----&quot;
 [1] &quot;found a match&quot;</code></pre>
-<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_BDCL4_assign,level_from=&quot;Class @ BDCL&quot;)</code></pre>
+<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_BDCL4_assign_c,level_from=&quot;Class @ BDCL&quot;)</code></pre>
 <pre><code>[1] &quot;The number of ambiguous taxa: 29&quot;</code></pre>
 <p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-16-5.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># (6) Phylum level
-tad_BDCL4_assign &lt;- left_join(tad_BDCL4, assign_from_phylum_level(tad_BDCL4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
+tad_BDCL4_assign_p &lt;- left_join(tad_BDCL4, assign_from_phylum_level(tad_BDCL4_tax), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
 <pre><code>[1] &quot;----Pep_1----&quot;
 [1] &quot;found a match&quot;
 [1] &quot;----Pep_10----&quot;
@@ -28728,7 +28777,7 @@ tad_BDCL4_assign &lt;- left_join(tad_BDCL4, assign_from_phylum_level(tad_BDCL4_t
 [1] &quot;You don&#39;t have any assignment (assign ambiguous)&quot;
 [1] &quot;----Pep_99----&quot;
 [1] &quot;found a match&quot;</code></pre>
-<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_BDCL4_assign,level_from=&quot;Phylum @ BDCL&quot;)</code></pre>
+<pre class="r"><code>plot_cluster_rhythmic_taxa(tad_BDCL4_assign_p,level_from=&quot;Phylum @ BDCL&quot;)</code></pre>
 <pre><code>[1] &quot;The number of ambiguous taxa: 36&quot;</code></pre>
 <p><img src="figure/taxonomy_assignment_and_analysis.Rmd/unnamed-chunk-16-6.png" width="1056" style="display: block; margin: auto;" /></p>
 <br>
