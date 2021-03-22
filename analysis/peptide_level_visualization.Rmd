@@ -624,7 +624,9 @@ PCoA_1
 
 ```
 
-### 5.2.2. Ordination analysis by samples (PCA, Principal component analysis)
+### 5.3. Ordination analysis by samples (PCA, Principal component analysis)
+
+### 5.3.1. Intensity based
 
 ```{r}
 # make the matrix by reshaping dataframe
@@ -741,6 +743,33 @@ ggplot(df_out,aes(x=PC1,y=PC2,alpha = time))+
   # ggrepel::geom_label_repel()
 
 
+# plot PCA with different shape for depth
+
+# brewing color palette
+purple_yellow<-colorRampPalette(colors=c("#6F068C",'#CF2525','#E3D445'))(8)
+library(scales)
+show_col(purple_yellow)
+
+ggplot(df_out,aes(x=PC1,y=PC2))+
+  theme(plot.title = element_text(size = 20,hjust = 0.5, face="bold")) +
+  geom_point(size = 5, aes(shape=depth, col=time))+
+  # geom_point(size = 5,stroke = 1.3, shape=21, aes(fill=depth))+
+  # scale_color_discrete() +
+  scale_color_manual(values=purple_yellow) +
+  xlab(paste0('\n PC1', " (explained variance: ",round(eigs[1] / sum(eigs),3)*100,"%)"))+
+  ylab(paste0("PC2"," (explained variance: ",round(eigs[2] / sum(eigs),3)*100,"%) \n")) +
+  ggtitle("Principle component analysis plot for samples \n") +
+  ## adjust positions
+  guides(fill = guide_legend(nrow = 2,reverse = T))+
+  theme(legend.position="bottom") +
+  theme(plot.title = element_text(size = 20,hjust = 0.5, face='bold')) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, face='bold')) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, face='bold')) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.95,face='bold', vjust=0.4,size=15))+
+  theme(axis.text.y = element_text(size=15, face='bold'))
+  # ggrepel::geom_label_repel()
+
+
 # PCA with sparse pca methods
 
 library(sparsepca)
@@ -795,6 +824,186 @@ sparse_pca_plot <- function(spc,type="Sparse"){
 sparse_pca_plot(spc,type="Sparse")
 sparse_pca_plot(rspc,type="Randomized Sparse")
 sparse_pca_plot(robspc,type="Robust Sparse")
+
+```
+
+
+### 5.3.2. Intensity based, but merge all 3 replicates into 1
+
+```{r}
+# make the matrix by reshaping dataframe: now merge replicates into 1 sample
+library(maditr)
+dim(df_ave_rep)
+colnames(df_ave_rep)
+
+head(df_ave_rep)
+df_deptime <- df_ave_rep %>% unite(col="Depth_time",Depth,Time,sep="_",remove=F)
+
+dc_deptime <- dcast(df_deptime, Depth_time ~ Peptide_id, value.var = "Ave_abundance_ratio")
+dim(dc_deptime)
+# names(dc_ave)
+rownames(dc_deptime)
+# make Peptide_id more simpler (Pep_1 -> P.1)
+names(dc_deptime) <- str_replace(names(dc_deptime),"Pep_","P.")
+# make first column into row name
+dc_deptime <- tibble::column_to_rownames(dc_deptime, var="Depth_time")
+
+dim(dc_deptime) # 24 samples (row) x 3326 peptides (columns)
+
+# First, the typical principal component analysis on the samples would be to transpose the data such that the samples are rows of the data matrix. The prcomp function can be used to return the principal components and other variables.(https://genomicsclass.github.io/book/pages/pca_svd.html)
+
+# pc <- prcomp(dc_deptime) # due to NA this is not working
+
+# how should we change NA in the matrix?
+any(is.na(dc_deptime))
+sum(is.na(dc_deptime)) 
+
+dim(dc_deptime)
+# let's replace na into minimum value for each sample
+dc_namin <- dc_deptime
+for (i in 1:dim(dc_deptime)[1]){
+  rowMin <- (min(dc_deptime[i,] ,na.rm=T))
+  # print(rowMin)
+  for (j in 1:dim(dc_deptime)[2]) {
+    if (is.na(dc_namin[i,j])){
+      dc_namin[i,j] <- rowMin
+      # print(dc_namin[i,j])
+    }
+  }
+}
+
+sum(is.na(dc_namin)) # 0 mean success
+dim(dc_namin)
+# PCA with prcomp
+pc <- prcomp(dc_namin)
+eigs <- pc$sdev^2
+# variance explained
+eigs[1] / sum(eigs) # pc1
+eigs[2] / sum(eigs) # pc2
+
+# First, a new dataframe should be created, with the information of sample-group. (http://huboqiang.cn/2016/03/03/RscatterPlotPCA)
+df_out <- as.data.frame(pc$x)
+df_out$depth <- sapply( strsplit(as.character(row.names(df_out)), "_"), "[[", 1 )
+df_out$time <- sapply( strsplit(as.character(row.names(df_out)), "_"), "[[", 2 )
+df_out$time <- as.numeric(str_replace(df_out$time, "T",""))
+df_out$time <- factor(df_out$time,levels=1L:8L)
+df_out$depth <- factor(df_out$depth, levels=depth_vec)
+
+head(df_out)
+
+# brewing color palette
+purple_yellow<-colorRampPalette(colors=c("#6F068C",'#CF2525','#E3D445'))(8)
+library(scales)
+show_col(purple_yellow)
+
+ggplot(df_out,aes(x=PC1,y=PC2))+
+  theme(plot.title = element_text(size = 20,hjust = 0.5, face="bold")) +
+  geom_point(size = 5, aes(shape=depth, col=time))+
+  # geom_point(size = 5,stroke = 1.3, shape=21, aes(fill=depth))+
+  # scale_color_discrete() +
+  scale_color_manual(values=purple_yellow) +
+  xlab(paste0('\n PC1', " (explained variance: ",round(eigs[1] / sum(eigs),3)*100,"%)"))+
+  ylab(paste0("PC2"," (explained variance: ",round(eigs[2] / sum(eigs),3)*100,"%) \n")) +
+  ggtitle("Principle component analysis plot for samples \n") +
+  ## adjust positions
+  guides(fill = guide_legend(nrow = 2,reverse = T))+
+  theme(legend.position="bottom") +
+  theme(plot.title = element_text(size = 20,hjust = 0.5, face='bold')) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, face='bold')) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, face='bold')) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.95,face='bold', vjust=0.4,size=15))+
+  theme(axis.text.y = element_text(size=15, face='bold'))
+  # ggrepel::geom_label_repel()
+
+```
+
+
+### 5.3.3. Intensity based, but only use the peptides that have intensity value in all 8 timepoints
+
+```{r}
+# make the matrix by reshaping dataframe: now merge replicates into 1 sample
+library(maditr)
+dim(df_filt8)
+colnames(df_filt8)
+
+head(df_filt8)
+df_deptime8 <- df_filt8 %>% unite(col="Depth_time",Depth,Time,sep="_",remove=F)
+
+dc_deptime8 <- dcast(df_deptime8, Depth_time ~ Peptide_id, value.var = "Ave_abundance_ratio")
+dim(dc_deptime8)
+# names(dc_ave)
+rownames(dc_deptime8)
+# make Peptide_id more simpler (Pep_1 -> P.1)
+names(dc_deptime8) <- str_replace(names(dc_deptime8),"Pep_","P.")
+# make first column into row name
+dc_deptime8 <- tibble::column_to_rownames(dc_deptime8, var="Depth_time")
+
+dim(dc_deptime8) # 24 samples (row) x 647 peptides (columns)
+
+# First, the typical principal component analysis on the samples would be to transpose the data such that the samples are rows of the data matrix. The prcomp function can be used to return the principal components and other variables.(https://genomicsclass.github.io/book/pages/pca_svd.html)
+
+# pc <- prcomp(dc_deptime8) # due to NA this is not working
+
+# how should we change NA in the matrix?
+any(is.na(dc_deptime8))
+sum(is.na(dc_deptime8)) # 4728 nas
+
+dim(dc_deptime8)
+# let's replace na into minimum value for each sample
+dc_namin <- dc_deptime8
+for (i in 1:dim(dc_deptime8)[1]){
+  rowMin <- (min(dc_deptime8[i,] ,na.rm=T))
+  # print(rowMin)
+  for (j in 1:dim(dc_deptime8)[2]) {
+    if (is.na(dc_namin[i,j])){
+      dc_namin[i,j] <- rowMin
+      # print(dc_namin[i,j])
+    }
+  }
+}
+
+sum(is.na(dc_namin)) # 0 mean success
+dim(dc_namin)
+# PCA with prcomp
+pc <- prcomp(dc_namin)
+eigs <- pc$sdev^2
+# variance explained
+eigs[1] / sum(eigs) # pc1
+eigs[2] / sum(eigs) # pc2
+
+# First, a new dataframe should be created, with the information of sample-group. (http://huboqiang.cn/2016/03/03/RscatterPlotPCA)
+df_out <- as.data.frame(pc$x)
+df_out$depth <- sapply( strsplit(as.character(row.names(df_out)), "_"), "[[", 1 )
+df_out$time <- sapply( strsplit(as.character(row.names(df_out)), "_"), "[[", 2 )
+df_out$time <- as.numeric(str_replace(df_out$time, "T",""))
+df_out$time <- factor(df_out$time,levels=1L:8L)
+df_out$depth <- factor(df_out$depth, levels=depth_vec)
+
+head(df_out)
+
+# brewing color palette
+purple_yellow<-colorRampPalette(colors=c("#6F068C",'#CF2525','#E3D445'))(8)
+library(scales)
+show_col(purple_yellow)
+
+ggplot(df_out,aes(x=PC1,y=PC2))+
+  theme(plot.title = element_text(size = 20,hjust = 0.5, face="bold")) +
+  geom_point(size = 5, aes(shape=depth, col=time))+
+  # geom_point(size = 5,stroke = 1.3, shape=21, aes(fill=depth))+
+  # scale_color_discrete() +
+  scale_color_manual(values=purple_yellow) +
+  xlab(paste0('\n PC1', " (explained variance: ",round(eigs[1] / sum(eigs),3)*100,"%)"))+
+  ylab(paste0("PC2"," (explained variance: ",round(eigs[2] / sum(eigs),3)*100,"%) \n")) +
+  ggtitle("Principle component analysis plot for samples \n") +
+  ## adjust positions
+  guides(fill = guide_legend(nrow = 2,reverse = T))+
+  theme(legend.position="bottom") +
+  theme(plot.title = element_text(size = 20,hjust = 0.5, face='bold')) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, face='bold')) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, face='bold')) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.95,face='bold', vjust=0.4,size=15))+
+  theme(axis.text.y = element_text(size=15, face='bold'))
+  # ggrepel::geom_label_repel()
 
 ```
 
