@@ -473,16 +473,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree93128d53a1888dccc6c1562daa79a1607798c5c9targetblank93128d5a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/93128d53a1888dccc6c1562daa79a1607798c5c9" target="_blank">93128d5</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree6d4c1329ce4d8ff7e87649e4b222ea6ef53f252etargetblank6d4c132a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/6d4c1329ce4d8ff7e87649e4b222ea6ef53f252e" target="_blank">6d4c132</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree93128d53a1888dccc6c1562daa79a1607798c5c9targetblank93128d5a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree6d4c1329ce4d8ff7e87649e4b222ea6ef53f252etargetblank6d4c132a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/93128d53a1888dccc6c1562daa79a1607798c5c9" target="_blank">93128d5</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/6d4c1329ce4d8ff7e87649e4b222ea6ef53f252e" target="_blank">6d4c132</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -689,6 +689,13 @@ Untracked files:
     Untracked:  Taxonomy_strain.pdf
     Untracked:  Taxonoy_family.pdf
     Untracked:  Time_series_intesity_all.pdf
+    Untracked:  Up_KO_16_19.pdf
+    Untracked:  Up_tax_class_10_13.pdf
+    Untracked:  Up_tax_family_12_15.pdf
+    Untracked:  Up_tax_genus_112_15.pdf
+    Untracked:  Up_tax_order_12_15.pdf
+    Untracked:  Up_tax_phylum_10_13.pdf
+    Untracked:  Up_tax_strain_17_20.pdf
     Untracked:  data/Final_pep_seq_KEGG.tsv
     Untracked:  data/Final_pep_seq_ORF_rankedlineage.tsv
     Untracked:  data/Time_metadata.txt
@@ -700,12 +707,10 @@ Untracked files:
     Untracked:  data/synthetic_control.data.txt
     Untracked:  hclust_DTW_average_wide.pdf
     Untracked:  hclust_DTW_average_wide_after_normalization.pdf
+    Untracked:  sig_stor.tsv
     Untracked:  tad_BDCL4.tsv
     Untracked:  tad_DCL4.tsv
     Untracked:  tad_SRF4.tsv
-
-Unstaged changes:
-    Modified:   analysis/index.Rmd
 
 </code></pre>
 <p>
@@ -744,6 +749,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KiseokUchicago/BH_Diel/blob/6d4c1329ce4d8ff7e87649e4b222ea6ef53f252e/analysis/kegg_assignment_and_analysis.Rmd" target="_blank">6d4c132</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-21
+</td>
+<td>
+finalize
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KiseokUchicago/BH_Diel/658551b0a50c754f4f54ef6b9fd00239ad47d770/docs/kegg_assignment_and_analysis.html" target="_blank">658551b</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-21
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -9922,6 +9961,24 @@ rain_kegg &lt;- left_join(rain_sig, assign_kegg(rain_kegg), by=c(&quot;Peptide_i
 <pre><code>[1] &quot;The number of ambiguous KO: 14&quot;</code></pre>
 <p><img src="figure/kegg_assignment_and_analysis.Rmd/unnamed-chunk-6-1.png" width="1056" style="display: block; margin: auto;" /></p>
 </div>
+<div id="after-removing-valleys-plotting-taxonomic-profile-for-rhythmic-peptides-surface-dcl-below-dcl" class="section level3">
+<h3>3.2. (After removing valleys) Plotting taxonomic profile for rhythmic peptides (Surface, DCL, Below DCL)</h3>
+<pre class="r"><code># read in sig_stor
+sig_store &lt;- read.csv(file=&quot;sig_stor.tsv&quot;, sep = &#39;\t&#39;)
+# getting only the up-peaks
+sig_up &lt;- sig_stor %&gt;% filter(peak_type == &quot;Up&quot;) %&gt;% arrange(Time)</code></pre>
+<pre><code>Error in filter(., peak_type == &quot;Up&quot;): object &#39;sig_stor&#39; not found</code></pre>
+<pre class="r"><code>sig_up$Depth &lt;- factor(sig_up$Depth,levels=depth_vec)</code></pre>
+<pre><code>Error in factor(sig_up$Depth, levels = depth_vec): object &#39;sig_up&#39; not found</code></pre>
+<pre class="r"><code># plot
+rain_kegg &lt;- sig_up %&gt;% left_join(df_kegg, by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
+<pre><code>Error in left_join(., df_kegg, by = c(Peptide_id = &quot;Peptide_id&quot;)): object &#39;sig_up&#39; not found</code></pre>
+<pre class="r"><code>rain_kegg &lt;- left_join(sig_up, assign_kegg(rain_kegg), by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;))</code></pre>
+<pre><code>Error in left_join(sig_up, assign_kegg(rain_kegg), by = c(Peptide_id = &quot;Peptide_id&quot;)): object &#39;sig_up&#39; not found</code></pre>
+<pre class="r"><code>plot_depth_rhythmic_kegg(rain_kegg)</code></pre>
+<pre><code>[1] &quot;The number of ambiguous KO: 14&quot;</code></pre>
+<p><img src="figure/kegg_assignment_and_analysis.Rmd/unnamed-chunk-7-1.png" width="1056" style="display: block; margin: auto;" /></p>
+</div>
 <div id="plot-the-ko-relative-abundance-from-tadpole-partial-clustering-method" class="section level3">
 <h3>4. Plot the KO relative abundance from Tadpole partial clustering method</h3>
 <p>Before doing this go to clustering_time_series and get the cluster_id dataframe.</p>
@@ -10998,7 +11055,7 @@ tad_SRF4_kegg &lt;- left_join(tad_SRF4, assign_kegg(tad_SRF4_kegg), by=c(&quot;P
 [1] &quot;Found a match&quot;</code></pre>
 <pre class="r"><code>plot_cluster_rhythmic_kegg(tad_SRF4_kegg,depth=&quot;SRF&quot;)</code></pre>
 <pre><code>[1] &quot;The number of ambiguous KO: 35&quot;</code></pre>
-<p><img src="figure/kegg_assignment_and_analysis.Rmd/unnamed-chunk-7-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/kegg_assignment_and_analysis.Rmd/unnamed-chunk-8-1.png" width="1056" style="display: block; margin: auto;" /></p>
 </div>
 <div id="dcl" class="section level3">
 <h3>4.2. DCL</h3>
@@ -11860,7 +11917,7 @@ tad_DCL4_kegg &lt;- left_join(tad_DCL4, assign_kegg(tad_DCL4_kegg), by=c(&quot;P
 [1] &quot;Found a match&quot;</code></pre>
 <pre class="r"><code>plot_cluster_rhythmic_kegg(tad_DCL4_kegg,depth=&quot;DCL&quot;)</code></pre>
 <pre><code>[1] &quot;The number of ambiguous KO: 31&quot;</code></pre>
-<p><img src="figure/kegg_assignment_and_analysis.Rmd/unnamed-chunk-8-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/kegg_assignment_and_analysis.Rmd/unnamed-chunk-9-1.png" width="1056" style="display: block; margin: auto;" /></p>
 </div>
 <div id="bdcl" class="section level3">
 <h3>4.3. BDCL</h3>
@@ -12654,7 +12711,7 @@ tad_BDCL4_kegg &lt;- left_join(tad_BDCL4, assign_kegg(tad_BDCL4_kegg), by=c(&quo
 [1] &quot;Found a match&quot;</code></pre>
 <pre class="r"><code>plot_cluster_rhythmic_kegg(tad_BDCL4_kegg,depth=&quot;BDCL&quot;)</code></pre>
 <pre><code>[1] &quot;The number of ambiguous KO: 25&quot;</code></pre>
-<p><img src="figure/kegg_assignment_and_analysis.Rmd/unnamed-chunk-9-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/kegg_assignment_and_analysis.Rmd/unnamed-chunk-10-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
