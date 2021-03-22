@@ -473,16 +473,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree577f04b043253a17030a520c2539c1bb1860ad0dtargetblank577f04ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/577f04b043253a17030a520c2539c1bb1860ad0d" target="_blank">577f04b</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree02c0dd1c98561951574cf63aa2e50ad7db528a91targetblank02c0dd1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/BH_Diel/tree/02c0dd1c98561951574cf63aa2e50ad7db528a91" target="_blank">02c0dd1</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree577f04b043253a17030a520c2539c1bb1860ad0dtargetblank577f04ba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoBHDieltree02c0dd1c98561951574cf63aa2e50ad7db528a91targetblank02c0dd1a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/577f04b043253a17030a520c2539c1bb1860ad0d" target="_blank">577f04b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/BH_Diel/tree/02c0dd1c98561951574cf63aa2e50ad7db528a91" target="_blank">02c0dd1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -704,6 +704,9 @@ Untracked files:
     Untracked:  tad_DCL4.tsv
     Untracked:  tad_SRF4.tsv
 
+Unstaged changes:
+    Modified:   analysis/taxonomy_assignment_and_analysis.Rmd
+
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
@@ -741,6 +744,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KiseokUchicago/BH_Diel/blob/02c0dd1c98561951574cf63aa2e50ad7db528a91/analysis/peptide_level_visualization.Rmd" target="_blank">02c0dd1</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-21
+</td>
+<td>
+Removing valleys
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KiseokUchicago/BH_Diel/4fc5218c3b891e1bc3a90e2061d64246893beb20/docs/peptide_level_visualization.html" target="_blank">4fc5218</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2021-03-21
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -3349,8 +3386,8 @@ ggplot(rain_sig, aes(x=phase)) +
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-23-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>  # theme(panel.grid.major = element_blank())</code></pre>
 </div>
-<div id="amplitude" class="section level3">
-<h3>6.5. Amplitude</h3>
+<div id="plotting-rhythmic-peptides-sorted-by-peak-time" class="section level3">
+<h3>6.5. Plotting rhythmic peptides sorted by peak time</h3>
 <pre class="r"><code># Shaping data
 rain_sig1 &lt;- rain_8 %&gt;% filter(pVal &lt;= 0.25)
 rain_sig1$Peptide_id &lt;- str_replace(rain_sig1$Peptide_id,&quot;P.&quot;,&quot;Pep_&quot;)
@@ -3360,8 +3397,8 @@ rain_sig2 &lt;- rain_sig1 %&gt;% rename(Time = phase) %&gt;% select(-period)
 # rain_sig2 %&gt;% arrange(Peptide_id)
            
 # plot
-time_series_1depth_1peak &lt;- function(df_filt8,n=1,time=&quot;T1&quot;){
-  peak_T1 &lt;- rain_sig2 %&gt;% filter(Time==time) %&gt;% select(Peptide_id)
+time_series_1depth_1peaktime &lt;- function(df_filt8,n=1,rain_sig2,time=&quot;T1&quot;){
+  peak_T1 &lt;- rain_sig2 %&gt;% filter(Time==time,Depth==depth_vec[n]) %&gt;% select(Peptide_id)
   print(length(peak_T1$Peptide_id))
   time_series_clust_wError(df_filt8, n, peak_T1$Peptide_id) +
     ggtitle(paste0(&quot;Peptides with peak time &quot;,time))+
@@ -3377,24 +3414,24 @@ library(gridExtra)
 l &lt;- list()
 for (i in paste0(&quot;T&quot;,1L:8L)){
   print(i)
-  l[[i]] &lt;- time_series_1depth_1peak(df_filt8,n=1,time=i)
+  l[[i]] &lt;- time_series_1depth_1peaktime(df_filt8,n=1,rain_sig2,time=i)
 }</code></pre>
 <pre><code>[1] &quot;T1&quot;
-[1] 23
-[1] &quot;T2&quot;
-[1] 40
-[1] &quot;T3&quot;
-[1] 16
-[1] &quot;T4&quot;
-[1] 22
-[1] &quot;T5&quot;
 [1] 9
+[1] &quot;T2&quot;
+[1] 14
+[1] &quot;T3&quot;
+[1] 6
+[1] &quot;T4&quot;
+[1] 8
+[1] &quot;T5&quot;
+[1] 3
 [1] &quot;T6&quot;
-[1] 5
+[1] 4
 [1] &quot;T7&quot;
-[1] 33
+[1] 14
 [1] &quot;T8&quot;
-[1] 29</code></pre>
+[1] 11</code></pre>
 <pre class="r"><code>length(l)</code></pre>
 <pre><code>[1] 8</code></pre>
 <pre class="r"><code>grid.arrange(grobs = l, ncol=4)</code></pre>
@@ -3403,24 +3440,24 @@ for (i in paste0(&quot;T&quot;,1L:8L)){
 l &lt;- list()
 for (i in paste0(&quot;T&quot;,1L:8L)){
   print(i)
-  l[[i]] &lt;- time_series_1depth_1peak(df_filt8,n=2,time=i)
+  l[[i]] &lt;- time_series_1depth_1peaktime(df_filt8,n=2,rain_sig2,time=i)
 }</code></pre>
 <pre><code>[1] &quot;T1&quot;
-[1] 23
+[1] 4
 [1] &quot;T2&quot;
-[1] 40
+[1] 21
 [1] &quot;T3&quot;
-[1] 16
+[1] 7
 [1] &quot;T4&quot;
-[1] 22
+[1] 8
 [1] &quot;T5&quot;
-[1] 9
+[1] 2
 [1] &quot;T6&quot;
-[1] 5
+[1] 0
 [1] &quot;T7&quot;
-[1] 33
+[1] 3
 [1] &quot;T8&quot;
-[1] 29</code></pre>
+[1] 7</code></pre>
 <pre class="r"><code>length(l)</code></pre>
 <pre><code>[1] 8</code></pre>
 <pre class="r"><code>grid.arrange(grobs = l, ncol=4)</code></pre>
@@ -3429,31 +3466,649 @@ for (i in paste0(&quot;T&quot;,1L:8L)){
 l &lt;- list()
 for (i in paste0(&quot;T&quot;,1L:8L)){
   print(i)
-  l[[i]] &lt;- time_series_1depth_1peak(df_filt8,n=3,time=i)
+  l[[i]] &lt;- time_series_1depth_1peaktime(df_filt8,n=3,rain_sig2,time=i)
 }</code></pre>
 <pre><code>[1] &quot;T1&quot;
-[1] 23
+[1] 10
 [1] &quot;T2&quot;
-[1] 40
-[1] &quot;T3&quot;
-[1] 16
-[1] &quot;T4&quot;
-[1] 22
-[1] &quot;T5&quot;
-[1] 9
-[1] &quot;T6&quot;
 [1] 5
+[1] &quot;T3&quot;
+[1] 3
+[1] &quot;T4&quot;
+[1] 6
+[1] &quot;T5&quot;
+[1] 4
+[1] &quot;T6&quot;
+[1] 1
 [1] &quot;T7&quot;
-[1] 33
+[1] 16
 [1] &quot;T8&quot;
-[1] 29</code></pre>
+[1] 11</code></pre>
 <pre class="r"><code>length(l)</code></pre>
 <pre><code>[1] 8</code></pre>
 <pre class="r"><code>grid.arrange(grobs = l, ncol=4)</code></pre>
 <p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-24-3.png" width="1056" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># Getting amplitude
-inner_join(rain_sig2, df_ave_rep, by=c(&quot;Peptide_id&quot;=&quot;Peptide_id&quot;,&quot;Depth&quot;=&quot;Depth&quot;,&quot;Time&quot;=&quot;Time&quot;)) %&gt;% dim()</code></pre>
-<pre><code>[1] 177   7</code></pre>
+</div>
+<div id="sorting-peak-by-local-maxima-minima" class="section level3">
+<h3>6.6. Sorting peak by local maxima, minima</h3>
+<pre class="r"><code>head(rain_sig2)</code></pre>
+<pre><code>  Peptide_id       pVal Time peak.shape Depth
+1    Pep_103 0.03763441   T1          3   SRF
+2    Pep_113 0.11881188   T3          5   SRF
+3    Pep_114 0.20234958   T7          4   SRF
+4    Pep_117 0.17217484   T2          5   SRF
+5    Pep_123 0.02081581   T7          3   SRF
+6    Pep_130 0.18860387   T2          6   SRF</code></pre>
+<pre class="r"><code>dim(rain_sig2)</code></pre>
+<pre><code>[1] 177   5</code></pre>
+<pre class="r"><code>dim(df_ave_rep)</code></pre>
+<pre><code>[1] 24109     5</code></pre>
+<pre class="r"><code>colnames(rain_sig2)</code></pre>
+<pre><code>[1] &quot;Peptide_id&quot; &quot;pVal&quot;       &quot;Time&quot;       &quot;peak.shape&quot; &quot;Depth&quot;     </code></pre>
+<pre class="r"><code>colnames(df_ave_rep)</code></pre>
+<pre><code>[1] &quot;Time&quot;                &quot;Depth&quot;               &quot;Peptide_id&quot;         
+[4] &quot;Ave_abundance_ratio&quot; &quot;SE_abundance_ratio&quot; </code></pre>
+<pre class="r"><code>head(df_sig_time)</code></pre>
+<pre><code>Error in head(df_sig_time): object &#39;df_sig_time&#39; not found</code></pre>
+<pre class="r"><code>peak_up_down_assign &lt;- function(rain_sig2,df_ave_rep){
+  # Prepare reference dataframe
+  rain_sig2$Time &lt;- str_replace(rain_sig2$Time,&quot;T&quot;,&quot;&quot;)
+  rain_sig2 %&gt;% arrange(Peptide_id,Depth)
+  
+  sig_list &lt;- unique(rain_sig2$Peptide_id)
+  df_sig_time &lt;- df_ave_rep %&gt;% filter(Peptide_id %in% sig_list) %&gt;% arrange(Peptide_id, Depth)
+  df_sig_time$Time &lt;- str_replace(df_sig_time$Time,&quot;T&quot;,&quot;&quot;)
+
+  # Make Storing dataframe
+  sig_stor &lt;- rain_sig2 %&gt;% select(Peptide_id, Depth, Time,pVal) %&gt;% unique() %&gt;% arrange(Peptide_id,Depth)
+  sig_stor$peak_type &lt;- NA
+
+  # for loop for every peptide
+  for (i in 1:nrow(sig_stor)){
+    # print(i)
+    # print(sig_stor$Peptide_id[i])
+    # print(sig_stor$Depth[i])
+    # i &lt;- 3
+    id &lt;- sig_stor$Peptide_id[i]
+    dp &lt;- sig_stor$Depth[i]
+    tm &lt;- sig_stor$Time[i]
+    # id &lt;- &quot;Pep_1027&quot;
+    print(paste0(&quot;----&quot;,id,&quot; : &quot;,dp,&quot;----&quot;))
+    
+    df_id_dp &lt;- df_sig_time[df_sig_time$Peptide_id==id &amp; df_sig_time$Depth==dp,]
+    
+    if (tm==1){ # when peak is allegedly T1
+      ratio_1 &lt;- df_id_dp[df_id_dp$Time==1,]$Ave_abundance_ratio
+      ratio_2 &lt;- df_id_dp[df_id_dp$Time==2,]$Ave_abundance_ratio
+      if (ratio_1 &gt; ratio_2){
+        sig_stor[sig_stor$Peptide_id==id &amp; sig_stor$Depth==dp,]$peak_type &lt;- &quot;Up&quot;
+      } else if (ratio_1 &lt; ratio_2){
+        sig_stor[sig_stor$Peptide_id==id &amp; sig_stor$Depth==dp,]$peak_type &lt;- &quot;Down&quot;
+      } else{
+        sig_stor[sig_stor$Peptide_id==id &amp; sig_stor$Depth==dp,]$peak_type &lt;- &quot;Neither&quot;
+      } # when peak is allegedly T1 (close)
+      
+    } else if (tm==8){ # when peak is allegedly T8
+      
+      ratio_7 &lt;- df_id_dp[df_id_dp$Time==7,]$Ave_abundance_ratio
+      ratio_8 &lt;- df_id_dp[df_id_dp$Time==8,]$Ave_abundance_ratio
+      if (ratio_8 &gt; ratio_7){
+        sig_stor[sig_stor$Peptide_id==id &amp; sig_stor$Depth==dp,]$peak_type &lt;- &quot;Up&quot;
+        # print(&quot;Up&quot;)
+      } else if (ratio_8 &lt; ratio_7){
+        sig_stor[sig_stor$Peptide_id==id &amp; sig_stor$Depth==dp,]$peak_type &lt;- &quot;Down&quot;
+        # print(&quot;Down&quot;)
+      } else{
+        sig_stor[sig_stor$Peptide_id==id &amp; sig_stor$Depth==dp,]$peak_type &lt;- &quot;Neither&quot;
+        # print(&quot;Neither&quot;)
+      } # when peak is allegedly T8 (close)
+      
+    } else{ # when peak is alledgedly between T2 and T7
+      ileft = as.numeric(tm)-1
+      iright = as.numeric(tm)+1
+      ratio_ileft &lt;- df_id_dp[df_id_dp$Time== ileft,]$Ave_abundance_ratio
+      ratio_i &lt;- df_id_dp[df_id_dp$Time==tm,]$Ave_abundance_ratio
+      ratio_iright &lt;- df_id_dp[df_id_dp$Time== iright,]$Ave_abundance_ratio
+      max_ratio = max(ratio_ileft,ratio_i,ratio_iright)
+      min_ratio = min(ratio_ileft,ratio_i,ratio_iright)
+
+      if (ratio_i == max_ratio){
+        print(paste0(&quot;Maximum? &quot;,(ratio_i == max_ratio)))
+        sig_stor[sig_stor$Peptide_id==id &amp; sig_stor$Depth==dp,]$peak_type &lt;- &quot;Up&quot;
+      } else if (ratio_i == min_ratio){
+        print(paste0(&quot;Minimum? &quot;,(ratio_i == min_ratio)))
+        sig_stor[sig_stor$Peptide_id==id &amp; sig_stor$Depth==dp,]$peak_type &lt;- &quot;Down&quot;
+      } else{
+        print(&quot;This is not a peak&quot;)
+        sig_stor[sig_stor$Peptide_id==id &amp; sig_stor$Depth==dp,]$peak_type &lt;- &quot;Neither&quot;
+      } # when peak is alledgedly between T2 and T7 (close)
+    }
+  }
+  return(sig_stor)
+}
+
+sig_stor &lt;- peak_up_down_assign(rain_sig2,df_ave_rep)</code></pre>
+<pre><code>[1] &quot;----Pep_1 : BDCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_103 : SRF----&quot;
+[1] &quot;----Pep_105 : DCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_113 : SRF----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_114 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_117 : SRF----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_122 : DCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_123 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_127 : DCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_130 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_136 : DCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_137 : DCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_139 : BDCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_14 : BDCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_141 : DCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_142 : BDCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_142 : DCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_143 : DCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_148 : BDCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_149 : SRF----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_152 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_159 : DCL----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_160 : BDCL----&quot;
+[1] &quot;----Pep_160 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_161 : SRF----&quot;
+[1] &quot;----Pep_164 : DCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_165 : BDCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_17 : BDCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_170 : SRF----&quot;
+[1] &quot;----Pep_171 : DCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_173 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_176 : BDCL----&quot;
+[1] &quot;----Pep_18 : SRF----&quot;
+[1] &quot;----Pep_180 : BDCL----&quot;
+[1] &quot;----Pep_183 : BDCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_184 : BDCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_187 : DCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_188 : SRF----&quot;
+[1] &quot;----Pep_189 : DCL----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_190 : SRF----&quot;
+[1] &quot;----Pep_193 : BDCL----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_194 : BDCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_198 : BDCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_2 : BDCL----&quot;
+[1] &quot;----Pep_20 : BDCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_213 : DCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_213 : SRF----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_215 : BDCL----&quot;
+[1] &quot;----Pep_217 : DCL----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_22 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_224 : BDCL----&quot;
+[1] &quot;----Pep_227 : SRF----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_228 : BDCL----&quot;
+[1] &quot;----Pep_228 : DCL----&quot;
+[1] &quot;----Pep_235 : DCL----&quot;
+[1] &quot;----Pep_237 : DCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_238 : DCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_24 : BDCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_247 : DCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_248 : BDCL----&quot;
+[1] &quot;----Pep_249 : DCL----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_250 : BDCL----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_250 : DCL----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_253 : BDCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_253 : SRF----&quot;
+[1] &quot;----Pep_254 : SRF----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_255 : BDCL----&quot;
+[1] &quot;----Pep_255 : DCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_259 : SRF----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_262 : DCL----&quot;
+[1] &quot;----Pep_262 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_268 : SRF----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_269 : BDCL----&quot;
+[1] &quot;----Pep_27 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_272 : SRF----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_276 : DCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_28 : DCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_280 : DCL----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_281 : SRF----&quot;
+[1] &quot;----Pep_282 : BDCL----&quot;
+[1] &quot;----Pep_282 : DCL----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_283 : BDCL----&quot;
+[1] &quot;----Pep_287 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_29 : SRF----&quot;
+[1] &quot;----Pep_291 : DCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_294 : DCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_294 : SRF----&quot;
+[1] &quot;----Pep_295 : DCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_297 : DCL----&quot;
+[1] &quot;----Pep_298 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_30 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_301 : BDCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_302 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_305 : SRF----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_314 : SRF----&quot;
+[1] &quot;----Pep_315 : SRF----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_319 : BDCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_320 : BDCL----&quot;
+[1] &quot;----Pep_326 : BDCL----&quot;
+[1] &quot;----Pep_332 : BDCL----&quot;
+[1] &quot;----Pep_337 : BDCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_34 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_342 : DCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_344 : SRF----&quot;
+[1] &quot;----Pep_354 : BDCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_361 : SRF----&quot;
+[1] &quot;----Pep_368 : DCL----&quot;
+[1] &quot;----Pep_374 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_375 : BDCL----&quot;
+[1] &quot;----Pep_376 : DCL----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_377 : BDCL----&quot;
+[1] &quot;----Pep_38 : BDCL----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_382 : BDCL----&quot;
+[1] &quot;----Pep_394 : BDCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_397 : SRF----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_4 : SRF----&quot;
+[1] &quot;----Pep_403 : BDCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_41 : BDCL----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_41 : SRF----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_410 : SRF----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_416 : SRF----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_418 : DCL----&quot;
+[1] &quot;----Pep_421 : SRF----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_428 : BDCL----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_439 : DCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_443 : SRF----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_445 : SRF----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_446 : DCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_447 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_452 : DCL----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_463 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_469 : DCL----&quot;
+[1] &quot;----Pep_47 : SRF----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_474 : SRF----&quot;
+[1] &quot;----Pep_478 : DCL----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_481 : BDCL----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_481 : SRF----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_49 : SRF----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_491 : SRF----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_493 : BDCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_507 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_52 : BDCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_520 : DCL----&quot;
+[1] &quot;----Pep_539 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_555 : SRF----&quot;
+[1] &quot;----Pep_56 : BDCL----&quot;
+[1] &quot;----Pep_58 : DCL----&quot;
+[1] &quot;----Pep_58 : SRF----&quot;
+[1] &quot;----Pep_586 : DCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_592 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_594 : SRF----&quot;
+[1] &quot;----Pep_595 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_617 : DCL----&quot;
+[1] &quot;----Pep_619 : BDCL----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_62 : BDCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_638 : SRF----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_639 : BDCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_65 : DCL----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_671 : BDCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_674 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_68 : SRF----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_69 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_705 : SRF----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_710 : BDCL----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_719 : SRF----&quot;
+[1] &quot;----Pep_725 : BDCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_728 : BDCL----&quot;
+[1] &quot;Minimum? TRUE&quot;
+[1] &quot;----Pep_745 : DCL----&quot;
+[1] &quot;----Pep_765 : DCL----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_769 : DCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_836 : SRF----&quot;
+[1] &quot;----Pep_88 : SRF----&quot;
+[1] &quot;Maximum? TRUE&quot;
+[1] &quot;----Pep_880 : BDCL----&quot;
+[1] &quot;----Pep_89 : DCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_9 : BDCL----&quot;
+[1] &quot;----Pep_93 : DCL----&quot;
+[1] &quot;This is not a peak&quot;
+[1] &quot;----Pep_97 : DCL----&quot;
+[1] &quot;Maximum? TRUE&quot;</code></pre>
+<pre class="r"><code>sig_stor %&gt;% filter(peak_type==&quot;Neither&quot;) %&gt;% nrow() # 40 out of 177 peptides were Neither Up or Down peaks</code></pre>
+<pre><code>[1] 40</code></pre>
+</div>
+<div id="plot-up-peaks-only" class="section level3">
+<h3>6.6.1. Plot up peaks only</h3>
+<pre class="r"><code># getting only the up-peaks
+sig_up &lt;- sig_stor %&gt;% filter(peak_type == &quot;Up&quot;) %&gt;% arrange(Time)
+sig_up$Time &lt;- str_replace(sig_up$Time,&quot;^&quot;,&quot;T&quot;)
+
+# really seeing if that is true
+
+# draw histogram in multigrids
+library(gridExtra)
+
+# (1) Surface
+l &lt;- list()
+for (i in paste0(&quot;T&quot;,1L:8L)){
+  print(i)
+  l[[i]] &lt;- time_series_1depth_1peaktime(df_filt8,n=1,sig_up,time=i)
+}</code></pre>
+<pre><code>[1] &quot;T1&quot;
+[1] 9
+[1] &quot;T2&quot;
+[1] 6
+[1] &quot;T3&quot;
+[1] 0
+[1] &quot;T4&quot;
+[1] 6
+[1] &quot;T5&quot;
+[1] 1
+[1] &quot;T6&quot;
+[1] 0
+[1] &quot;T7&quot;
+[1] 11
+[1] &quot;T8&quot;
+[1] 3</code></pre>
+<pre class="r"><code>length(l)</code></pre>
+<pre><code>[1] 8</code></pre>
+<pre class="r"><code>grid.arrange(grobs = l, ncol=4)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-26-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># (2) DCL
+l &lt;- list()
+for (i in paste0(&quot;T&quot;,1L:8L)){
+  print(i)
+  l[[i]] &lt;- time_series_1depth_1peaktime(df_filt8,n=2,sig_up,time=i)
+}</code></pre>
+<pre><code>[1] &quot;T1&quot;
+[1] 4
+[1] &quot;T2&quot;
+[1] 6
+[1] &quot;T3&quot;
+[1] 0
+[1] &quot;T4&quot;
+[1] 2
+[1] &quot;T5&quot;
+[1] 1
+[1] &quot;T6&quot;
+[1] 0
+[1] &quot;T7&quot;
+[1] 2
+[1] &quot;T8&quot;
+[1] 2</code></pre>
+<pre class="r"><code>length(l)</code></pre>
+<pre><code>[1] 8</code></pre>
+<pre class="r"><code>grid.arrange(grobs = l, ncol=4)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-26-2.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># (3) BDCL
+l &lt;- list()
+for (i in paste0(&quot;T&quot;,1L:8L)){
+  print(i)
+  l[[i]] &lt;- time_series_1depth_1peaktime(df_filt8,n=3,sig_up,time=i)
+}</code></pre>
+<pre><code>[1] &quot;T1&quot;
+[1] 10
+[1] &quot;T2&quot;
+[1] 3
+[1] &quot;T3&quot;
+[1] 0
+[1] &quot;T4&quot;
+[1] 3
+[1] &quot;T5&quot;
+[1] 0
+[1] &quot;T6&quot;
+[1] 0
+[1] &quot;T7&quot;
+[1] 13
+[1] &quot;T8&quot;
+[1] 2</code></pre>
+<pre class="r"><code>length(l)</code></pre>
+<pre><code>[1] 8</code></pre>
+<pre class="r"><code>grid.arrange(grobs = l, ncol=4)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-26-3.png" width="1056" style="display: block; margin: auto;" /></p>
+</div>
+<div id="plot-down-peaks-valleys-only" class="section level3">
+<h3>6.6.2. Plot down peaks (valleys) only</h3>
+<pre class="r"><code># getting only the up-peaks
+sig_down &lt;- sig_stor %&gt;% filter(peak_type == &quot;Down&quot;) %&gt;% arrange(Time)
+sig_down$Time &lt;- str_replace(sig_down$Time,&quot;^&quot;,&quot;T&quot;)
+
+# really seeing if that is true
+
+# draw histogram in multigrids
+library(gridExtra)
+
+# (1) Surface
+l &lt;- list()
+for (i in paste0(&quot;T&quot;,1L:8L)){
+  print(i)
+  l[[i]] &lt;- time_series_1depth_1peaktime(df_filt8,n=1,sig_down,time=i)
+}</code></pre>
+<pre><code>[1] &quot;T1&quot;
+[1] 0
+[1] &quot;T2&quot;
+[1] 2
+[1] &quot;T3&quot;
+[1] 4
+[1] &quot;T4&quot;
+[1] 0
+[1] &quot;T5&quot;
+[1] 1
+[1] &quot;T6&quot;
+[1] 4
+[1] &quot;T7&quot;
+[1] 0
+[1] &quot;T8&quot;
+[1] 8</code></pre>
+<pre class="r"><code>length(l)</code></pre>
+<pre><code>[1] 8</code></pre>
+<pre class="r"><code>grid.arrange(grobs = l, ncol=4)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-27-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># (2) DCL
+l &lt;- list()
+for (i in paste0(&quot;T&quot;,1L:8L)){
+  print(i)
+  l[[i]] &lt;- time_series_1depth_1peaktime(df_filt8,n=2,sig_down,time=i)
+}</code></pre>
+<pre><code>[1] &quot;T1&quot;
+[1] 0
+[1] &quot;T2&quot;
+[1] 4
+[1] &quot;T3&quot;
+[1] 5
+[1] &quot;T4&quot;
+[1] 1
+[1] &quot;T5&quot;
+[1] 1
+[1] &quot;T6&quot;
+[1] 0
+[1] &quot;T7&quot;
+[1] 0
+[1] &quot;T8&quot;
+[1] 5</code></pre>
+<pre class="r"><code>length(l)</code></pre>
+<pre><code>[1] 8</code></pre>
+<pre class="r"><code>grid.arrange(grobs = l, ncol=4)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-27-2.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># (3) BDCL
+l &lt;- list()
+for (i in paste0(&quot;T&quot;,1L:8L)){
+  print(i)
+  l[[i]] &lt;- time_series_1depth_1peaktime(df_filt8,n=3,sig_down,time=i)
+}</code></pre>
+<pre><code>[1] &quot;T1&quot;
+[1] 0
+[1] &quot;T2&quot;
+[1] 1
+[1] &quot;T3&quot;
+[1] 3
+[1] &quot;T4&quot;
+[1] 2
+[1] &quot;T5&quot;
+[1] 2
+[1] &quot;T6&quot;
+[1] 1
+[1] &quot;T7&quot;
+[1] 0
+[1] &quot;T8&quot;
+[1] 9</code></pre>
+<pre class="r"><code>length(l)</code></pre>
+<pre><code>[1] 8</code></pre>
+<pre class="r"><code>grid.arrange(grobs = l, ncol=4)</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-27-3.png" width="1056" style="display: block; margin: auto;" /></p>
+</div>
+<div id="rhythmic-peptides-peak-time-distribution-using-only-the-real-peaks-up" class="section level3">
+<h3>6.6.3. Rhythmic peptide’s peak time distribution (using only the real peaks (up))</h3>
+<pre class="r"><code># getting only the up-peaks
+sig_peak &lt;- sig_stor %&gt;% filter(peak_type == &quot;Up&quot;) %&gt;% arrange(Time)
+
+sig_peak$Depth &lt;- factor(sig_peak$Depth, levels=depth_vec)
+
+ggplot(sig_peak, aes(x=as.numeric(Time))) +
+  geom_freqpoly(binwidth = 1, aes(color=Depth), size=1.5) +
+  # geom_histogram(binwidth = 1, position=&quot;dodge&quot;, aes(fill=Depth)) +
+  scale_color_manual(values=cols) +
+  ylab(&quot;Rhythmic peptide frequency \n&quot;) +
+  # xlab(&quot;\n Peak timepoint (Sampling order #)&quot;) +
+  xlab(&quot;\n Time of day on June 26-27 2019 (Daylight 05:17-20:30)&quot;) +
+  scale_x_continuous(breaks=seq(1,8,1),labels =c(df_time$date_time))+
+  ggtitle(paste0(&quot;Histogram of peak time \n&quot;))+
+  # scale_x_continuous(breaks=seq(1,8,1)) +
+  ## adjust positions
+  theme(plot.title = element_text(size = 20,hjust = 0.5, family=&quot;serif&quot;)) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, family=&quot;serif&quot;)) + 
+  theme(axis.text.x = element_text(hjust = 0.9, vjust=0.9,angle=40,size=13, family=&quot;serif&quot;))+
+  theme(axis.text.y = element_text(size=10)) +
+  annotate(&quot;rect&quot;, xmin = 3.6, xmax = 5.35, ymin = -Inf, ymax = Inf, alpha = .2) +
+  theme(panel.grid.minor = element_blank())</code></pre>
+<p><img src="figure/peptide_level_visualization.Rmd/unnamed-chunk-28-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>  # theme(panel.grid.major = element_blank())
+
+sig_peak %&gt;% group_by(Depth) %&gt;% count()</code></pre>
+<pre><code># A tibble: 3 x 2
+# Groups:   Depth [3]
+  Depth     n
+  &lt;fct&gt; &lt;int&gt;
+1 SRF      36
+2 DCL      17
+3 BDCL     31</code></pre>
 </div>
 <div id="archived-not-using-this-part" class="section level3">
 <h3>Archived: Not using this part</h3>
