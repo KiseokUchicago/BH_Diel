@@ -14,3 +14,4 @@ Welcome to my research website.
 * [Peptide_level_visualization](peptide_level_visualization.html)
 * [Time_series_clustering](clustering_time_series.html)
 * [Taxonomy_assignment_and_analysis](taxonomy_assignment_and_analysis.html)
+* [KEGG_assignment_and_analysis](kegg_assignment_and_analysis.html)
