@@ -1260,7 +1260,7 @@ ggplot(rain_sig, aes(x=phase)) +
 ```
 
 
-### 6.5. Amplitude
+### 6.5. Plotting rhythmic peptides sorted by peak time
 
 ```{r}
 # Shaping data
@@ -1272,8 +1272,8 @@ rain_sig2 <- rain_sig1 %>% rename(Time = phase) %>% select(-period)
 # rain_sig2 %>% arrange(Peptide_id)
            
 # plot
-time_series_1depth_1peak <- function(df_filt8,n=1,time="T1"){
-  peak_T1 <- rain_sig2 %>% filter(Time==time) %>% select(Peptide_id)
+time_series_1depth_1peaktime <- function(df_filt8,n=1,rain_sig2,time="T1"){
+  peak_T1 <- rain_sig2 %>% filter(Time==time,Depth==depth_vec[n]) %>% select(Peptide_id)
   print(length(peak_T1$Peptide_id))
   time_series_clust_wError(df_filt8, n, peak_T1$Peptide_id) +
     ggtitle(paste0("Peptides with peak time ",time))+
@@ -1289,7 +1289,7 @@ library(gridExtra)
 l <- list()
 for (i in paste0("T",1L:8L)){
   print(i)
-  l[[i]] <- time_series_1depth_1peak(df_filt8,n=1,time=i)
+  l[[i]] <- time_series_1depth_1peaktime(df_filt8,n=1,rain_sig2,time=i)
 }
 length(l)
 
@@ -1299,7 +1299,7 @@ grid.arrange(grobs = l, ncol=4)
 l <- list()
 for (i in paste0("T",1L:8L)){
   print(i)
-  l[[i]] <- time_series_1depth_1peak(df_filt8,n=2,time=i)
+  l[[i]] <- time_series_1depth_1peaktime(df_filt8,n=2,rain_sig2,time=i)
 }
 length(l)
 
@@ -1309,28 +1309,232 @@ grid.arrange(grobs = l, ncol=4)
 l <- list()
 for (i in paste0("T",1L:8L)){
   print(i)
-  l[[i]] <- time_series_1depth_1peak(df_filt8,n=3,time=i)
+  l[[i]] <- time_series_1depth_1peaktime(df_filt8,n=3,rain_sig2,time=i)
 }
 length(l)
 
 grid.arrange(grobs = l, ncol=4)
 
+```
+
+### 6.6. Sorting peak by local maxima, minima
+
+```{r}
+head(rain_sig2)
+dim(rain_sig2)
+dim(df_ave_rep)
+colnames(rain_sig2)
+colnames(df_ave_rep)
 
 
-# Getting amplitude
-inner_join(rain_sig2, df_ave_rep, by=c("Peptide_id"="Peptide_id","Depth"="Depth","Time"="Time")) %>% dim()
 
+head(df_sig_time)
+
+
+peak_up_down_assign <- function(rain_sig2,df_ave_rep){
+  # Prepare reference dataframe
+  rain_sig2$Time <- str_replace(rain_sig2$Time,"T","")
+  rain_sig2 %>% arrange(Peptide_id,Depth)
+  
+  sig_list <- unique(rain_sig2$Peptide_id)
+  df_sig_time <- df_ave_rep %>% filter(Peptide_id %in% sig_list) %>% arrange(Peptide_id, Depth)
+  df_sig_time$Time <- str_replace(df_sig_time$Time,"T","")
+
+  # Make Storing dataframe
+  sig_stor <- rain_sig2 %>% select(Peptide_id, Depth, Time,pVal) %>% unique() %>% arrange(Peptide_id,Depth)
+  sig_stor$peak_type <- NA
+
+  # for loop for every peptide
+  for (i in 1:nrow(sig_stor)){
+    # print(i)
+    # print(sig_stor$Peptide_id[i])
+    # print(sig_stor$Depth[i])
+    # i <- 3
+    id <- sig_stor$Peptide_id[i]
+    dp <- sig_stor$Depth[i]
+    tm <- sig_stor$Time[i]
+    # id <- "Pep_1027"
+    print(paste0("----",id," : ",dp,"----"))
+    
+    df_id_dp <- df_sig_time[df_sig_time$Peptide_id==id & df_sig_time$Depth==dp,]
+    
+    if (tm==1){ # when peak is allegedly T1
+      ratio_1 <- df_id_dp[df_id_dp$Time==1,]$Ave_abundance_ratio
+      ratio_2 <- df_id_dp[df_id_dp$Time==2,]$Ave_abundance_ratio
+      if (ratio_1 > ratio_2){
+        sig_stor[sig_stor$Peptide_id==id & sig_stor$Depth==dp,]$peak_type <- "Up"
+      } else if (ratio_1 < ratio_2){
+        sig_stor[sig_stor$Peptide_id==id & sig_stor$Depth==dp,]$peak_type <- "Down"
+      } else{
+        sig_stor[sig_stor$Peptide_id==id & sig_stor$Depth==dp,]$peak_type <- "Neither"
+      } # when peak is allegedly T1 (close)
+      
+    } else if (tm==8){ # when peak is allegedly T8
+      
+      ratio_7 <- df_id_dp[df_id_dp$Time==7,]$Ave_abundance_ratio
+      ratio_8 <- df_id_dp[df_id_dp$Time==8,]$Ave_abundance_ratio
+      if (ratio_8 > ratio_7){
+        sig_stor[sig_stor$Peptide_id==id & sig_stor$Depth==dp,]$peak_type <- "Up"
+        # print("Up")
+      } else if (ratio_8 < ratio_7){
+        sig_stor[sig_stor$Peptide_id==id & sig_stor$Depth==dp,]$peak_type <- "Down"
+        # print("Down")
+      } else{
+        sig_stor[sig_stor$Peptide_id==id & sig_stor$Depth==dp,]$peak_type <- "Neither"
+        # print("Neither")
+      } # when peak is allegedly T8 (close)
+      
+    } else{ # when peak is alledgedly between T2 and T7
+      ileft = as.numeric(tm)-1
+      iright = as.numeric(tm)+1
+      ratio_ileft <- df_id_dp[df_id_dp$Time== ileft,]$Ave_abundance_ratio
+      ratio_i <- df_id_dp[df_id_dp$Time==tm,]$Ave_abundance_ratio
+      ratio_iright <- df_id_dp[df_id_dp$Time== iright,]$Ave_abundance_ratio
+      max_ratio = max(ratio_ileft,ratio_i,ratio_iright)
+      min_ratio = min(ratio_ileft,ratio_i,ratio_iright)
+
+      if (ratio_i == max_ratio){
+        print(paste0("Maximum? ",(ratio_i == max_ratio)))
+        sig_stor[sig_stor$Peptide_id==id & sig_stor$Depth==dp,]$peak_type <- "Up"
+      } else if (ratio_i == min_ratio){
+        print(paste0("Minimum? ",(ratio_i == min_ratio)))
+        sig_stor[sig_stor$Peptide_id==id & sig_stor$Depth==dp,]$peak_type <- "Down"
+      } else{
+        print("This is not a peak")
+        sig_stor[sig_stor$Peptide_id==id & sig_stor$Depth==dp,]$peak_type <- "Neither"
+      } # when peak is alledgedly between T2 and T7 (close)
+    }
+  }
+  return(sig_stor)
+}
+
+sig_stor <- peak_up_down_assign(rain_sig2,df_ave_rep)
+
+sig_stor %>% filter(peak_type=="Neither") %>% nrow() # 40 out of 177 peptides were Neither Up or Down peaks
 
 
 ```
 
+### 6.6.1. Plot up peaks only
+
+```{r}
+# getting only the up-peaks
+sig_up <- sig_stor %>% filter(peak_type == "Up") %>% arrange(Time)
+sig_up$Time <- str_replace(sig_up$Time,"^","T")
+
+# really seeing if that is true
+
+# draw histogram in multigrids
+library(gridExtra)
+
+# (1) Surface
+l <- list()
+for (i in paste0("T",1L:8L)){
+  print(i)
+  l[[i]] <- time_series_1depth_1peaktime(df_filt8,n=1,sig_up,time=i)
+}
+length(l)
+
+grid.arrange(grobs = l, ncol=4)
+
+# (2) DCL
+l <- list()
+for (i in paste0("T",1L:8L)){
+  print(i)
+  l[[i]] <- time_series_1depth_1peaktime(df_filt8,n=2,sig_up,time=i)
+}
+length(l)
+
+grid.arrange(grobs = l, ncol=4)
+
+# (3) BDCL
+l <- list()
+for (i in paste0("T",1L:8L)){
+  print(i)
+  l[[i]] <- time_series_1depth_1peaktime(df_filt8,n=3,sig_up,time=i)
+}
+length(l)
+
+grid.arrange(grobs = l, ncol=4)
+
+```
 
 
+### 6.6.2. Plot down peaks (valleys) only
 
+```{r}
+# getting only the up-peaks
+sig_down <- sig_stor %>% filter(peak_type == "Down") %>% arrange(Time)
+sig_down$Time <- str_replace(sig_down$Time,"^","T")
 
+# really seeing if that is true
 
+# draw histogram in multigrids
+library(gridExtra)
 
+# (1) Surface
+l <- list()
+for (i in paste0("T",1L:8L)){
+  print(i)
+  l[[i]] <- time_series_1depth_1peaktime(df_filt8,n=1,sig_down,time=i)
+}
+length(l)
 
+grid.arrange(grobs = l, ncol=4)
+
+# (2) DCL
+l <- list()
+for (i in paste0("T",1L:8L)){
+  print(i)
+  l[[i]] <- time_series_1depth_1peaktime(df_filt8,n=2,sig_down,time=i)
+}
+length(l)
+
+grid.arrange(grobs = l, ncol=4)
+
+# (3) BDCL
+l <- list()
+for (i in paste0("T",1L:8L)){
+  print(i)
+  l[[i]] <- time_series_1depth_1peaktime(df_filt8,n=3,sig_down,time=i)
+}
+length(l)
+
+grid.arrange(grobs = l, ncol=4)
+
+```
+
+### 6.6.3. Rhythmic peptide's peak time distribution (using only the real peaks (up))
+
+```{r}
+# getting only the up-peaks
+sig_peak <- sig_stor %>% filter(peak_type == "Up") %>% arrange(Time)
+
+sig_peak$Depth <- factor(sig_peak$Depth, levels=depth_vec)
+
+ggplot(sig_peak, aes(x=as.numeric(Time))) +
+  geom_freqpoly(binwidth = 1, aes(color=Depth), size=1.5) +
+  # geom_histogram(binwidth = 1, position="dodge", aes(fill=Depth)) +
+  scale_color_manual(values=cols) +
+  ylab("Rhythmic peptide frequency \n") +
+  # xlab("\n Peak timepoint (Sampling order #)") +
+  xlab("\n Time of day on June 26-27 2019 (Daylight 05:17-20:30)") +
+  scale_x_continuous(breaks=seq(1,8,1),labels =c(df_time$date_time))+
+  ggtitle(paste0("Histogram of peak time \n"))+
+  # scale_x_continuous(breaks=seq(1,8,1)) +
+  ## adjust positions
+  theme(plot.title = element_text(size = 20,hjust = 0.5, family="serif")) + 
+  theme(axis.title.x = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.title.y = element_text(size = 15,hjust = 0.5, family="serif")) + 
+  theme(axis.text.x = element_text(hjust = 0.9, vjust=0.9,angle=40,size=13, family="serif"))+
+  theme(axis.text.y = element_text(size=10)) +
+  annotate("rect", xmin = 3.6, xmax = 5.35, ymin = -Inf, ymax = Inf, alpha = .2) +
+  theme(panel.grid.minor = element_blank())
+  # theme(panel.grid.major = element_blank())
+
+sig_peak %>% group_by(Depth) %>% count()
+
+```
 
 
 
