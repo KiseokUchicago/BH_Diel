@@ -1412,6 +1412,9 @@ sig_stor <- peak_up_down_assign(rain_sig2,df_ave_rep)
 
 sig_stor %>% filter(peak_type=="Neither") %>% nrow() # 40 out of 177 peptides were Neither Up or Down peaks
 
+# save file
+write.table(sig_stor,file='sig_stor.tsv', sep='\t',row.names = F)
+
 
 ```
 

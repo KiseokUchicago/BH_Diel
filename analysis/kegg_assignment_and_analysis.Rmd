@@ -448,6 +448,28 @@ plot_depth_rhythmic_kegg(rain_kegg)
 
 ```
 
+### 3.2. (After removing valleys) Plotting taxonomic profile for rhythmic peptides (Surface, DCL, Below DCL)
+
+```{r}
+
+
+# read in sig_stor
+sig_store <- read.csv(file="sig_stor.tsv", sep = '\t')
+# getting only the up-peaks
+sig_up <- sig_stor %>% filter(peak_type == "Up") %>% arrange(Time)
+sig_up$Depth <- factor(sig_up$Depth,levels=depth_vec)
+
+# plot
+rain_kegg <- sig_up %>% left_join(df_kegg, by=c("Peptide_id"="Peptide_id"))
+
+rain_kegg <- left_join(sig_up, assign_kegg(rain_kegg), by=c("Peptide_id"="Peptide_id"))
+plot_depth_rhythmic_kegg(rain_kegg)
+
+```
+
+
+
+
 ### 4. Plot the KO relative abundance from Tadpole partial clustering method
 
 Before doing this go to clustering_time_series and get the cluster_id dataframe.

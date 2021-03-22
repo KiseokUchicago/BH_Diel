@@ -1128,6 +1128,49 @@ plot_depth_rhythmic_taxa(rain_assign,level_from="Phylum")
 
 ```
 
+### 3.2. (After removing valleys) Plotting taxonomic profile for rhythmic peptides (Surface, DCL, Below DCL)
+
+```{r}
+# read in sig_stor
+sig_store <- read.csv(file="sig_stor.tsv", sep = '\t')
+# getting only the up-peaks
+sig_up <- sig_stor %>% filter(peak_type == "Up") %>% arrange(Time)
+sig_up$Depth <- factor(sig_up$Depth,levels=depth_vec)
+
+# in all taxonomy levels
+rain_tax <- sig_up %>% left_join(df_peptax, by=c("Peptide_id"="Peptide_id"))
+
+# (1) Strain level
+rain_assign <- left_join(sig_up, assign_from_strain_level(rain_tax), by=c("Peptide_id"="Peptide_id"))
+plot_depth_rhythmic_taxa(rain_assign,level_from="Strain")
+
+# (2) Genus level
+rain_assign <- left_join(sig_up, assign_from_genus_level(rain_tax), by=c("Peptide_id"="Peptide_id"))
+plot_depth_rhythmic_taxa(rain_assign,level_from="Genus")
+
+# (3) Family level
+rain_assign <- left_join(sig_up, assign_from_family_level(rain_tax), by=c("Peptide_id"="Peptide_id"))
+plot_depth_rhythmic_taxa(rain_assign,level_from="Family")
+
+# (4) Order level
+rain_assign <- left_join(sig_up, assign_from_order_level(rain_tax), by=c("Peptide_id"="Peptide_id"))
+plot_depth_rhythmic_taxa(rain_assign,level_from="Order")
+
+# (5) Class level
+rain_assign <- left_join(sig_up, assign_from_class_level(rain_tax), by=c("Peptide_id"="Peptide_id"))
+plot_depth_rhythmic_taxa(rain_assign,level_from="Class")
+
+# (6) Phylum level
+rain_assign <- left_join(sig_up, assign_from_phylum_level(rain_tax), by=c("Peptide_id"="Peptide_id"))
+plot_depth_rhythmic_taxa(rain_assign,level_from="Phylum")
+
+```
+
+
+
+
+
+
 ### 4. Plot the taxonomy relative abundance from Tadpole partial clustering method
 
 Before doing this go to clustering_time_series and get the cluster_id dataframe.
